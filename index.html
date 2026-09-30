@@ -2,9 +2,56 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>거북목 실시간 측정 결과</title>
+    <style>
+        table { width : 80%; border-collapse : collapse; margin : 20px auto; text-align : center; }
+        th, td { border : 1px solid #ccc; padding : 10px; }
+        th { background-color : #f4f4f4; }
+        .warning { color : red; font-weight : bold; }
+        .good { color : green; font-weight : bold; }
+    </style>
 </head>
 <body>
-    
+    <h2 style="text-align: center;">실시간 거북목 측정 결과 목록</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>측정 시간</th>
+                <th>측정 각도 (°)</th>
+                <th>상태</th>
+            </tr>
+        </thead>
+        <tbody id="result-table">
+        </tbody>
+    </table>
+
+    <script>
+        function fetchResults() {
+            fetch('/api/results')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('result-table');
+                    tbody.innerHTML = '';
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        const statusClass = row.status.includes('위험') ? 'warning' : 'good';
+                        
+                        tr.innerHTML = `
+                            <td>${row.id}</td>
+                            <td>${row.timestamp}</td>
+                            <td>${row.angle}°</td>
+                            <td class="${statusClass}">${row.status}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        setInterval(fetchResults, 2000);
+        fetchResults();
+    </script>
 </body>
 </html>
