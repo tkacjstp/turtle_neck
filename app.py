@@ -83,7 +83,8 @@ def get_stats():
     day = request.args.get('date') or datetime.now().strftime('%Y-%m-%d')
     conn = get_conn()
     rows = conn.execute('SELECT status, COUNT(*) AS cnt FROM measurements '
-                        'WHERE timestamp LIKE ? GROUP BY status', (day + '%',)).fetchall()
+                        'WHERE timestamp BETWEEN ? AND ? GROUP BY status',  # 인덱스 사용
+                        (day + ' 00:00:00', day + ' 23:59:59')).fetchall()
     conn.close()
 
     counts = {s: 0 for s in VALID_STATUS}
@@ -105,4 +106,4 @@ init_db()
 
 if __name__ == '__main__':
     # 개발 중 오류 확인이 필요하면 debug=True, 시연·제출 때는 False
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5050, debug=False)
