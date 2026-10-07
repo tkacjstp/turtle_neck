@@ -7,8 +7,9 @@
         table { width : 80%; border-collapse : collapse; margin : 20px auto; text-align : center; }
         th, td { border : 1px solid #ccc; padding : 10px; }
         th { background-color : #f4f4f4; }
-        .warning { color : red; font-weight : bold; }
-        .good { color : green; font-weight : bold; }
+        .위험 { color : red; font-weight : bold; }
+        .경고 { color : orange; font-weight : bold; }
+        .정상 { color : green; font-weight : bold; }
     </style>
 </head>
 <body>
@@ -18,7 +19,7 @@
             <tr>
                 <th>번호</th>
                 <th>측정 시간</th>
-                <th>측정 각도 (°)</th>
+                <th>악화율 (%)</th>
                 <th>상태</th>
             </tr>
         </thead>
@@ -32,19 +33,14 @@
                 .then(response => response.json())
                 .then(data => {
                     const tbody = document.getElementById('result-table');
-                    tbody.innerHTML = '';
+                    tbody.replaceChildren();
 
                     data.forEach(row => {
-                        const tr = document.createElement('tr');
-                        const statusClass = row.status.includes('위험') ? 'warning' : 'good';
-                        
-                        tr.innerHTML = `
-                            <td>${row.id}</td>
-                            <td>${row.timestamp}</td>
-                            <td>${row.angle}°</td>
-                            <td class="${statusClass}">${row.status}</td>
-                        `;
-                        tbody.appendChild(tr);
+                        const tr = tbody.insertRow();
+                        [row.id, row.timestamp, row.angle, row.status].forEach(v => {
+                            tr.insertCell().textContent = v;
+                        });
+                        tr.cells[3].className = row.status;
                     });
                 })
                 .catch(error => console.error('Error fetching data:', error));
