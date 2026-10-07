@@ -22,6 +22,20 @@
 실행하면 자동으로 생기는 파일(git에 올리지 않음):
 `baseline.json`(기준자세), `posture.log`(판별기 로그), `turtle_neck.db`(서버 DB)
 
+## 0. 코드 받기와 가상환경 (서버·판별기 기기 모두)
+
+```bash
+git clone -b develop https://github.com/tkacjstp/turtle_neck.git
+cd turtle_neck
+python3 -m venv venv
+source venv/bin/activate
+```
+
+- 윈도우는 `venv\Scripts\activate` 입니다. 프롬프트 앞에 `(venv)`가 보이면 성공입니다.
+- 새 터미널을 열 때마다 `source venv/bin/activate`를 다시 실행하세요.
+- 라즈베리파이 최신 OS는 가상환경 없이 `pip install` 하면 `externally-managed-environment` 오류가 납니다.
+- `mediapipe`는 너무 최신 Python에서는 설치가 안 될 수 있습니다. 실패하면 Python 3.11로 가상환경을 만드세요. 라즈베리파이는 64비트 OS가 필요합니다.
+
 ## 1. 서버 실행
 
 ```bash
@@ -86,6 +100,7 @@ LED·부저를 연결하려면 `posture.py`의 `on_status_change()`에 코드를
 ## 5. 라즈베리파이 부팅 시 자동 실행 (systemd)
 
 `/etc/systemd/system/turtle.service` 파일을 만듭니다. 경로와 사용자 이름은 환경에 맞게 바꾸세요.
+`ExecStart`는 **가상환경 안의 python**을 가리켜야 설치한 라이브러리를 찾습니다.
 
 ```ini
 [Unit]
@@ -95,7 +110,7 @@ After=network-online.target
 [Service]
 User=pi
 WorkingDirectory=/home/pi/turtle_neck
-ExecStart=/usr/bin/python3 /home/pi/turtle_neck/posture.py
+ExecStart=/home/pi/turtle_neck/venv/bin/python /home/pi/turtle_neck/posture.py
 Restart=always
 
 [Install]
@@ -151,6 +166,8 @@ python3 test_posture.py
 | `전송 실패 ... timed out` | `server_url`의 IP가 틀렸거나, 두 기기가 다른 네트워크에 있거나, 서버 방화벽이 막고 있음. 판별기 기기에서 `curl http://<서버 IP>:5050/api/results`로 확인 |
 | `전송 실패 ... Connection refused` | 서버(`app.py`)가 꺼져 있음 |
 | macOS에서 서버 포트 충돌 | 5000번은 AirPlay 수신이 사용하므로 이 프로젝트는 5050번을 씀 |
-| `카메라 연결 실패` 반복 | 카메라 연결 확인. 0번 카메라(처음 인식된 카메라)를 사용함 |
+| `카메라 연결 실패` 반복 | 카메라 연결 확인. 0번 카메라(처음 인식된 카메라)를 사용함. 맥은 시스템 설정 → 개인정보 보호 → 카메라에서 터미널/VS Code 허용 |
+| `pip install mediapipe` 실패 | Python 3.11로 가상환경을 다시 만들기. 라즈베리파이는 64비트 OS 확인 |
+| systemd 실행 시 `ModuleNotFoundError` | `ExecStart`가 가상환경 python(`venv/bin/python`)을 가리키는지 확인 |
 | 라즈베리파이 카메라 모듈(리본 케이블)이 안 열림 | 최신 라즈베리파이 OS는 `cv2.VideoCapture`로 바로 안 열릴 수 있음. USB 웹캠을 쓰거나 `picamera2` 사용 |
 | 판정이 이상함 | `baseline.json`을 지우고 바른 자세로 기준값을 다시 측정 |
