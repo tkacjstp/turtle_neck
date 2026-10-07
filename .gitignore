@@ -7,3 +7,8 @@ __pycache__/
 venv/
 
 .vscode/
+tempCodeRunnerFile.py
+
+# 라즈베리파이 판별기가 만드는 파일
+baseline.json
+*.log*
