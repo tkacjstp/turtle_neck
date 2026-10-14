@@ -1,21 +1,24 @@
 # 거북목 판별기 (turtle_neck)
 
-웹캠으로 앉은 자세를 보고 거북목을 판별해, 결과를 서버에 저장하고 웹 페이지로 보여줍니다.
+노트북 카메라로 앉은 자세를 보고 거북목을 판별해, 결과를 서버에 저장하고 웹 페이지로 보여줍니다.
+라즈베리파이는 판정 결과를 받아 LED·부저·진동으로 알리고, 센서값을 서버로 보냅니다.
 
 ```
-[라즈베리파이 / 노트북]                         [서버 컴퓨터]
-웹캠 → posture.py ──POST /api/record──→ app.py → turtle_neck.db
-                                                  ↑
-                                   브라우저 (index.html, 2초마다 갱신)
+[노트북]  카메라 → posture.py ──POST /api/record──→ app.py → turtle_neck.db
+                       └─POST /api/status (상태 변경 즉시)─┘ │   ↑
+                                                             │   브라우저 (index.html)
+[라즈베리파이]  rpi_device.py ── GET /api/status (0.3초마다) ─┘
+                (LED·부저·진동)   POST /api/sensor (센서값)
 ```
 
 ## 파일 구성
 
 | 파일 | 실행 위치 | 역할 |
 |---|---|---|
-| `posture.py` | 라즈베리파이 | 카메라로 자세를 판별하고 결과를 서버로 전송 |
-| `config.json` | 라즈베리파이 | 서버 주소와 판별 기준값 |
-| `app.py` | 서버 | 측정값 저장, 조회 API, 웹 페이지 |
+| `posture.py` | 노트북 | 카메라로 자세를 판별하고 결과를 서버로 전송 |
+| `config.json` | 노트북 | 서버 주소와 판별 기준값 |
+| `app.py` | 노트북 | 측정값·센서값 저장, 지금 상태 전달, 조회 API, 웹 페이지 |
+| `rpi_device.py` | 라즈베리파이 | 상태에 따라 LED·부저·진동, 센서값 전송 |
 | `templates/index.html` | 브라우저 | 최근 측정 결과 표 |
 | `test_posture.py` | 개발용 | 판별 로직과 서버 연동 확인 |
 
@@ -88,7 +91,8 @@ python3 posture.py
 | `model_complexity` | 1: 정확 / 0: 가벼움(라즈베리파이가 느릴 때) | 1 |
 | `smooth_sec` | 최근 몇 초의 중간값으로 판정할지 | 2 |
 | `hysteresis_pct` | 경고 진입 후 해제 기준을 몇 % 낮출지 (깜빡임 방지) | 2 |
-| `analysis_fps` | 초당 분석 횟수 (낮추면 CPU 절약) | 10 |
+| `analysis_fps` | 초당 분석 횟수 (낮추면 CPU 절약). 실제 속도는 1분마다 로그에 `분석 속도`로 남음 | 10 |
+| `camera_fov_deg` | 카메라 가로 화각(°). 카메라 거리 추정용 — 제품 사양에 있으면 그 값으로 | 65 |
 
 - 설정을 바꾸면 판별기를 **재시작**해야 반영됩니다.
 - 판별이 너무 민감하면 `warning_pct`, `danger_pct`, `hold_sec`를 올리고, 둔하면 내리세요.
@@ -96,33 +100,72 @@ python3 posture.py
 
 ## 4. 판별 방식
 
-MediaPipe Pose로 귀·입·어깨 좌표를 찾아 지표 4개를 계산합니다. 모두 **어깨 너비로 나눈 비율**이라 카메라와의 거리가 달라져도 값이 유지됩니다.
+Pose로 어깨, Face Mesh로 양쪽 눈 끝·코끝을 찾아 지표를 계산합니다. 모두 **어깨 너비로 나눈 비율**입니다.
 
 | 지표 | 계산 | 나빠지면 |
 |---|---|---|
-| `neck` | 귀~어깨 높이 | 줄어듦 (거북목) |
-| `mouth` | 입~어깨 높이 | 줄어듦 (고개 숙임) |
-| `face` | 양쪽 귀 사이 거리 | 커짐 (머리가 앞으로) |
-| `tilt` | 어깨 기울기 | 커짐 (어깨 틀어짐) |
+| `forward` | 눈 사이 거리 / 어깨 너비 | 커짐 (머리만 카메라 쪽으로 나옴) |
+| `height` | 어깨선~눈 높이 / 어깨 너비 | 작아짐 (목을 빼고 숙임, 구부정함) |
+| `tilt` | 어깨 기울기(°) | 커짐 (어깨 틀어짐, 따로 판정) |
+| `dist` | 카메라~눈 거리 추정(cm) | 판정 보정용 |
 
-기준자세 대비 **가장 많이 나빠진 지표의 %(악화율)** 를 최근 15프레임 평균으로 구해 정상/경고/위험을 정합니다.
+- 기준자세 대비 **더 많이 나빠진 쪽의 %(악화율)** 를 최근 `smooth_sec`초 중간값으로 구해 정상/경고/위험을 정합니다.
+- `forward`는 카메라 거리(`dist`)로 **60cm 기준 %로 환산**해서, 카메라가 가깝든 멀든 같은 기준으로 판정합니다.
+- 몸통만 돌려 어깨가 좁아 보이는 경우는 머리가 나온 것으로 치지 않습니다(눈이 실제로 가까워진 만큼만 인정).
+- 고개를 옆으로 돌렸거나 다른 사람 얼굴이 잡힌 순간은 판정에서 뺍니다.
 
-LED·부저를 연결하려면 `posture.py`의 `on_status_change()`에 코드를 넣으면 됩니다. 상태가 바뀔 때마다 호출됩니다.
+## 5. 라즈베리파이 알림·센서 (rpi_device.py)
 
-## 5. 라즈베리파이 부팅 시 자동 실행 (systemd)
+라즈베리파이에는 `rpi_device.py` 하나만 있으면 됩니다. 기본 `python3`와 `gpiozero`(라즈베리파이 OS에 기본 설치)만 쓰므로 **가상환경·mediapipe 설치가 필요 없습니다.**
 
-`/etc/systemd/system/turtle.service` 파일을 만듭니다. 경로와 사용자 이름은 환경에 맞게 바꾸세요.
-`ExecStart`는 **가상환경 안의 python**을 가리켜야 설치한 라이브러리를 찾습니다.
+**1) 설정** — `rpi_device.py` 위쪽
+
+| 항목 | 의미 | 기본값 |
+|---|---|---|
+| `SERVER` | 노트북 서버 주소 (노트북에서 `ipconfig getifaddr en0`) | `http://노트북IP:5050` |
+| `LED_PIN`, `BUZZER_PIN`, `VIBRATION_PIN` | BCM 핀 번호. 없는 장치는 `None` | 17, 27, 22 |
+| `POLL_SEC` | 상태 확인 주기(초) | 0.3 |
+| `SENSOR_SEC` | 센서값 전송 주기(초) | 5 |
+| `STALE_SEC` | 판별기 소식이 이 시간 넘게 없으면 알림 끔 | 15 |
+
+**2) 센서 연결** — `read_sensors()`가 `{"이름": 숫자}`를 돌려주면 서버 DB(`sensor_readings`)에 저장됩니다.
+
+```python
+from gpiozero import DistanceSensor
+sonar = DistanceSensor(echo=24, trigger=23)   # 파일 위쪽에서 한 번만 만들기
+
+def read_sensors():
+    return {"distance_cm": sonar.distance * 100}
+```
+
+**3) 실행** (노트북에서 `app.py`, `posture.py`를 먼저 켠 뒤)
+
+```bash
+python3 rpi_device.py
+```
+
+| 판정 | 동작 |
+|---|---|
+| 정상 | 모두 꺼짐 |
+| 경고 | LED 켜짐 + 진동 짧게 한 번 |
+| 위험 | LED 깜빡임 + 부저 삐- 삐- + 진동 짧게 한 번 |
+| 서버 연결 끊김 / 판별기 꺼짐 | 모두 꺼짐 |
+
+상태가 바뀌고 약 0.2~0.5초 안에 반응합니다. 연결이 안 되면 라즈베리파이에서 `curl http://노트북IP:5050/api/status`로 확인하세요(같은 와이파이, 맥 방화벽).
+
+배선 없이 동작만 시험하려면 가짜 GPIO로 실행합니다: `GPIOZERO_PIN_FACTORY=mock python3 rpi_device.py`
+
+**4) 부팅 시 자동 실행 (systemd)** — `/etc/systemd/system/turtle.service` (경로·사용자 이름은 환경에 맞게)
 
 ```ini
 [Unit]
-Description=Turtle neck detector
+Description=Turtle neck RPi alerts and sensors
 After=network-online.target
 
 [Service]
 User=pi
 WorkingDirectory=/home/pi/turtle_neck
-ExecStart=/home/pi/turtle_neck/venv/bin/python /home/pi/turtle_neck/posture.py
+ExecStart=/usr/bin/python3 /home/pi/turtle_neck/rpi_device.py
 Restart=always
 
 [Install]
@@ -134,7 +177,7 @@ sudo systemctl enable --now turtle
 ```
 
 - 상태 확인: `systemctl status turtle`
-- 로그 보기: `journalctl -u turtle -f` 또는 `posture.log`
+- 로그 보기: `journalctl -u turtle -f`
 - 설정 변경 후 재시작: `sudo systemctl restart turtle`
 
 ## 6. API
@@ -144,6 +187,10 @@ sudo systemctl enable --now turtle
 | `POST /api/record` | 측정값 저장. `status`는 `정상`/`경고`/`위험`만 허용 |
 | `GET /api/results?limit=20` | 최근 측정값 (최대 500개) |
 | `GET /api/stats?date=YYYY-MM-DD` | 그날 상태별 개수와 비율 |
+| `POST /api/status` | 판별기가 지금 상태를 알림 `{"status": "경고"}` |
+| `GET /api/status` | 지금 상태와 마지막 소식 후 지난 초 `{"status": "경고", "age": 1.2}` |
+| `POST /api/sensor` | 센서값 저장 `{"timestamp": "...", "values": {"distance_cm": 42.5}}` |
+| `GET /api/sensor?limit=20` | 최근 센서값 |
 
 `/api/record` 요청 예시:
 
@@ -182,7 +229,7 @@ python3 test_posture.py
 | `pip install mediapipe==0.10.18` 실패 | Python 3.9~3.12인지 확인(3.11로 가상환경 다시 만들기). 라즈베리파이는 64비트 OS 확인 |
 | `module 'mediapipe' has no attribute 'solutions'` | mediapipe 버전이 너무 최신. `pip install mediapipe==0.10.18`로 다시 설치 |
 | 카메라 창이 안 뜸 | 모니터 없이(SSH·systemd) 실행 중이거나 `show_window`가 false. `opencv-python-headless`가 설치돼 있으면 삭제 |
-| systemd 실행 시 `ModuleNotFoundError` | `ExecStart`가 가상환경 python(`venv/bin/python`)을 가리키는지 확인 |
+| 라즈베리파이에서 `No module named gpiozero` | `sudo apt install python3-gpiozero` |
 | 라즈베리파이 카메라 모듈(리본 케이블)이 안 열림 | 최신 라즈베리파이 OS는 `cv2.VideoCapture`로 바로 안 열릴 수 있음. USB 웹캠을 쓰거나 `picamera2` 사용 |
 | 사람이 있는데 `NO PERSON` / `MOVE BACK` | 양쪽 귀·입·양쪽 어깨가 모두 화면에 나오도록 의자를 뒤로 빼거나 카메라를 멀리 두기 |
 | `config.json 형식 오류: N번째 줄` | 그 줄 근처의 쉼표·따옴표 확인 (한글 따옴표 “ ”, 끝에 남은 쉼표, `True` 대문자 등) |

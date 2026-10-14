@@ -26,6 +26,9 @@ r"""
   - 경고에 들어간 뒤에는 기준을 2%(hysteresis_pct) 낮춰서 경계에서 깜빡이지 않게 함
   - 기준자세 측정 중 많이 움직이면 처음부터 다시 측정
   - 고개를 옆으로 돌린 순간은 판정에서 제외 (잠깐이면 상태 유지)
+  - 카메라 거리를 눈 사이 거리로 추정해서, 카메라가 가깝든 멀든 같은 기준(60cm 기준 %)으로 판정
+  - 몸통만 돌려 어깨가 좁아 보이는 것은 머리가 나온 것으로 치지 않음 (눈이 실제로 가까워진 만큼만 인정)
+  - 화면에 다른 사람 얼굴이 잡히면 무시 (어깨 사이에 있는 얼굴만 사용)
 
   효율을 위한 처리
   - 자세는 천천히 변하므로 분석은 초당 10번(analysis_fps)만, 화면은 계속 갱신 -> CPU 사용량 감소
@@ -157,6 +160,8 @@ LOG_FILE = os.path.join(BASE_DIR, "posture.log")
 
 VIS_MIN = 0.6        # 관절점이 이 값 이상 확실하게 보여야 사용
 ABSENT_SEC = 3       # 판정할 수 없는 화면이 이만큼 이어지면 자리 비움으로 처리
+EYE_W_CM = 9.0       # 양쪽 눈 바깥 끝 사이 실제 거리(성인 평균). 카메라 거리 추정용
+REF_DIST_CM = 60     # warning_pct·danger_pct는 카메라가 이 거리에 있을 때 기준
 LOCAL_DB = os.path.join(BASE_DIR, "posture_data.db")   # 측정 기록 저장 + 전송 대기 (자동 생성)
 
 # 랜드마크 번호: 어깨는 Pose, 눈·코는 Face Mesh(얼굴 468점, Pose보다 훨씬 정밀)
@@ -253,14 +258,15 @@ def _flush(url):
 
 
 # ======================== 지표 계산 ========================
-def get_metrics(pose_lm, face_lm, w, h):
+def get_metrics(pose_lm, face_lm, w, h, fov_deg=65):
     """(지표, None) 또는 판정할 수 없을 때 (None, 화면에 띄울 이유)
 
     forward : 눈 사이 거리 / 어깨 너비
               카메라에 가까울수록 크게 보이므로, 머리만 앞으로 나오면 이 값이 커짐
               (몸 전체가 다가오거나 멀어지면 둘 다 같이 변해서 값이 그대로 -> 거리 영향 없음)
     height  : 어깨선~눈 높이 / 어깨 너비 -> 목을 빼고 숙이거나 구부정하면 작아짐
-    tilt    : 어깨 기울기(도)"""
+    tilt    : 어깨 기울기(도)
+    dist    : 카메라~눈 거리 추정(cm). 화면 속 눈 사이 거리와 카메라 화각(fov_deg)으로 계산"""
     if face_lm is None:
         return None, "FACE NOT FOUND - look at camera"
     if min(pose_lm[i].visibility for i in (LEFT_SHOULDER, RIGHT_SHOULDER)) < VIS_MIN:
@@ -272,19 +278,29 @@ def get_metrics(pose_lm, face_lm, w, h):
     sw, eye_d = math.dist(ls, rs), math.dist(e1, e2)
     if sw < 1 or eye_d < 1:
         return None, "MOVE BACK - show both shoulders"
+    if not min(ls[0], rs[0]) < nose[0] < max(ls[0], rs[0]):
+        return None, "ONE PERSON ONLY"         # 잡힌 얼굴이 이 사람 어깨 사이에 없음 (다른 사람 얼굴)
     if abs(nose[0] - (e1[0] + e2[0]) / 2) / eye_d > 0.15:
         return None, "TURN TO CAMERA"          # 고개를 옆으로 돌린 순간은 판정에서 제외
 
+    # ponytail: 눈 너비를 성인 평균으로 가정 -> 사람마다 ±10% 오차. 정확도가 더 필요하면 개인별 측정
+    focal = (w / 2) / math.tan(math.radians(fov_deg) / 2)
     return {
         "forward": eye_d / sw,
         "height": ((ls[1] + rs[1]) / 2 - (e1[1] + e2[1]) / 2) / sw,
         "tilt": math.degrees(math.atan2(abs(ls[1] - rs[1]), abs(ls[0] - rs[0]))),
+        "dist": focal * EYE_W_CM / eye_d,
     }, None
 
 
 def worse_pct(m, base):
     """기준자세보다 몇 % 나빠졌는지 (머리가 앞으로 나온 정도, 내려간 정도 중 큰 쪽)"""
     forward = (m["forward"] - base["forward"]) / base["forward"] * 100
+    if "dist" in m and "dist" in base:
+        # 몸통만 돌리면 어깨만 좁아지고 눈은 그대로 -> 머리가 실제로 카메라에 가까워진 만큼만 인정
+        forward = min(forward, (base["dist"] / m["dist"] - 1) * 100)
+        # 같은 %라도 카메라가 멀수록 머리가 실제로 많이 나온 것 -> REF_DIST_CM 기준으로 환산
+        forward *= base["dist"] / REF_DIST_CM
     drop = (base["height"] - m["height"]) / base["height"] * 100
     return max(forward, drop, 0.0)
 
@@ -308,10 +324,27 @@ def hold(raw, bad_since, hold_sec, now):
     return (raw if duration >= hold_sec else "정상"), bad_since, duration
 
 
+STATUS_URL = None   # main()에서 server_url로 정함. 예) http://127.0.0.1:5050/api/status
+
+
+def post_status(status):
+    """지금 상태를 서버 /api/status로 바로 보냄 -> 라즈베리파이가 가져가서 LED/부저/진동 제어.
+    실패해도 다음 상태 변경이나 save_interval마다 다시 보내므로 기록만 남김"""
+    def _post():
+        try:
+            req = urllib.request.Request(
+                STATUS_URL, data=json.dumps({"status": status}, ensure_ascii=False).encode("utf-8"),
+                headers={"Content-Type": "application/json"}, method="POST")
+            urllib.request.urlopen(req, timeout=1).close()
+        except Exception as e:
+            log.warning(f"상태 알림 실패: {e}")
+    threading.Thread(target=_post, daemon=True).start()
+
+
 def on_status_change(old, new):
-    """상태가 바뀔 때 호출. 로컬 피드백(LED/부저/진동) 담당이 여기에 연결.
-    예) from gpiozero import LED, Buzzer 로 핀 제어"""
+    """상태가 바뀔 때 호출. 서버를 거쳐 라즈베리파이(rpi_device.py)가 1초 안에 알림"""
     log.info(f"상태 변경: {old} -> {new}")
+    post_status(new)
 
 
 # ======================== 화면 표시 ========================
@@ -387,7 +420,7 @@ def run(cfg):
         return
 
     base = load_json(BASELINE_FILE)
-    if base and "forward" not in base:
+    if base and "dist" not in base:
         log.info("예전 방식의 기준자세라 다시 측정")
         base = None
     calib, calib_start, still_msg_until = [], None, 0
@@ -395,6 +428,7 @@ def run(cfg):
     status, raw, bad_since = "정상", "정상", None
     last_save = last_valid = time.time()
     last_proc, interval = 0.0, 1 / cfg.get("analysis_fps", 10)
+    n_proc, fps_since = 0, time.time()   # 실제 분석 속도 기록용 (라즈베리파이 성능 확인)
     pct, duration = 0.0, 0.0
     pose_res, face_lm, text, color = None, None, "STARTING", GRAY
     show = cfg.get("show_window", True) and has_display()
@@ -427,13 +461,19 @@ def run(cfg):
                 # 분석은 초당 analysis_fps번만 (자세는 천천히 변하므로 CPU 절약), 화면은 매번 갱신
                 if now - last_proc >= interval:
                     last_proc = now
+                    n_proc += 1
+                    if now - fps_since >= 60:
+                        log.info(f"분석 속도: 초당 {n_proc / (now - fps_since):.1f}회 "
+                                 f"(목표 {cfg.get('analysis_fps', 10)}회)")
+                        n_proc, fps_since = 0, now
                     h, w = frame.shape[:2]
                     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     pose_res = pose.process(rgb)
                     faces = face_mesh.process(rgb).multi_face_landmarks
                     face_lm = faces[0].landmark if faces else None
                     if pose_res.pose_landmarks:
-                        m, reason = get_metrics(pose_res.pose_landmarks.landmark, face_lm, w, h)
+                        m, reason = get_metrics(pose_res.pose_landmarks.landmark, face_lm, w, h,
+                                                cfg.get("camera_fov_deg", 65))
                     else:
                         m, reason = None, "NO PERSON"
 
@@ -492,6 +532,7 @@ def run(cfg):
                                 "shoulder_tilt": round(tilt, 1),
                                 "bad_duration": round(duration, 1),
                             }, cfg["server_url"])).start()   # 백그라운드 전송: 서버가 느려도 화면이 안 멈춤
+                            post_status(status)   # 살아 있다는 신호 겸 상태 재전송
                             last_save = now
 
                 if show and draw(cv2, mp, frame, pose_res, face_lm, text, color) == ord("c"):
@@ -512,10 +553,12 @@ def run(cfg):
 def main():
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
+    global STATUS_URL
     cfg = load_json(CONFIG_FILE)
     if cfg is None:
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
         return
+    STATUS_URL = cfg["server_url"].rsplit("/", 1)[0] + "/status"
     log.info("프로그램 시작")
     left = unsent_count()
     if left:

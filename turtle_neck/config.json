@@ -1,5 +1,5 @@
 {
-  "server_url": "http://172.31.1.49:5050/api/record",
+  "server_url": "http://127.0.0.1:5050/api/record",
   "user_id": "user1",
   "calib_sec": 5,
   "hold_sec": 10,
@@ -11,5 +11,6 @@
   "model_complexity": 1,
   "smooth_sec": 2,
   "hysteresis_pct": 2,
-  "analysis_fps": 10
+  "analysis_fps": 10,
+  "camera_fov_deg": 65
 }
