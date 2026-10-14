@@ -7,5 +7,9 @@
   "danger_pct": 20,
   "shoulder_tilt_deg": 5,
   "save_interval": 5,
-  "show_window": true
+  "show_window": true,
+  "model_complexity": 1,
+  "smooth_sec": 2,
+  "hysteresis_pct": 2,
+  "analysis_fps": 10
 }

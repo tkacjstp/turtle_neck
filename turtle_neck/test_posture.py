@@ -12,10 +12,14 @@ posture.LOCAL_DB = os.path.join(tempfile.mkdtemp(), "posture_data.db")
 from werkzeug.serving import make_server
 
 cfg = {"warning_pct": 10, "danger_pct": 20}
-base = {"neck": 1.0, "mouth": 0.5, "face": 0.4}
-assert posture.worse_pct({"neck": 1.0, "mouth": 0.5, "face": 0.4}, base) == 0
-assert round(posture.worse_pct({"neck": 0.85, "mouth": 0.5, "face": 0.4}, base)) == 15
+base = {"forward": 0.25, "height": 0.60, "tilt": 1.0}
+assert posture.worse_pct({"forward": 0.25, "height": 0.60}, base) == 0
+assert round(posture.worse_pct({"forward": 0.2875, "height": 0.60}, base)) == 15   # 머리가 앞으로 15%
+assert round(posture.worse_pct({"forward": 0.25, "height": 0.48}, base)) == 20     # 머리가 20% 내려감
+assert posture.worse_pct({"forward": 0.22, "height": 0.66}, base) == 0             # 뒤로 기대면 정상
 assert posture.raw_status(15, cfg) == "경고" and posture.raw_status(25, cfg) == "위험"
+assert posture.raw_status(9, cfg, prev="경고") == "경고"    # 경계 근처에서 깜빡이지 않음
+assert posture.raw_status(7, cfg, prev="경고") == "정상"
 
 # 지속시간: 10초 미만이면 정상, 이상이면 확정, 정상 들어오면 리셋
 s, since, d = posture.hold("위험", None, 10, now=100)
