@@ -1,0 +1,16 @@
+{
+  "server_url": "http://172.31.1.49:5050/api/record",
+  "user_id": "user1",
+  "calib_sec": 3,
+  "hold_sec": 1,
+  "warning_pct": 50,
+  "danger_pct": 80,
+  "hysteresis_pct": 5,
+  "shoulder_tilt_deg": 5,
+  "save_interval": 5,
+  "show_window": true,
+  "model_complexity": 1,
+  "analysis_fps": 30,
+  "new_person_reset_sec": 5,
+  "mirror": true
+}
