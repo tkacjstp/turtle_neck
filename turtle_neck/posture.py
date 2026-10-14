@@ -81,13 +81,18 @@ r"""
   - 판정이 너무 예민하거나 둔하면 config.json의 warning_pct, danger_pct, hold_sec 숫자를 조절
   - config.json을 바꾸면 프로그램을 껐다 켜야 반영됨
   - 기준자세를 다시 잡고 싶으면 baseline.json을 지우고 다시 실행
-  - 서버가 꺼져 있어도 판별은 계속되고, 결과는 최대 1000개까지 보관했다가 서버가 켜지면 한꺼번에 전송
+  - 모든 측정값은 판별기 쪽 posture_data.db에 먼저 저장되고, 그다음 서버 포트(server_url)로 전송됨
+    서버가 꺼져 있거나 연결이 안 되면 DB에 남겨 두었다가, 연결되면 오래된 것부터 자동 전송
+    (프로그램을 껐다 켜도 남아 있고, 측정 시각도 원래 시각 그대로 저장됨)
+  - posture_data.db는 보낸 기록도 계속 쌓임 (하루 약 1.7만 개, 약 3MB)
+    -> 정리하고 싶으면 프로그램을 끄고 삭제. 단, 아직 못 보낸 데이터도 같이 사라짐
   - 카메라 창은 모니터가 있을 때만 뜸. 라즈베리파이를 SSH로 접속하거나 부팅 시 자동 실행(systemd)하면
     창 없이 실행됨 (오류 아님). 창을 일부러 끄려면 config.json에 "show_window": false
   - 실행 기록은 posture.log 파일에 남음. 문제가 생기면 이 파일을 확인
 
 
 [자주 나오는 메시지와 해결]
+  "전송 실패, DB에 보관 중 N개"         -> 데이터는 posture_data.db에 안전하게 저장 중. 아래 원인 해결하면 자동 전송
   "전송 실패 ... timed out"            -> server_url의 IP가 틀렸거나, 서버와 다른 네트워크에 있음
   "전송 실패 ... Connection refused"   -> 서버(app.py)가 꺼져 있음
   "카메라 연결 실패, 5초 후 재시도"     -> 웹캠 연결 확인 / 다른 프로그램이 카메라 사용 중
@@ -105,6 +110,7 @@ import math
 import json
 import time
 import signal
+import sqlite3
 import threading
 import logging
 import logging.handlers
@@ -118,7 +124,7 @@ BASELINE_FILE = os.path.join(BASE_DIR, "baseline.json")
 LOG_FILE = os.path.join(BASE_DIR, "posture.log")
 
 SMOOTH_N = 15        # 최근 N프레임 평균
-PENDING_MAX = 1000   # 전송 실패 시 보관할 최대 개수
+LOCAL_DB = os.path.join(BASE_DIR, "posture_data.db")   # 측정 기록 저장 + 전송 대기 (자동 생성)
 
 # MediaPipe Pose 랜드마크 번호
 LEFT_EAR, RIGHT_EAR, MOUTH_LEFT, MOUTH_RIGHT, LEFT_SHOULDER, RIGHT_SHOULDER = 7, 8, 9, 10, 11, 12
@@ -153,15 +159,37 @@ def load_json(path):
 
 
 # ======================== 전송 ========================
-pending = deque(maxlen=PENDING_MAX)
 send_lock = threading.Lock()
 
 
+def _local_db():
+    """판별기 쪽 DB(posture_data.db). 모든 측정값을 저장하고, sent=1이면 서버로 보낸 것"""
+    conn = sqlite3.connect(LOCAL_DB, timeout=5)
+    conn.execute("CREATE TABLE IF NOT EXISTS records "
+                 "(id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT, sent INTEGER DEFAULT 0)")
+    return conn
+
+
+def unsent_count():
+    """아직 서버로 못 보낸 개수"""
+    conn = _local_db()
+    try:
+        return conn.execute("SELECT COUNT(*) FROM records WHERE sent = 0").fetchone()[0]
+    finally:
+        conn.close()
+
+
 def send(rec, url):
-    """서버로 전송. 실패한 데이터는 보관했다가 다음에 다시 보냄"""
-    pending.append(rec)
+    """측정값을 posture_data.db에 저장한 뒤, 안 보낸 것을 오래된 순서로 서버 포트(server_url)에 전송.
+    서버가 꺼져 있으면 DB에 남겨 두었다가 다음 전송 때(프로그램을 다시 켠 뒤에도) 보냄"""
+    conn = _local_db()
+    try:
+        conn.execute("INSERT INTO records (data) VALUES (?)", (json.dumps(rec, ensure_ascii=False),))
+        conn.commit()
+    finally:
+        conn.close()
     if not send_lock.acquire(blocking=False):
-        return   # 이전 전송이 아직 진행 중이면 보관만
+        return   # 이전 전송이 아직 진행 중이면 저장만
     try:
         _flush(url)
     finally:
@@ -169,18 +197,23 @@ def send(rec, url):
 
 
 def _flush(url):
+    conn = _local_db()
     sent = 0
-    while pending:
-        try:
-            req = urllib.request.Request(
-                url, data=json.dumps(pending[0], ensure_ascii=False).encode("utf-8"),
-                headers={"Content-Type": "application/json"}, method="POST")
-            urllib.request.urlopen(req, timeout=1).close()  # 4xx/5xx는 예외 발생
-        except Exception as e:
-            log.warning(f"전송 실패, 보관 중 {len(pending)}개: {e}")
-            break
-        pending.popleft()
-        sent += 1
+    try:
+        rows = conn.execute("SELECT id, data FROM records WHERE sent = 0 ORDER BY id").fetchall()
+        for rid, data in rows:
+            try:
+                req = urllib.request.Request(url, data=data.encode("utf-8"),
+                                             headers={"Content-Type": "application/json"}, method="POST")
+                urllib.request.urlopen(req, timeout=1).close()  # 4xx/5xx는 예외 발생
+            except Exception as e:
+                log.warning(f"전송 실패, DB에 보관 중 {len(rows) - sent}개: {e}")
+                break
+            conn.execute("UPDATE records SET sent = 1 WHERE id = ?", (rid,))
+            conn.commit()
+            sent += 1
+    finally:
+        conn.close()
     if sent > 1:
         log.info(f"밀린 데이터 {sent}개 전송 완료")
 
@@ -403,6 +436,9 @@ def main():
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
         return
     log.info("프로그램 시작")
+    left = unsent_count()
+    if left:
+        log.info(f"지난번에 못 보낸 데이터 {left}개 있음 -> 서버 연결되면 자동 전송")
     while running:
         try:
             run(cfg)

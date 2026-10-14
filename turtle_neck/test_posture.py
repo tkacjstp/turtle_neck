@@ -8,6 +8,7 @@ python3 test_posture.py  (flask 필요, 카메라/mediapipe 불필요)
 """
 import os, json, threading, tempfile, urllib.request
 import app, posture
+posture.LOCAL_DB = os.path.join(tempfile.mkdtemp(), "posture_data.db")
 from werkzeug.serving import make_server
 
 cfg = {"warning_pct": 10, "danger_pct": 20}
@@ -30,10 +31,10 @@ url = f"http://127.0.0.1:{srv.port}"
 rec = {"user_id": "u", "timestamp": "2026-10-07 10:00:00", "worse_pct": 15.0,
        "status": "경고", "shoulder_status": "정상", "shoulder_tilt": 1.0, "bad_duration": 12.0}
 posture.send(rec, "http://127.0.0.1:1/api/record")
-assert len(posture.pending) == 1
+assert posture.unsent_count() == 1
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 posture.send(rec, url + "/api/record")
-assert not posture.pending
+assert posture.unsent_count() == 0
 rows = json.load(urllib.request.urlopen(url + "/api/results"))
 assert len(rows) == 2 and rows[0]["angle"] == 15.0 and rows[0]["status"] == "경고"
 stats = json.load(urllib.request.urlopen(url + "/api/stats?date=2026-10-07"))
