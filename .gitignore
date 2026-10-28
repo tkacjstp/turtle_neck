@@ -7,3 +7,6 @@ __pycache__/
 venv/
 
 .vscode/
+# 판별기가 만드는 파일
+baseline.json
+*.log*

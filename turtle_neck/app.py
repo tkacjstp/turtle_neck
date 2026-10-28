@@ -33,6 +33,7 @@ r"""
 from flask import Flask, render_template, request, jsonify
 import os
 import sqlite3
+import time
 from datetime import datetime
 
 app = Flask(__name__)
@@ -71,6 +72,15 @@ def init_db():
         if col not in existing:
             conn.execute(f'ALTER TABLE measurements ADD COLUMN {col} {typ}')
     conn.execute('CREATE INDEX IF NOT EXISTS idx_timestamp ON measurements(timestamp)')
+    # 라즈베리파이 센서 측정값 (센서 이름별로 한 줄씩)
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS sensor_readings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            sensor TEXT,
+            value REAL
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -126,6 +136,53 @@ def get_stats():
     total = sum(counts.values())
     percent = {k: round(v / total * 100, 1) if total else 0 for k, v in counts.items()}
     return jsonify({"date": day, "total": total, "counts": counts, "percent": percent})
+
+
+# 판별기의 "지금" 상태 (라즈베리파이 알림용). DB가 아니라 메모리에만 둠
+live = {"status": "정상", "at": 0.0}
+
+
+@app.route('/api/status', methods=['GET', 'POST'])
+def live_status():
+    """POST: 판별기가 상태를 알림 / GET: 라즈베리파이가 가져감
+    age = 마지막으로 상태를 받은 뒤 지난 초 (판별기가 꺼지면 계속 커짐)"""
+    if request.method == 'POST':
+        status = (request.get_json(silent=True) or {}).get('status')
+        if status not in VALID_STATUS:
+            return jsonify({"result": "fail", "reason": f"status 값 오류: {status}"}), 400
+        live.update(status=status, at=time.time())
+        return jsonify({"result": "success"})
+    age = round(time.time() - live['at'], 1) if live['at'] else None
+    return jsonify({"status": live['status'], "age": age})
+
+
+@app.route('/api/sensor', methods=['POST'])
+def record_sensor():
+    """라즈베리파이 센서값 저장. {"timestamp": "...", "values": {"distance": 42.1, ...}}"""
+    data = request.get_json(silent=True)
+    values = data.get('values') if isinstance(data, dict) else None
+    if not isinstance(values, dict) or not values:
+        return jsonify({"result": "fail", "reason": "values 형식 오류"}), 400
+    try:
+        rows = [(str(k), float(v)) for k, v in values.items()]
+    except (TypeError, ValueError):
+        return jsonify({"result": "fail", "reason": "values는 숫자여야 함"}), 400
+    timestamp = data.get('timestamp') or datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    conn = get_conn()
+    conn.executemany('INSERT INTO sensor_readings (timestamp, sensor, value) VALUES (?, ?, ?)',
+                     [(timestamp, k, v) for k, v in rows])
+    conn.commit()
+    conn.close()
+    return jsonify({"result": "success"})
+
+
+@app.route('/api/sensor', methods=['GET'])
+def get_sensor():
+    limit = min(request.args.get('limit', 20, type=int), 500)
+    conn = get_conn()
+    rows = conn.execute('SELECT * FROM sensor_readings ORDER BY id DESC LIMIT ?', (limit,)).fetchall()
+    conn.close()
+    return jsonify([dict(r) for r in rows])
 
 
 @app.route('/')

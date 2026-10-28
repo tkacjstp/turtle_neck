@@ -410,10 +410,27 @@ def hold(raw, bad_since, hold_sec, now):
     return (raw if duration >= hold_sec else "정상"), bad_since, duration
 
 
+STATUS_URL = None   # main()에서 server_url로 정함. 예) http://127.0.0.1:5050/api/status
+
+
+def post_status(status):
+    """지금 상태를 서버 /api/status로 바로 보냄 -> 라즈베리파이(rpi_device.py)가 가져가서 LED/부저/진동 제어.
+    실패해도 다음 상태 변경이나 save_interval마다 다시 보내므로 기록만 남김"""
+    def _post():
+        try:
+            req = urllib.request.Request(
+                STATUS_URL, data=json.dumps({"status": status}, ensure_ascii=False).encode("utf-8"),
+                headers={"Content-Type": "application/json"}, method="POST")
+            urllib.request.urlopen(req, timeout=1).close()
+        except Exception as e:
+            log.warning(f"상태 알림 실패: {e}")
+    threading.Thread(target=_post, daemon=True).start()
+
+
 def on_status_change(old, new):
-    """상태가 바뀔 때 호출. 로컬 피드백(LED/부저/진동) 담당이 여기에 연결.
-    예) from gpiozero import LED, Buzzer 로 핀 제어"""
+    """상태가 바뀔 때 호출. 서버를 거쳐 라즈베리파이(rpi_device.py)가 1초 안에 알림"""
     log.info(f"상태 변경: {old} -> {new}")
+    post_status(new)
 
 
 # ======================== 화면 표시 ========================
@@ -626,6 +643,7 @@ def run(cfg):
                                     "shoulder_tilt": round(tilt, 1) if shoulder else None,
                                     "bad_duration": round(duration, 1),
                                 }, cfg["server_url"])).start()   # 백그라운드 전송: 서버가 느려도 화면이 안 멈춤
+                                post_status(status)   # 살아 있다는 신호 겸 상태 재전송
                                 last_save = now
 
                 if show:
@@ -646,10 +664,12 @@ def run(cfg):
 def main():
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
+    global STATUS_URL
     cfg = load_json(CONFIG_FILE)
     if cfg is None:
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
         return
+    STATUS_URL = cfg["server_url"].rsplit("/", 1)[0] + "/status"
     log.info("프로그램 시작")
     left = unsent_count()
     if left:

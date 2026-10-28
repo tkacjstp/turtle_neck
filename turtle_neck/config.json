@@ -1,5 +1,5 @@
 {
-  "server_url": "http://172.31.1.49:5050/api/record",
+  "server_url": "http://127.0.0.1:5050/api/record",
   "user_id": "user1",
   "calib_sec": 3,
   "hold_sec": 1,

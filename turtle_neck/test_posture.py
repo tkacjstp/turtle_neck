@@ -52,5 +52,30 @@ assert len(rows) == 2 and rows[0]["angle"] == 15.0 and rows[0]["status"] == "경
 stats = json.load(urllib.request.urlopen(url + "/api/stats?date=2026-10-07"))
 assert stats["counts"]["경고"] == 2
 assert "악화율" in urllib.request.urlopen(url + "/").read().decode()
+
+# 라즈베리파이 연동: 판별기 상태 알림 -> RPi가 가져감, RPi 센서값 저장
+import time
+import rpi_device
+rpi_device.SERVER = url
+assert rpi_device.get_status() == "정상"            # 판별기 소식이 아직 없으면 알림 끔
+posture.STATUS_URL = url + "/api/status"
+posture.post_status("위험")
+time.sleep(0.3)
+assert rpi_device.get_status() == "위험"
+rpi_device.read_sensors = lambda: {"distance_cm": 42.5}
+rpi_device.send_sensors()
+assert json.load(urllib.request.urlopen(url + "/api/sensor"))[0]["value"] == 42.5
 srv.shutdown()
+rpi_device.SERVER = "http://127.0.0.1:1"
+assert rpi_device.get_status() == "정상"            # 서버가 꺼지면 알림 끔
+try:   # GPIO 출력 (gpiozero가 있을 때만, 가짜 핀으로 확인)
+    os.environ["GPIOZERO_PIN_FACTORY"] = "mock"
+    led, buzzer, vib = rpi_device.make_devices()
+except ImportError:
+    pass
+else:
+    rpi_device.apply("경고", led, buzzer, vib)
+    assert led.is_lit and not buzzer.is_active
+    rpi_device.apply("정상", led, buzzer, vib)
+    assert not led.is_lit
 print("OK")
