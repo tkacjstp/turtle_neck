@@ -9,23 +9,25 @@ r"""
   작품 전시용으로 관람객이 바뀌면 자동으로 새로 학습하고, 격하게 움직여도 바로 반응한다.
 
   웹캠 -> 자세 학습(바른 자세 3초 + 거북목 3초) -> 실시간 점수 -> 정상/경고/위험
-       -> 5초마다 서버로 전송 -> 웹 페이지(http://서버IP:5050)에서 결과 확인
+       -> 2초마다(상태가 바뀌면 바로) 서버로 전송 -> 웹 페이지(http://서버IP:5050)에서 결과 확인
 
 
 [판별 방식]  노트북·모니터 위 웹캠 같은 "정면" 카메라용
   1) 머리 3D 자세 추정
      Face Mesh(얼굴 468점) 중 6점(코끝·턱·양 눈끝·양 입꼬리)을 사람 얼굴 3D 모형에 맞춰서(solvePnP)
-     고개 숙인 각도, 카메라까지 거리, 머리 높이를 계산. 어깨(Pose)는 확실히 보일 때만 보조로 사용
+     고개 숙인 각도, 카메라까지 거리(cm), 머리 높이를 계산. 어깨(Pose)는 확실히 보일 때만 보조로 사용
+     -> 팔을 어깨 위로 들었거나 어깨가 화면 아래 끝에 걸리면 어깨는 빼고 얼굴만으로 판정
+        (팔을 들면 Pose의 어깨 점이 팔을 따라 움직여서 오차가 나기 때문)
   2) 개인 맞춤 학습 (선형판별분석, LDA)
      바른 자세와 거북목 자세를 3초씩 측정해서, "이 사람·이 카메라에서 거북목이 되면
      어떤 값이 어느 방향으로 변하는지"를 학습. 흔들림이 큰 값은 자동으로 비중이 낮아짐
      -> 키보드 내려다보기, 어깨 으쓱, 몸 전체가 다가오기처럼 거북목이 아닌 동작은 점수가 거의 안 오름
      -> 보조로 "머리가 어깨보다 앞으로 나온 정도"도 따로 봐서, 숙이지 않고 머리만 내밀어도 잡아냄
   3) 점수: 바른 자세 = 0%, 학습한 거북목 자세 = 100%
-     경고 50%, 위험 80% (사람·카메라가 달라도 같은 의미)
+     10% 이상이면 바로 경고, 20% 이상인 상태가 2.5초(danger_after_sec) 이어지면 위험
 
   빠른 반응을 위한 처리 (전시용)
-  - 초당 30번 분석, 판정 확정까지 1초(hold_sec)
+  - 초당 30번 분석, 경고는 기다리지 않고 바로 표시
   - One Euro 필터: 빠르게 움직일 땐 바로 따라가고, 가만히 있을 땐 떨림만 잡음
   - 경고에 들어간 뒤에는 기준을 5%(hysteresis_pct) 낮춰 경계에서 깜빡이지 않게 함
   - 자리를 떠나면 1초 안에 정상으로, 5초 이상 비면 다음 관람객을 위해 학습을 처음부터
@@ -91,6 +93,7 @@ r"""
 
   ※ 개인용으로 쓸 때: config.json의 new_person_reset_sec을 0으로 하면
      학습 결과를 baseline.json에 저장해 두고 다음 실행에도 그대로 사용
+  ※ 어깨를 아예 안 쓰려면 config.json에 "use_shoulders": false (얼굴만으로 판정)
 
 
 [카메라 창 글자 뜻]  (OpenCV는 한글을 못 써서 영어로 표시)
@@ -100,8 +103,8 @@ r"""
                         ※ 위 경우가 1초 넘게 이어지면 상태를 정상으로 돌림
   1/2 ..., 2/2 ...    : 자세 학습 중 (위 [실행] 순서 참고)
   NORMAL  (초록)      : 정상
-  WARNING (주황)      : 경고 - 점수 50% 이상이 1초 이상
-  DANGER  (빨강)      : 위험 - 점수 80% 이상이 1초 이상
+  WARNING (주황)      : 경고 - 점수 10%(warning_pct) 이상 (바로 표시)
+  DANGER  (빨강)      : 위험 - 점수 20%(danger_pct) 이상이 2.5초(danger_after_sec) 이상 이어짐
   ※ 점수 0% = 학습한 바른 자세, 100% = 학습한 거북목 자세 (100%를 넘을 수도 있음)
   ※ 하늘색 점 6개 = 머리 각도 계산에 쓰는 얼굴 점
   ※ 화면은 거울처럼 좌우 반전해서 보여줌 (mirror: false로 끌 수 있음)
@@ -111,20 +114,21 @@ r"""
   - 카메라는 정면, 눈높이 근처에 둘 것. 학습한 뒤 카메라(노트북 화면 각도 포함)를 움직이면
     판정이 틀어지므로 c 키로 다시 학습할 것
   - 거북목 자세를 너무 과장해서 학습하면 평소 자세에 둔해짐. "평소 하는 나쁜 자세" 정도로 보여줄 것
-  - 어깨가 안 보이면 얼굴만으로 판정함. 이때는 "숙이지 않고 머리만 내미는" 자세는 잘 못 잡으니
-    가능하면 어깨까지 나오게 앉을 것
+  - 어깨가 안 보이면(팔을 든 순간 포함) 얼굴만으로 판정함. 이때는 "숙이지 않고 머리만 내미는" 자세는
+    잘 못 잡으니 가능하면 어깨까지 나오게 앉을 것 (노트북이면 화면을 조금 뒤로 젖히기)
   - 안경은 괜찮지만, 마스크나 손으로 얼굴을 가리면 인식이 안 됨
   - model_complexity: 1(기본)이 더 정확. 라즈베리파이가 너무 느리면 0으로 (대신 첫 실행 때 다운로드)
-  - 판정이 너무 예민하거나 둔하면 config.json의 warning_pct, danger_pct, hold_sec 숫자를 조절
+  - 판정이 너무 예민하거나 둔하면 config.json의 warning_pct, danger_pct, danger_after_sec 숫자를 조절
   - config.json을 바꾸면 프로그램을 껐다 켜야 반영됨
   - 모든 측정값은 판별기 쪽 posture_data.db에 먼저 저장되고, 그다음 서버 포트(server_url)로 전송됨
     서버가 꺼져 있거나 연결이 안 되면 DB에 남겨 두었다가, 연결되면 오래된 것부터 자동 전송
     (프로그램을 껐다 켜도 남아 있고, 측정 시각도 원래 시각 그대로 저장됨)
-  - posture_data.db는 보낸 기록도 계속 쌓임 (하루 약 1.7만 개, 약 3MB)
+  - posture_data.db는 보낸 기록도 계속 쌓임 (save_interval 2초면 하루 약 4.3만 개, 약 8MB)
     -> 정리하고 싶으면 프로그램을 끄고 삭제. 단, 아직 못 보낸 데이터도 같이 사라짐
   - 카메라 창은 모니터가 있을 때만 뜸. 라즈베리파이를 SSH로 접속하거나 부팅 시 자동 실행(systemd)하면
     창 없이 실행됨 (오류 아님). 창을 일부러 끄려면 config.json에 "show_window": false
   - 실행 기록은 posture.log 파일에 남음. 문제가 생기면 이 파일을 확인
+    (전송할 때마다 점수·숙임 각도·카메라 거리·어깨 사용 여부가 남아서 오판 원인을 볼 수 있음)
 
 
 [자주 나오는 메시지와 해결]
@@ -167,6 +171,8 @@ LOCAL_DB = os.path.join(BASE_DIR, "posture_data.db")   # 측정 기록 저장 + 
 
 # 어깨는 Pose(몸 33점)의 11, 12번 / 얼굴은 Face Mesh(얼굴 468점) 사용
 LEFT_SHOULDER, RIGHT_SHOULDER = 11, 12
+ARM_POINTS = (13, 14, 15, 16)   # 양쪽 팔꿈치, 손목: 어깨보다 위로 올라가면 팔을 든 것
+EDGE_Y = 0.95   # 어깨가 화면 높이의 이 비율보다 아래면 화면 밖을 추측한 위치라 사용 안 함
 
 logging.basicConfig(
     level=logging.INFO,
@@ -259,17 +265,19 @@ def _flush(url):
 
 
 # ======================== 특징값 계산 ========================
-# 얼굴 3D 표준 모형 (카메라와 같은 방향: x 오른쪽, y 아래, z 카메라에서 멀어지는 쪽)
+# 성인 평균 얼굴 3D 모형(cm) (카메라와 같은 방향: x 오른쪽, y 아래, z 카메라에서 멀어지는 쪽)
 # Face Mesh 번호: 코끝 1, 턱 152, 양쪽 눈 바깥 끝 33/263, 양쪽 입꼬리 61/291
 FACE_IDX = [1, 152, 33, 263, 61, 291]
-FACE_3D = np.array([(0, 0, 0), (0, 330, 65), (-225, -170, 135), (225, -170, 135),
-                    (-150, 150, 125), (150, 150, 125)], dtype=np.float64)
+FACE_3D = np.array([(0, 0, 0), (0, 6.6, 1.3), (-4.5, -3.4, 2.7), (4.5, -3.4, 2.7),
+                    (-3.0, 3.0, 2.5), (3.0, 3.0, 2.5)], dtype=np.float64)
 
 
-def head_pose(cv2, face_lm, w, h):
-    """얼굴 6점을 3D 표준 모형에 맞춰(solvePnP) 고개 각도·카메라까지 거리·높이를 구함"""
+def head_pose(cv2, face_lm, w, h, fov_deg=65):
+    """얼굴 6점을 3D 모형에 맞춰(solvePnP) 고개 각도·카메라까지 거리(cm)·높이를 구함.
+    fov_deg: 카메라 가로 화각. 노트북 웹캠은 보통 60~70도"""
     pts = np.array([(face_lm[i].x * w, face_lm[i].y * h) for i in FACE_IDX], dtype=np.float64)
-    cam = np.array([[w, 0, w / 2], [0, w, h / 2], [0, 0, 1]], dtype=np.float64)   # 초점거리 ≈ 화면 폭
+    f = (w / 2) / math.tan(math.radians(fov_deg) / 2)   # 화각으로 구한 초점거리(픽셀)
+    cam = np.array([[f, 0, w / 2], [0, f, h / 2], [0, 0, 1]], dtype=np.float64)
     flag = getattr(cv2, "SOLVEPNP_SQPNP", cv2.SOLVEPNP_ITERATIVE)
     ok, rvec, tvec = cv2.solvePnP(FACE_3D, pts, cam, None, flags=flag)
     if not ok or tvec[2, 0] <= 0:
@@ -277,24 +285,36 @@ def head_pose(cv2, face_lm, w, h):
     fx, fy, fz = cv2.Rodrigues(rvec)[0] @ np.array([0.0, 0.0, -1.0])   # 얼굴이 향한 방향
     return {"pitch": math.degrees(math.atan2(fy, -fz)),   # +: 고개 숙임
             "yaw": math.degrees(math.atan2(fx, -fz)),     # 좌우로 돌린 각도
-            "dist": tvec[2, 0],                           # 카메라까지 거리 (상대값)
+            "dist": tvec[2, 0],                           # 카메라까지 거리 (cm)
             "y": tvec[1, 0] / tvec[2, 0]}                 # 카메라 중심 대비 머리 높이
 
 
-def get_features(cv2, pose_lm, face_lm, w, h):
-    """({"face": [..], "shoulder": [..] 또는 None, "tilt": 도 또는 None}, None)
+def shoulders_ok(pose_lm):
+    """어깨 점을 믿을 수 있는지. 잘 안 보이거나, 화면 아래 끝에 걸렸거나(Pose가 추측한 위치),
+    팔꿈치·손목이 어깨보다 위에 있으면(팔을 들면 어깨 점이 팔을 따라 움직임) False"""
+    shoulders = (LEFT_SHOULDER, RIGHT_SHOULDER)
+    if min(pose_lm[i].visibility for i in shoulders) < VIS_MIN:
+        return False
+    if max(pose_lm[i].y for i in shoulders) > EDGE_Y:
+        return False
+    top = min(pose_lm[i].y for i in shoulders)
+    return not any(pose_lm[i].visibility >= 0.5 and pose_lm[i].y < top for i in ARM_POINTS)
+
+
+def get_features(cv2, pose_lm, face_lm, w, h, fov_deg=65, use_shoulders=True):
+    """({"face": [..], "shoulder": [..] 또는 None, "tilt": 도 또는 None, "pose": head_pose 결과}, None)
     또는 판정할 수 없을 때 (None, 화면에 띄울 이유)"""
     if face_lm is None:
         return None, "FACE NOT FOUND - look at camera"
-    hp = head_pose(cv2, face_lm, w, h)
+    hp = head_pose(cv2, face_lm, w, h, fov_deg)
     if hp is None:
         return None, "FACE NOT FOUND - look at camera"
     if abs(hp["yaw"]) > 35:
         return None, "TURN TO CAMERA"
-    feats = {"face": [hp["pitch"], math.log(hp["dist"]), hp["y"]], "shoulder": None, "tilt": None}
+    feats = {"face": [hp["pitch"], math.log(hp["dist"]), hp["y"]], "shoulder": None, "tilt": None, "pose": hp}
 
-    # 어깨: 확실히 보이고, 얼굴이 두 어깨 사이에 있을 때만(같은 사람인지 확인) 보조로 사용
-    if pose_lm is not None and min(pose_lm[i].visibility for i in (LEFT_SHOULDER, RIGHT_SHOULDER)) >= VIS_MIN:
+    # 어깨: 믿을 수 있고, 얼굴이 두 어깨 사이에 있을 때만(같은 사람인지 확인) 보조로 사용
+    if use_shoulders and pose_lm is not None and shoulders_ok(pose_lm):
         ls = (pose_lm[LEFT_SHOULDER].x * w, pose_lm[LEFT_SHOULDER].y * h)
         rs = (pose_lm[RIGHT_SHOULDER].x * w, pose_lm[RIGHT_SHOULDER].y * h)
         nose_x, sw = face_lm[1].x * w, math.dist(ls, rs)
@@ -310,6 +330,7 @@ def vector(feats, kind):
 
 # ======================== 개인 맞춤 학습 (LDA) ========================
 MIN_SEPARATION = 3.0   # 바른 자세와 나쁜 자세가 이 정도 이상 구분돼야 학습 성공
+MODEL_VERSION = 2      # 저장된 학습 결과(baseline.json) 형식. 바뀌면 예전 파일은 다시 학습
 
 
 def fit_lda(good, bad):
@@ -339,7 +360,7 @@ def train(good, bad):
     model, sep = fit_lda([vector(f, "face") for f in good], [vector(f, "face") for f in bad])
     if model is None:
         return None, 0.0
-    result = {"face": model}
+    result = {"version": MODEL_VERSION, "face": model}
     g = [f for f in good if f["shoulder"]]
     b = [f for f in bad if f["shoulder"]]
     if len(g) >= 0.7 * len(good) and len(b) >= 0.7 * len(bad):
@@ -392,8 +413,8 @@ class OneEuro:
 
 
 def raw_status(pct, cfg, prev="정상"):
-    """점수 -> 상태. 이미 경고/위험이면 기준을 hysteresis_pct만큼 낮춰 경계에서 깜빡이지 않게"""
-    gap = cfg.get("hysteresis_pct", 5)
+    """점수 -> 정상/경고/위험. 이미 경고/위험이면 기준을 hysteresis_pct만큼 낮춰 경계에서 깜빡이지 않게"""
+    gap = cfg.get("hysteresis_pct", 2)
     warn = cfg["warning_pct"] - (gap if prev != "정상" else 0)
     danger = cfg["danger_pct"] - (gap if prev == "위험" else 0)
     if pct < warn:
@@ -401,13 +422,16 @@ def raw_status(pct, cfg, prev="정상"):
     return "경고" if pct < danger else "위험"
 
 
-def hold(raw, bad_since, hold_sec, now):
-    """나쁜 자세가 hold_sec 이상 이어져야 확정. (확정 상태, bad_since, 지속시간)"""
+def hold(raw, since, danger_after_sec, now):
+    """경고 기준을 넘으면 바로 경고, 위험 기준을 넘은 상태가 danger_after_sec 이어지면 위험.
+    since: (나쁜 자세 시작 시각, 위험 기준 넘은 시각) 또는 None. 반환: (상태, since, 나쁜 자세 지속시간)"""
     if raw == "정상":
         return "정상", None, 0.0
-    bad_since = bad_since or now
-    duration = now - bad_since
-    return (raw if duration >= hold_sec else "정상"), bad_since, duration
+    bad, danger = since or (None, None)
+    bad = bad or now
+    danger = (danger or now) if raw == "위험" else None
+    status = "위험" if danger is not None and now - danger >= danger_after_sec else "경고"
+    return status, (bad, danger), now - bad
 
 
 STATUS_URL = None   # main()에서 server_url로 정함. 예) http://127.0.0.1:5050/api/status
@@ -467,7 +491,7 @@ def draw(cv2, mp, frame, pose_res, face_lm, text, color, sub, pct, cfg):
         cv2.rectangle(frame, (x0, y0), (x1, y0 + 15), (80, 80, 80), -1)
         fill = x0 + int((x1 - x0) * min(max(pct, 0), 120) / 120)
         cv2.rectangle(frame, (x0, y0), (fill, y0 + 15), color, -1)
-        for th in (cfg["warning_pct"], cfg["danger_pct"]):
+        for th in (cfg["warning_pct"], cfg["danger_pct"]):   # 경고·위험 기준선
             tx = x0 + int((x1 - x0) * th / 120)
             cv2.line(frame, (tx, y0 - 3), (tx, y0 + 18), (255, 255, 255), 2)
     cv2.putText(frame, "c: recalibrate  q: quit", (10, h - 12),
@@ -523,8 +547,8 @@ def run(cfg):
 
     reset_sec = cfg.get("new_person_reset_sec", 5)
     model = load_json(BASELINE_FILE) if reset_sec == 0 else None   # 전시회 모드면 매번 새로 학습
-    if model and "face" not in model:
-        model = None   # 예전 버전 파일
+    if model and model.get("version") != MODEL_VERSION:
+        model = None   # 예전 버전 파일 (거리 단위 등이 달라서 다시 학습)
     phase = "run" if model else "wait"   # wait -> good_ready -> good_rec -> bad_ready -> bad_rec -> run
     phase_start, good, bad, retry_msg_until = 0.0, [], [], 0.0
     filt = OneEuro()
@@ -539,10 +563,11 @@ def run(cfg):
         log.info("카메라 창 없이 실행 (모니터 없음 또는 show_window=false)")
 
     def set_status(new):
-        nonlocal status
+        nonlocal status, last_save
         if new != status:
             on_status_change(status, new)
             status = new
+            last_save = 0   # 상태가 바뀌면 전송 주기를 기다리지 않고 바로 기록
 
     def restart_calibration(why):
         nonlocal model, phase, good, bad, pct, bad_since, raw, filt
@@ -573,7 +598,8 @@ def run(cfg):
                     faces = face_mesh.process(rgb).multi_face_landmarks
                     face_lm = faces[0].landmark if faces else None
                     pose_lm = pose_res.pose_landmarks.landmark if pose_res.pose_landmarks else None
-                    feats, reason = get_features(cv2, pose_lm, face_lm, w, h)
+                    feats, reason = get_features(cv2, pose_lm, face_lm, w, h, cfg.get("camera_fov_deg", 65),
+                                                 cfg.get("use_shoulders", True))
                     if face_lm is not None or pose_lm is not None:
                         last_seen = now
 
@@ -626,7 +652,7 @@ def run(cfg):
                         else:
                             pct = filt(posture_score(model, feats), now)
                             raw = raw_status(pct, cfg, raw)
-                            new_status, bad_since, duration = hold(raw, bad_since, cfg["hold_sec"], now)
+                            new_status, bad_since, duration = hold(raw, bad_since, cfg.get("danger_after_sec", 2.5), now)
                             set_status(new_status)
                             text, sub, color = f"{STATUS_EN[status]}  {max(pct, 0):.0f}%", "", STATUS_COLOR[status]
 
@@ -634,6 +660,9 @@ def run(cfg):
                             if tilt is not None and "tilt" in model:
                                 shoulder = "틀어짐" if tilt - model["tilt"] >= cfg["shoulder_tilt_deg"] else "정상"
                             if now - last_save >= cfg["save_interval"]:
+                                hp = feats["pose"]
+                                log.info(f"{status} 점수 {pct:.0f}% (숙임 {hp['pitch']:+.0f}°, 거리 {hp['dist']:.0f}cm, "
+                                         f"어깨 {'사용' if feats['shoulder'] and 'full' in model else '안 씀'})")
                                 threading.Thread(target=send, daemon=True, args=({
                                     "user_id": cfg["user_id"],
                                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
