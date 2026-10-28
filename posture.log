@@ -1,0 +1,1241 @@
+2026-10-07 11:01:55,716 [INFO] 프로그램 시작
+2026-10-07 11:01:55,717 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:05,720 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:15,735 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:25,738 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:35,740 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:45,742 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:02:55,743 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:05,746 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:15,749 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:25,751 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:35,755 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:45,779 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:03:55,781 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:05,783 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:15,785 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:25,787 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:35,789 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:45,790 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:55,791 [ERROR] 오류 발생, 10초 후 재시작: 'storage'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 350, in main
+    run()
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 258, in run
+    store = Storage(cfg)
+            ^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 76, in __init__
+    self.mode = cfg["storage"]
+                ~~~^^^^^^^^^^^
+KeyError: 'storage'
+2026-10-07 11:04:58,687 [INFO] 종료 신호 받음
+2026-10-07 11:05:05,797 [INFO] 프로그램 종료
+2026-10-07 11:08:31,903 [INFO] 프로그램 시작
+2026-10-07 11:08:31,906 [INFO] 저장 방식: sqlite
+2026-10-07 11:08:32,809 [INFO] 카메라 연결 성공
+2026-10-07 11:08:35,059 [INFO] 사람 감지, 기준자세 측정 시작
+2026-10-07 11:08:40,091 [INFO] 기준값 저장: {'neck': 0.48849766320626237, 'mouth': 0.2967743689858251, 'face': 0.41327334632803375, 'tilt': 6.441497965793096}
+2026-10-07 11:08:40,125 [WARNING] 저장 실패, 보관 중 1개: table measurements has no column named neck_ratio
+2026-10-07 11:08:45,129 [WARNING] 저장 실패, 보관 중 2개: table measurements has no column named neck_ratio
+2026-10-07 11:08:50,135 [WARNING] 저장 실패, 보관 중 3개: table measurements has no column named neck_ratio
+2026-10-07 11:08:55,167 [WARNING] 저장 실패, 보관 중 4개: table measurements has no column named neck_ratio
+2026-10-07 11:09:00,180 [WARNING] 저장 실패, 보관 중 5개: table measurements has no column named neck_ratio
+2026-10-07 11:09:05,196 [WARNING] 저장 실패, 보관 중 6개: table measurements has no column named neck_ratio
+2026-10-07 11:09:10,208 [WARNING] 저장 실패, 보관 중 7개: table measurements has no column named neck_ratio
+2026-10-07 11:09:15,241 [WARNING] 저장 실패, 보관 중 8개: table measurements has no column named neck_ratio
+2026-10-07 11:09:15,928 [INFO] 종료 신호 받음
+2026-10-07 11:09:16,341 [INFO] 프로그램 종료
+2026-10-07 11:10:52,471 [INFO] 프로그램 시작
+2026-10-07 11:10:52,474 [INFO] 저장 방식: sqlite
+2026-10-07 11:10:54,661 [WARNING] 카메라 연결 실패, 5초 후 재시도
+2026-10-07 11:10:59,755 [WARNING] 카메라 연결 실패, 5초 후 재시도
+2026-10-07 11:11:04,873 [WARNING] 카메라 연결 실패, 5초 후 재시도
+2026-10-07 11:11:05,685 [INFO] 종료 신호 받음
+2026-10-07 11:11:09,874 [INFO] 프로그램 종료
+2026-10-07 11:14:07,616 [INFO] 프로그램 시작
+2026-10-07 11:14:07,633 [INFO] 저장 방식: sqlite
+2026-10-07 11:14:08,335 [INFO] 카메라 연결 성공
+2026-10-07 11:14:13,358 [WARNING] 저장 실패, 보관 중 1개: table measurements has no column named neck_ratio
+2026-10-07 11:14:18,375 [WARNING] 저장 실패, 보관 중 2개: table measurements has no column named neck_ratio
+2026-10-07 11:14:19,574 [INFO] 종료 신호 받음
+2026-10-07 11:14:19,971 [INFO] 프로그램 종료
+2026-10-14 09:03:48,875 [WARNING] 전송 실패, 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:03:48,913 [INFO] 127.0.0.1 - - [14/Oct/2026 09:03:48] "POST /api/record HTTP/1.1" 200 -
+2026-10-14 09:03:48,948 [INFO] 127.0.0.1 - - [14/Oct/2026 09:03:48] "POST /api/record HTTP/1.1" 200 -
+2026-10-14 09:03:48,950 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 09:03:48,957 [INFO] 127.0.0.1 - - [14/Oct/2026 09:03:48] "GET /api/results HTTP/1.1" 200 -
+2026-10-14 09:03:48,966 [INFO] 127.0.0.1 - - [14/Oct/2026 09:03:48] "GET /api/stats?date=2026-10-07 HTTP/1.1" 200 -
+2026-10-14 09:03:48,977 [ERROR] Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\app.py", line 101, in index
+    return render_template('index.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\templating.py", line 150, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\templating.py", line 66, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\templating.py", line 100, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: index.html
+2026-10-14 09:03:48,982 [INFO] 127.0.0.1 - - [14/Oct/2026 09:03:48] "GET / HTTP/1.1" 500 -
+2026-10-14 09:05:52,003 [WARNING] 전송 실패, 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:05:52,060 [INFO] 127.0.0.1 - - [14/Oct/2026 09:05:52] "POST /api/record HTTP/1.1" 200 -
+2026-10-14 09:05:52,071 [INFO] 127.0.0.1 - - [14/Oct/2026 09:05:52] "POST /api/record HTTP/1.1" 200 -
+2026-10-14 09:05:52,072 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 09:05:52,076 [INFO] 127.0.0.1 - - [14/Oct/2026 09:05:52] "GET /api/results HTTP/1.1" 200 -
+2026-10-14 09:05:52,081 [INFO] 127.0.0.1 - - [14/Oct/2026 09:05:52] "GET /api/stats?date=2026-10-07 HTTP/1.1" 200 -
+2026-10-14 09:05:52,108 [INFO] 127.0.0.1 - - [14/Oct/2026 09:05:52] "GET / HTTP/1.1" 200 -
+2026-10-14 09:07:56,639 [INFO] 프로그램 시작
+2026-10-14 09:08:02,856 [INFO] 카메라 연결 성공
+2026-10-14 09:08:08,889 [WARNING] 전송 실패, 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:08:13,919 [WARNING] 전송 실패, 보관 중 2개: <urlopen error timed out>
+2026-10-14 09:08:18,932 [WARNING] 전송 실패, 보관 중 3개: <urlopen error timed out>
+2026-10-14 09:08:23,965 [WARNING] 전송 실패, 보관 중 4개: <urlopen error timed out>
+2026-10-14 09:08:28,972 [WARNING] 전송 실패, 보관 중 5개: <urlopen error timed out>
+2026-10-14 09:08:33,995 [WARNING] 전송 실패, 보관 중 6개: <urlopen error timed out>
+2026-10-14 09:08:39,040 [WARNING] 전송 실패, 보관 중 7개: <urlopen error timed out>
+2026-10-14 09:12:31,114 [INFO] 프로그램 시작
+2026-10-14 09:12:36,024 [INFO] 카메라 연결 성공
+2026-10-14 09:12:36,025 [WARNING] 가벼운 모델 다운로드 실패, 기본 모델로 실행: module 'mediapipe' has no attribute 'solutions'
+2026-10-14 09:12:36,042 [ERROR] 오류 발생, 10초 후 재시작: module 'mediapipe' has no attribute 'solutions'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 408, in main
+    run(cfg)
+    ~~~^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 315, in run
+    with make_pose(mp) as pose:
+         ~~~~~~~~~^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 272, in make_pose
+    return mp.solutions.pose.Pose(model_complexity=c,
+           ^^^^^^^^^^^^
+AttributeError: module 'mediapipe' has no attribute 'solutions'
+2026-10-14 09:12:46,292 [INFO] 카메라 연결 성공
+2026-10-14 09:12:46,301 [WARNING] 가벼운 모델 다운로드 실패, 기본 모델로 실행: module 'mediapipe' has no attribute 'solutions'
+2026-10-14 09:12:46,317 [ERROR] 오류 발생, 10초 후 재시작: module 'mediapipe' has no attribute 'solutions'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 408, in main
+    run(cfg)
+    ~~~^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 315, in run
+    with make_pose(mp) as pose:
+         ~~~~~~~~~^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 272, in make_pose
+    return mp.solutions.pose.Pose(model_complexity=c,
+           ^^^^^^^^^^^^
+AttributeError: module 'mediapipe' has no attribute 'solutions'
+2026-10-14 09:15:28,690 [INFO] 프로그램 시작
+2026-10-14 09:15:30,665 [INFO] 카메라 연결 성공
+2026-10-14 09:15:36,769 [WARNING] 전송 실패, 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:15:41,749 [WARNING] 전송 실패, 보관 중 2개: <urlopen error timed out>
+2026-10-14 09:15:46,751 [WARNING] 전송 실패, 보관 중 3개: <urlopen error timed out>
+2026-10-14 09:15:51,759 [WARNING] 전송 실패, 보관 중 4개: <urlopen error timed out>
+2026-10-14 09:15:56,813 [WARNING] 전송 실패, 보관 중 5개: <urlopen error timed out>
+2026-10-14 09:16:01,856 [WARNING] 전송 실패, 보관 중 6개: <urlopen error timed out>
+2026-10-14 09:16:06,861 [WARNING] 전송 실패, 보관 중 7개: <urlopen error timed out>
+2026-10-14 09:16:11,888 [WARNING] 전송 실패, 보관 중 8개: <urlopen error timed out>
+2026-10-14 09:16:16,940 [WARNING] 전송 실패, 보관 중 9개: <urlopen error timed out>
+2026-10-14 09:16:21,999 [WARNING] 전송 실패, 보관 중 10개: <urlopen error timed out>
+2026-10-14 09:16:27,051 [WARNING] 전송 실패, 보관 중 11개: <urlopen error timed out>
+2026-10-14 09:16:32,106 [WARNING] 전송 실패, 보관 중 12개: <urlopen error timed out>
+2026-10-14 09:16:37,135 [WARNING] 전송 실패, 보관 중 13개: <urlopen error timed out>
+2026-10-14 09:16:42,163 [WARNING] 전송 실패, 보관 중 14개: <urlopen error timed out>
+2026-10-14 09:16:47,233 [WARNING] 전송 실패, 보관 중 15개: <urlopen error timed out>
+2026-10-14 09:16:52,256 [WARNING] 전송 실패, 보관 중 16개: <urlopen error timed out>
+2026-10-14 09:16:57,297 [WARNING] 전송 실패, 보관 중 17개: <urlopen error timed out>
+2026-10-14 09:17:02,356 [WARNING] 전송 실패, 보관 중 18개: <urlopen error timed out>
+2026-10-14 09:17:07,391 [WARNING] 전송 실패, 보관 중 19개: <urlopen error timed out>
+2026-10-14 09:17:12,452 [WARNING] 전송 실패, 보관 중 20개: <urlopen error timed out>
+2026-10-14 09:17:17,476 [WARNING] 전송 실패, 보관 중 21개: <urlopen error timed out>
+2026-10-14 09:17:22,481 [WARNING] 전송 실패, 보관 중 22개: <urlopen error timed out>
+2026-10-14 09:17:27,503 [WARNING] 전송 실패, 보관 중 23개: <urlopen error timed out>
+2026-10-14 09:17:32,526 [WARNING] 전송 실패, 보관 중 24개: <urlopen error timed out>
+2026-10-14 09:17:37,517 [WARNING] 전송 실패, 보관 중 25개: <urlopen error timed out>
+2026-10-14 09:17:42,536 [WARNING] 전송 실패, 보관 중 26개: <urlopen error timed out>
+2026-10-14 09:17:47,555 [WARNING] 전송 실패, 보관 중 27개: <urlopen error timed out>
+2026-10-14 09:17:52,559 [WARNING] 전송 실패, 보관 중 28개: <urlopen error timed out>
+2026-10-14 09:17:57,597 [WARNING] 전송 실패, 보관 중 29개: <urlopen error timed out>
+2026-10-14 09:18:02,602 [WARNING] 전송 실패, 보관 중 30개: <urlopen error timed out>
+2026-10-14 09:18:03,842 [INFO] 상태 변경: 정상 -> 위험
+2026-10-14 09:18:07,640 [WARNING] 전송 실패, 보관 중 31개: <urlopen error timed out>
+2026-10-14 09:18:12,649 [WARNING] 전송 실패, 보관 중 32개: <urlopen error timed out>
+2026-10-14 09:18:17,659 [WARNING] 전송 실패, 보관 중 33개: <urlopen error timed out>
+2026-10-14 09:18:22,696 [WARNING] 전송 실패, 보관 중 34개: <urlopen error timed out>
+2026-10-14 09:18:27,744 [WARNING] 전송 실패, 보관 중 35개: <urlopen error timed out>
+2026-10-14 09:18:32,759 [WARNING] 전송 실패, 보관 중 36개: <urlopen error timed out>
+2026-10-14 09:18:37,784 [WARNING] 전송 실패, 보관 중 37개: <urlopen error timed out>
+2026-10-14 09:18:42,846 [WARNING] 전송 실패, 보관 중 38개: <urlopen error timed out>
+2026-10-14 09:18:43,893 [INFO] 상태 변경: 위험 -> 경고
+2026-10-14 09:18:44,044 [INFO] 상태 변경: 경고 -> 정상
+2026-10-14 09:18:47,882 [WARNING] 전송 실패, 보관 중 39개: <urlopen error timed out>
+2026-10-14 09:18:52,904 [WARNING] 전송 실패, 보관 중 40개: <urlopen error timed out>
+2026-10-14 09:18:54,661 [INFO] 상태 변경: 정상 -> 위험
+2026-10-14 09:18:55,324 [INFO] 상태 변경: 위험 -> 경고
+2026-10-14 09:18:55,586 [INFO] 상태 변경: 경고 -> 정상
+2026-10-14 09:18:57,923 [WARNING] 전송 실패, 보관 중 41개: <urlopen error timed out>
+2026-10-14 09:19:02,944 [WARNING] 전송 실패, 보관 중 42개: <urlopen error timed out>
+2026-10-14 09:19:07,992 [WARNING] 전송 실패, 보관 중 43개: <urlopen error timed out>
+2026-10-14 09:19:13,009 [WARNING] 전송 실패, 보관 중 44개: <urlopen error timed out>
+2026-10-14 09:19:18,062 [WARNING] 전송 실패, 보관 중 45개: <urlopen error timed out>
+2026-10-14 09:19:23,103 [WARNING] 전송 실패, 보관 중 46개: <urlopen error timed out>
+2026-10-14 09:19:28,098 [WARNING] 전송 실패, 보관 중 47개: <urlopen error timed out>
+2026-10-14 09:19:33,131 [WARNING] 전송 실패, 보관 중 48개: <urlopen error timed out>
+2026-10-14 09:19:38,166 [WARNING] 전송 실패, 보관 중 49개: <urlopen error timed out>
+2026-10-14 09:19:43,168 [WARNING] 전송 실패, 보관 중 50개: <urlopen error timed out>
+2026-10-14 09:19:48,193 [WARNING] 전송 실패, 보관 중 51개: <urlopen error timed out>
+2026-10-14 09:19:53,210 [WARNING] 전송 실패, 보관 중 52개: <urlopen error timed out>
+2026-10-14 09:19:58,237 [WARNING] 전송 실패, 보관 중 53개: <urlopen error timed out>
+2026-10-14 09:20:03,267 [WARNING] 전송 실패, 보관 중 54개: <urlopen error timed out>
+2026-10-14 09:20:08,328 [WARNING] 전송 실패, 보관 중 55개: <urlopen error timed out>
+2026-10-14 09:20:13,378 [WARNING] 전송 실패, 보관 중 56개: <urlopen error timed out>
+2026-10-14 09:20:18,440 [WARNING] 전송 실패, 보관 중 57개: <urlopen error timed out>
+2026-10-14 09:20:20,028 [INFO] 종료 신호 받음
+2026-10-14 09:20:20,588 [INFO] 프로그램 종료
+2026-10-14 09:33:57,954 [INFO] 프로그램 시작
+2026-10-14 09:33:59,810 [INFO] 카메라 연결 성공
+2026-10-14 09:34:05,966 [WARNING] 전송 실패, 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:34:10,900 [WARNING] 전송 실패, 보관 중 2개: <urlopen error timed out>
+2026-10-14 09:34:15,951 [WARNING] 전송 실패, 보관 중 3개: <urlopen error timed out>
+2026-10-14 09:34:20,983 [WARNING] 전송 실패, 보관 중 4개: <urlopen error timed out>
+2026-10-14 09:34:26,012 [WARNING] 전송 실패, 보관 중 5개: <urlopen error timed out>
+2026-10-14 09:34:31,055 [WARNING] 전송 실패, 보관 중 6개: <urlopen error timed out>
+2026-10-14 09:34:36,077 [WARNING] 전송 실패, 보관 중 7개: <urlopen error timed out>
+2026-10-14 09:34:41,079 [WARNING] 전송 실패, 보관 중 8개: <urlopen error timed out>
+2026-10-14 09:34:45,490 [INFO] 상태 변경: 정상 -> 경고
+2026-10-14 09:34:46,122 [WARNING] 전송 실패, 보관 중 9개: <urlopen error timed out>
+2026-10-14 09:34:47,158 [INFO] 상태 변경: 경고 -> 정상
+2026-10-14 09:34:51,136 [WARNING] 전송 실패, 보관 중 10개: <urlopen error timed out>
+2026-10-14 09:34:56,176 [WARNING] 전송 실패, 보관 중 11개: <urlopen error timed out>
+2026-10-14 09:35:01,190 [WARNING] 전송 실패, 보관 중 12개: <urlopen error timed out>
+2026-10-14 09:35:06,816 [WARNING] 전송 실패, 보관 중 13개: <urlopen error timed out>
+2026-10-14 09:35:11,841 [WARNING] 전송 실패, 보관 중 14개: <urlopen error timed out>
+2026-10-14 09:35:16,856 [WARNING] 전송 실패, 보관 중 15개: <urlopen error timed out>
+2026-10-14 09:35:21,901 [WARNING] 전송 실패, 보관 중 16개: <urlopen error timed out>
+2026-10-14 09:35:26,930 [WARNING] 전송 실패, 보관 중 17개: <urlopen error timed out>
+2026-10-14 09:35:31,949 [WARNING] 전송 실패, 보관 중 18개: <urlopen error timed out>
+2026-10-14 09:35:38,131 [WARNING] 전송 실패, 보관 중 19개: <urlopen error timed out>
+2026-10-14 09:35:43,185 [WARNING] 전송 실패, 보관 중 20개: <urlopen error timed out>
+2026-10-14 09:35:48,202 [WARNING] 전송 실패, 보관 중 21개: <urlopen error timed out>
+2026-10-14 09:35:55,380 [WARNING] 전송 실패, 보관 중 22개: <urlopen error timed out>
+2026-10-14 09:36:00,388 [WARNING] 전송 실패, 보관 중 23개: <urlopen error timed out>
+2026-10-14 09:36:05,453 [WARNING] 전송 실패, 보관 중 24개: <urlopen error timed out>
+2026-10-14 09:36:10,473 [WARNING] 전송 실패, 보관 중 25개: <urlopen error timed out>
+2026-10-14 09:36:15,527 [WARNING] 전송 실패, 보관 중 26개: <urlopen error timed out>
+2026-10-14 09:36:17,245 [INFO] 종료 신호 받음
+2026-10-14 09:36:17,667 [INFO] 프로그램 종료
+2026-10-14 09:43:59,460 [INFO] 프로그램 시작
+2026-10-14 09:44:01,333 [INFO] 카메라 연결 성공
+2026-10-14 09:44:07,570 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:44:12,468 [WARNING] 전송 실패, DB에 보관 중 2개: <urlopen error timed out>
+2026-10-14 09:44:17,477 [WARNING] 전송 실패, DB에 보관 중 3개: <urlopen error timed out>
+2026-10-14 09:44:22,546 [WARNING] 전송 실패, DB에 보관 중 4개: <urlopen error timed out>
+2026-10-14 09:44:27,596 [WARNING] 전송 실패, DB에 보관 중 5개: <urlopen error timed out>
+2026-10-14 09:44:32,666 [WARNING] 전송 실패, DB에 보관 중 6개: <urlopen error timed out>
+2026-10-14 09:44:37,696 [WARNING] 전송 실패, DB에 보관 중 7개: <urlopen error timed out>
+2026-10-14 09:44:42,696 [WARNING] 전송 실패, DB에 보관 중 8개: <urlopen error timed out>
+2026-10-14 09:44:47,746 [WARNING] 전송 실패, DB에 보관 중 9개: <urlopen error timed out>
+2026-10-14 09:44:52,764 [WARNING] 전송 실패, DB에 보관 중 10개: <urlopen error timed out>
+2026-10-14 09:44:57,767 [INFO] 상태 변경: 정상 -> 위험
+2026-10-14 09:44:57,812 [WARNING] 전송 실패, DB에 보관 중 11개: <urlopen error timed out>
+2026-10-14 09:45:02,839 [WARNING] 전송 실패, DB에 보관 중 12개: <urlopen error timed out>
+2026-10-14 09:45:07,913 [WARNING] 전송 실패, DB에 보관 중 13개: <urlopen error timed out>
+2026-10-14 09:45:09,333 [INFO] 상태 변경: 위험 -> 경고
+2026-10-14 09:45:09,518 [INFO] 상태 변경: 경고 -> 정상
+2026-10-14 09:45:12,931 [WARNING] 전송 실패, DB에 보관 중 14개: <urlopen error timed out>
+2026-10-14 09:45:17,957 [WARNING] 전송 실패, DB에 보관 중 15개: <urlopen error timed out>
+2026-10-14 09:45:21,738 [INFO] 종료 신호 받음
+2026-10-14 09:45:22,207 [INFO] 프로그램 종료
+2026-10-14 09:47:08,255 [INFO] 프로그램 시작
+2026-10-14 09:47:08,257 [INFO] 지난번에 못 보낸 데이터 15개 있음 -> 서버 연결되면 자동 전송
+2026-10-14 09:47:10,047 [INFO] 카메라 연결 성공
+2026-10-14 09:47:16,092 [WARNING] 전송 실패, DB에 보관 중 16개: <urlopen error timed out>
+2026-10-14 09:47:21,106 [WARNING] 전송 실패, DB에 보관 중 17개: <urlopen error timed out>
+2026-10-14 09:47:26,108 [WARNING] 전송 실패, DB에 보관 중 18개: <urlopen error timed out>
+2026-10-14 09:47:31,178 [WARNING] 전송 실패, DB에 보관 중 19개: <urlopen error timed out>
+2026-10-14 09:47:36,188 [WARNING] 전송 실패, DB에 보관 중 20개: <urlopen error timed out>
+2026-10-14 09:47:41,328 [WARNING] 전송 실패, DB에 보관 중 21개: <urlopen error timed out>
+2026-10-14 09:47:41,555 [INFO] 종료 신호 받음
+2026-10-14 09:47:42,076 [INFO] 프로그램 종료
+2026-10-14 09:53:48,671 [INFO] 프로그램 시작
+2026-10-14 09:53:48,674 [INFO] 지난번에 못 보낸 데이터 21개 있음 -> 서버 연결되면 자동 전송
+2026-10-14 09:53:50,356 [INFO] 카메라 연결 성공
+2026-10-14 09:53:56,741 [WARNING] 전송 실패, DB에 보관 중 19개: <urlopen error timed out>
+2026-10-14 09:53:56,744 [INFO] 밀린 데이터 3개 전송 완료
+2026-10-14 09:54:02,182 [INFO] 밀린 데이터 20개 전송 완료
+2026-10-14 09:55:08,078 [INFO] 종료 신호 받음
+2026-10-14 09:55:08,638 [INFO] 프로그램 종료
+2026-10-14 09:55:10,451 [INFO] 프로그램 시작
+2026-10-14 09:55:11,979 [INFO] 카메라 연결 성공
+2026-10-14 09:55:53,187 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:55:57,412 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 09:56:23,287 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:56:27,446 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 09:56:43,419 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 09:56:48,453 [WARNING] 전송 실패, DB에 보관 중 2개: <urlopen error timed out>
+2026-10-14 09:56:53,487 [WARNING] 전송 실패, DB에 보관 중 3개: <urlopen error timed out>
+2026-10-14 09:56:58,514 [WARNING] 전송 실패, DB에 보관 중 4개: <urlopen error timed out>
+2026-10-14 09:57:03,570 [WARNING] 전송 실패, DB에 보관 중 5개: <urlopen error timed out>
+2026-10-14 09:57:08,613 [WARNING] 전송 실패, DB에 보관 중 6개: <urlopen error timed out>
+2026-10-14 09:57:13,667 [WARNING] 전송 실패, DB에 보관 중 7개: <urlopen error timed out>
+2026-10-14 09:57:18,771 [WARNING] 전송 실패, DB에 보관 중 8개: <urlopen error timed out>
+2026-10-14 09:57:23,808 [WARNING] 전송 실패, DB에 보관 중 9개: <urlopen error timed out>
+2026-10-14 09:57:28,797 [WARNING] 전송 실패, DB에 보관 중 10개: <urlopen error timed out>
+2026-10-14 09:57:33,833 [WARNING] 전송 실패, DB에 보관 중 11개: <urlopen error timed out>
+2026-10-14 09:57:38,874 [WARNING] 전송 실패, DB에 보관 중 12개: <urlopen error timed out>
+2026-10-14 09:57:43,904 [WARNING] 전송 실패, DB에 보관 중 13개: <urlopen error timed out>
+2026-10-14 09:57:48,952 [WARNING] 전송 실패, DB에 보관 중 14개: <urlopen error timed out>
+2026-10-14 09:57:54,006 [WARNING] 전송 실패, DB에 보관 중 15개: <urlopen error timed out>
+2026-10-14 09:57:59,085 [WARNING] 전송 실패, DB에 보관 중 16개: <urlopen error timed out>
+2026-10-14 09:58:04,116 [WARNING] 전송 실패, DB에 보관 중 17개: <urlopen error timed out>
+2026-10-14 09:58:09,165 [WARNING] 전송 실패, DB에 보관 중 18개: <urlopen error timed out>
+2026-10-14 09:58:14,144 [WARNING] 전송 실패, DB에 보관 중 19개: <urlopen error timed out>
+2026-10-14 09:58:19,150 [WARNING] 전송 실패, DB에 보관 중 20개: <urlopen error timed out>
+2026-10-14 09:58:24,575 [INFO] 밀린 데이터 21개 전송 완료
+2026-10-14 10:01:02,440 [INFO] 상태 변경: 정상 -> 위험
+2026-10-14 10:01:21,216 [INFO] 상태 변경: 위험 -> 경고
+2026-10-14 10:01:21,508 [INFO] 상태 변경: 경고 -> 정상
+2026-10-14 10:02:35,870 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:02:41,004 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:02:45,020 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 10:02:50,963 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:02:56,136 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:03:00,143 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 10:05:26,835 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:05:30,994 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 10:05:36,927 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:05:41,146 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 10:05:46,933 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-14 10:05:51,094 [INFO] 밀린 데이터 2개 전송 완료
+2026-10-14 10:05:54,467 [INFO] 종료 신호 받음
+2026-10-14 10:05:54,909 [INFO] 프로그램 종료
+2026-10-19 20:24:52,550 [INFO] 프로그램 시작
+2026-10-19 20:25:02,953 [INFO] 카메라 연결 성공
+2026-10-19 20:25:09,898 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-19 20:25:14,901 [WARNING] 전송 실패, DB에 보관 중 2개: <urlopen error timed out>
+2026-10-19 20:25:19,918 [WARNING] 전송 실패, DB에 보관 중 3개: <urlopen error timed out>
+2026-10-19 20:25:24,966 [WARNING] 전송 실패, DB에 보관 중 4개: <urlopen error timed out>
+2026-10-19 20:25:29,995 [WARNING] 전송 실패, DB에 보관 중 5개: <urlopen error timed out>
+2026-10-19 20:25:35,028 [WARNING] 전송 실패, DB에 보관 중 6개: <urlopen error timed out>
+2026-10-19 20:25:40,009 [WARNING] 전송 실패, DB에 보관 중 7개: <urlopen error timed out>
+2026-10-19 20:25:45,082 [WARNING] 전송 실패, DB에 보관 중 8개: <urlopen error timed out>
+2026-10-19 20:25:50,126 [WARNING] 전송 실패, DB에 보관 중 9개: <urlopen error timed out>
+2026-10-19 20:25:55,182 [WARNING] 전송 실패, DB에 보관 중 10개: <urlopen error timed out>
+2026-10-19 20:26:00,239 [WARNING] 전송 실패, DB에 보관 중 11개: <urlopen error timed out>
+2026-10-19 20:26:05,244 [WARNING] 전송 실패, DB에 보관 중 12개: <urlopen error timed out>
+2026-10-19 20:26:10,267 [WARNING] 전송 실패, DB에 보관 중 13개: <urlopen error timed out>
+2026-10-19 20:26:15,277 [WARNING] 전송 실패, DB에 보관 중 14개: <urlopen error timed out>
+2026-10-19 20:26:20,290 [WARNING] 전송 실패, DB에 보관 중 15개: <urlopen error timed out>
+2026-10-19 20:26:22,072 [INFO] 상태 변경: 정상 -> 경고
+2026-10-19 20:26:22,186 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:26:25,471 [WARNING] 전송 실패, DB에 보관 중 16개: <urlopen error timed out>
+2026-10-19 20:26:30,453 [WARNING] 전송 실패, DB에 보관 중 17개: <urlopen error timed out>
+2026-10-19 20:26:35,460 [WARNING] 전송 실패, DB에 보관 중 18개: <urlopen error timed out>
+2026-10-19 20:26:40,515 [WARNING] 전송 실패, DB에 보관 중 19개: <urlopen error timed out>
+2026-10-19 20:26:45,537 [WARNING] 전송 실패, DB에 보관 중 20개: <urlopen error timed out>
+2026-10-19 20:26:50,553 [WARNING] 전송 실패, DB에 보관 중 21개: <urlopen error timed out>
+2026-10-19 20:26:55,583 [WARNING] 전송 실패, DB에 보관 중 22개: <urlopen error timed out>
+2026-10-19 20:27:00,605 [WARNING] 전송 실패, DB에 보관 중 23개: <urlopen error timed out>
+2026-10-19 20:27:05,670 [WARNING] 전송 실패, DB에 보관 중 24개: <urlopen error timed out>
+2026-10-19 20:27:10,677 [WARNING] 전송 실패, DB에 보관 중 25개: <urlopen error timed out>
+2026-10-19 20:27:15,729 [WARNING] 전송 실패, DB에 보관 중 26개: <urlopen error timed out>
+2026-10-19 20:27:20,718 [WARNING] 전송 실패, DB에 보관 중 27개: <urlopen error timed out>
+2026-10-19 20:27:25,772 [WARNING] 전송 실패, DB에 보관 중 28개: <urlopen error timed out>
+2026-10-19 20:27:30,799 [WARNING] 전송 실패, DB에 보관 중 29개: <urlopen error timed out>
+2026-10-19 20:27:35,852 [WARNING] 전송 실패, DB에 보관 중 30개: <urlopen error timed out>
+2026-10-19 20:27:40,910 [WARNING] 전송 실패, DB에 보관 중 31개: <urlopen error timed out>
+2026-10-19 20:27:45,930 [WARNING] 전송 실패, DB에 보관 중 32개: <urlopen error timed out>
+2026-10-19 20:27:50,954 [WARNING] 전송 실패, DB에 보관 중 33개: <urlopen error timed out>
+2026-10-19 20:27:55,985 [WARNING] 전송 실패, DB에 보관 중 34개: <urlopen error timed out>
+2026-10-19 20:28:01,036 [WARNING] 전송 실패, DB에 보관 중 35개: <urlopen error timed out>
+2026-10-19 20:28:06,093 [WARNING] 전송 실패, DB에 보관 중 36개: <urlopen error timed out>
+2026-10-19 20:28:11,140 [WARNING] 전송 실패, DB에 보관 중 37개: <urlopen error timed out>
+2026-10-19 20:28:16,125 [WARNING] 전송 실패, DB에 보관 중 38개: <urlopen error timed out>
+2026-10-19 20:28:21,174 [WARNING] 전송 실패, DB에 보관 중 39개: <urlopen error timed out>
+2026-10-19 20:28:26,195 [WARNING] 전송 실패, DB에 보관 중 40개: <urlopen error timed out>
+2026-10-19 20:28:30,411 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:28:31,271 [WARNING] 전송 실패, DB에 보관 중 41개: <urlopen error timed out>
+2026-10-19 20:28:36,332 [WARNING] 전송 실패, DB에 보관 중 42개: <urlopen error timed out>
+2026-10-19 20:28:41,373 [WARNING] 전송 실패, DB에 보관 중 43개: <urlopen error timed out>
+2026-10-19 20:28:46,422 [WARNING] 전송 실패, DB에 보관 중 44개: <urlopen error timed out>
+2026-10-19 20:28:48,449 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:28:48,939 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:28:51,483 [WARNING] 전송 실패, DB에 보관 중 45개: <urlopen error timed out>
+2026-10-19 20:28:56,475 [WARNING] 전송 실패, DB에 보관 중 46개: <urlopen error timed out>
+2026-10-19 20:29:01,514 [WARNING] 전송 실패, DB에 보관 중 47개: <urlopen error timed out>
+2026-10-19 20:29:06,513 [WARNING] 전송 실패, DB에 보관 중 48개: <urlopen error timed out>
+2026-10-19 20:29:11,544 [WARNING] 전송 실패, DB에 보관 중 49개: <urlopen error timed out>
+2026-10-19 20:29:16,548 [WARNING] 전송 실패, DB에 보관 중 50개: <urlopen error timed out>
+2026-10-19 20:29:21,598 [WARNING] 전송 실패, DB에 보관 중 51개: <urlopen error timed out>
+2026-10-19 20:29:26,650 [WARNING] 전송 실패, DB에 보관 중 52개: <urlopen error timed out>
+2026-10-19 20:29:31,665 [WARNING] 전송 실패, DB에 보관 중 53개: <urlopen error timed out>
+2026-10-19 20:29:36,729 [WARNING] 전송 실패, DB에 보관 중 54개: <urlopen error timed out>
+2026-10-19 20:29:41,801 [WARNING] 전송 실패, DB에 보관 중 55개: <urlopen error timed out>
+2026-10-19 20:29:46,829 [WARNING] 전송 실패, DB에 보관 중 56개: <urlopen error timed out>
+2026-10-19 20:29:51,881 [WARNING] 전송 실패, DB에 보관 중 57개: <urlopen error timed out>
+2026-10-19 20:29:53,729 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:29:56,905 [WARNING] 전송 실패, DB에 보관 중 58개: <urlopen error timed out>
+2026-10-19 20:30:01,925 [WARNING] 전송 실패, DB에 보관 중 59개: <urlopen error timed out>
+2026-10-19 20:30:06,976 [WARNING] 전송 실패, DB에 보관 중 60개: <urlopen error timed out>
+2026-10-19 20:30:11,996 [WARNING] 전송 실패, DB에 보관 중 61개: <urlopen error timed out>
+2026-10-19 20:30:14,416 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:30:14,721 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:30:17,043 [WARNING] 전송 실패, DB에 보관 중 62개: <urlopen error timed out>
+2026-10-19 20:30:22,116 [WARNING] 전송 실패, DB에 보관 중 63개: <urlopen error timed out>
+2026-10-19 20:30:27,093 [WARNING] 전송 실패, DB에 보관 중 64개: <urlopen error timed out>
+2026-10-19 20:30:32,165 [WARNING] 전송 실패, DB에 보관 중 65개: <urlopen error timed out>
+2026-10-19 20:30:37,222 [WARNING] 전송 실패, DB에 보관 중 66개: <urlopen error timed out>
+2026-10-19 20:30:42,237 [WARNING] 전송 실패, DB에 보관 중 67개: <urlopen error timed out>
+2026-10-19 20:30:43,050 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:30:47,259 [WARNING] 전송 실패, DB에 보관 중 68개: <urlopen error timed out>
+2026-10-19 20:30:48,566 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:30:49,116 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:30:52,270 [WARNING] 전송 실패, DB에 보관 중 69개: <urlopen error timed out>
+2026-10-19 20:30:57,356 [WARNING] 전송 실패, DB에 보관 중 70개: <urlopen error timed out>
+2026-10-19 20:31:02,350 [WARNING] 전송 실패, DB에 보관 중 71개: <urlopen error timed out>
+2026-10-19 20:31:07,385 [WARNING] 전송 실패, DB에 보관 중 72개: <urlopen error timed out>
+2026-10-19 20:31:12,437 [WARNING] 전송 실패, DB에 보관 중 73개: <urlopen error timed out>
+2026-10-19 20:31:17,446 [WARNING] 전송 실패, DB에 보관 중 74개: <urlopen error timed out>
+2026-10-19 20:31:22,502 [WARNING] 전송 실패, DB에 보관 중 75개: <urlopen error timed out>
+2026-10-19 20:31:27,556 [WARNING] 전송 실패, DB에 보관 중 76개: <urlopen error timed out>
+2026-10-19 20:31:32,566 [WARNING] 전송 실패, DB에 보관 중 77개: <urlopen error timed out>
+2026-10-19 20:31:37,562 [WARNING] 전송 실패, DB에 보관 중 78개: <urlopen error timed out>
+2026-10-19 20:31:42,620 [WARNING] 전송 실패, DB에 보관 중 79개: <urlopen error timed out>
+2026-10-19 20:31:47,623 [WARNING] 전송 실패, DB에 보관 중 80개: <urlopen error timed out>
+2026-10-19 20:31:52,703 [WARNING] 전송 실패, DB에 보관 중 81개: <urlopen error timed out>
+2026-10-19 20:31:57,762 [WARNING] 전송 실패, DB에 보관 중 82개: <urlopen error timed out>
+2026-10-19 20:32:02,770 [WARNING] 전송 실패, DB에 보관 중 83개: <urlopen error timed out>
+2026-10-19 20:32:06,055 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:32:07,828 [WARNING] 전송 실패, DB에 보관 중 84개: <urlopen error timed out>
+2026-10-19 20:32:10,811 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:32:11,028 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:32:12,891 [WARNING] 전송 실패, DB에 보관 중 85개: <urlopen error timed out>
+2026-10-19 20:32:17,817 [INFO] 종료 신호 받음
+2026-10-19 20:32:17,864 [WARNING] 전송 실패, DB에 보관 중 86개: <urlopen error timed out>
+2026-10-19 20:32:18,261 [INFO] 프로그램 종료
+2026-10-19 20:32:49,453 [INFO] 프로그램 시작
+2026-10-19 20:32:49,460 [INFO] 지난번에 못 보낸 데이터 86개 있음 -> 서버 연결되면 자동 전송
+2026-10-19 20:32:51,381 [INFO] 카메라 연결 성공
+2026-10-19 20:32:58,441 [INFO] 밀린 데이터 87개 전송 완료
+2026-10-19 20:33:41,208 [INFO] 상태 변경: 정상 -> 경고
+2026-10-19 20:33:41,669 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:35:24,114 [INFO] 상태 변경: 정상 -> 경고
+2026-10-19 20:35:24,995 [INFO] 상태 변경: 경고 -> 위험
+2026-10-19 20:35:26,434 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:35:26,881 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:35:34,819 [INFO] 종료 신호 받음
+2026-10-19 20:35:35,267 [INFO] 프로그램 종료
+2026-10-19 20:36:25,882 [INFO] 프로그램 시작
+2026-10-19 20:36:28,185 [INFO] 카메라 연결 성공
+2026-10-19 20:38:16,168 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:38:16,670 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:38:18,881 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:38:42,702 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:39:00,124 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:39:00,292 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:46:50,007 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:47:03,427 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:47:03,746 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:48:09,441 [INFO] 상태 변경: 정상 -> 위험
+2026-10-19 20:48:21,107 [INFO] 상태 변경: 위험 -> 경고
+2026-10-19 20:48:21,473 [INFO] 상태 변경: 경고 -> 정상
+2026-10-19 20:50:24,465 [WARNING] 전송 실패, DB에 보관 중 1개: <urlopen error timed out>
+2026-10-19 20:50:29,470 [WARNING] 전송 실패, DB에 보관 중 2개: <urlopen error timed out>
+2026-10-19 20:50:29,814 [INFO] 종료 신호 받음
+2026-10-19 20:50:30,327 [INFO] 프로그램 종료
+2026-10-28 09:47:49,342 [INFO] 프로그램 시작
+2026-10-28 09:47:49,346 [INFO] 지난번에 못 보낸 데이터 2개 있음 -> 서버 연결되면 자동 전송
+2026-10-28 09:47:56,130 [INFO] 카메라 연결 성공
+2026-10-28 09:47:56,131 [INFO] 예전 방식의 기준자세라 다시 측정
+2026-10-28 09:48:01,026 [INFO] 사람 감지, 기준자세 측정 시작
+2026-10-28 09:48:06,027 [INFO] 기준값 저장: {'forward': 0.3963247829917577, 'height': 0.48403294818654585, 'tilt': 1.8021664280409662, 'dist': 39.14205737180928}
+2026-10-28 09:48:07,214 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:07,214 [WARNING] 전송 실패, DB에 보관 중 3개: <urlopen error timed out>
+2026-10-28 09:48:12,196 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:12,212 [WARNING] 전송 실패, DB에 보관 중 4개: <urlopen error timed out>
+2026-10-28 09:48:17,723 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:17,769 [WARNING] 전송 실패, DB에 보관 중 5개: <urlopen error timed out>
+2026-10-28 09:48:22,754 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:22,798 [WARNING] 전송 실패, DB에 보관 중 6개: <urlopen error timed out>
+2026-10-28 09:48:27,765 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:27,781 [WARNING] 전송 실패, DB에 보관 중 7개: <urlopen error timed out>
+2026-10-28 09:48:32,852 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:32,899 [WARNING] 전송 실패, DB에 보관 중 8개: <urlopen error timed out>
+2026-10-28 09:48:37,863 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:37,893 [WARNING] 전송 실패, DB에 보관 중 9개: <urlopen error timed out>
+2026-10-28 09:48:43,922 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:43,968 [WARNING] 전송 실패, DB에 보관 중 10개: <urlopen error timed out>
+2026-10-28 09:48:49,000 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:49,016 [WARNING] 전송 실패, DB에 보관 중 11개: <urlopen error timed out>
+2026-10-28 09:48:53,996 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:48:54,041 [WARNING] 전송 실패, DB에 보관 중 12개: <urlopen error timed out>
+2026-10-28 09:48:56,160 [INFO] 분석 속도: 초당 8.1회 (목표 10회)
+2026-10-28 09:49:26,652 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:49:26,697 [WARNING] 전송 실패, DB에 보관 중 13개: <urlopen error timed out>
+2026-10-28 09:49:31,722 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:49:31,738 [WARNING] 전송 실패, DB에 보관 중 14개: <urlopen error timed out>
+2026-10-28 09:49:50,101 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:49:50,147 [WARNING] 전송 실패, DB에 보관 중 15개: <urlopen error timed out>
+2026-10-28 09:49:55,132 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:49:55,179 [WARNING] 전송 실패, DB에 보관 중 16개: <urlopen error timed out>
+2026-10-28 09:49:56,178 [INFO] 분석 속도: 초당 8.2회 (목표 10회)
+2026-10-28 09:50:00,248 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:00,264 [WARNING] 전송 실패, DB에 보관 중 17개: <urlopen error timed out>
+2026-10-28 09:50:05,346 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:05,362 [WARNING] 전송 실패, DB에 보관 중 18개: <urlopen error timed out>
+2026-10-28 09:50:10,430 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:10,508 [WARNING] 전송 실패, DB에 보관 중 19개: <urlopen error timed out>
+2026-10-28 09:50:15,490 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:15,536 [WARNING] 전송 실패, DB에 보관 중 20개: <urlopen error timed out>
+2026-10-28 09:50:20,593 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:20,641 [WARNING] 전송 실패, DB에 보관 중 21개: <urlopen error timed out>
+2026-10-28 09:50:25,662 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:25,709 [WARNING] 전송 실패, DB에 보관 중 22개: <urlopen error timed out>
+2026-10-28 09:50:30,770 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:30,816 [WARNING] 전송 실패, DB에 보관 중 23개: <urlopen error timed out>
+2026-10-28 09:50:35,826 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:35,870 [WARNING] 전송 실패, DB에 보관 중 24개: <urlopen error timed out>
+2026-10-28 09:50:40,886 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:40,917 [WARNING] 전송 실패, DB에 보관 중 25개: <urlopen error timed out>
+2026-10-28 09:50:45,968 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:45,984 [WARNING] 전송 실패, DB에 보관 중 26개: <urlopen error timed out>
+2026-10-28 09:50:50,965 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:50,995 [WARNING] 전송 실패, DB에 보관 중 27개: <urlopen error timed out>
+2026-10-28 09:50:56,036 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:50:56,054 [WARNING] 전송 실패, DB에 보관 중 28개: <urlopen error timed out>
+2026-10-28 09:50:56,205 [INFO] 분석 속도: 초당 8.2회 (목표 10회)
+2026-10-28 09:51:01,062 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:01,093 [WARNING] 전송 실패, DB에 보관 중 29개: <urlopen error timed out>
+2026-10-28 09:51:06,108 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:06,155 [WARNING] 전송 실패, DB에 보관 중 30개: <urlopen error timed out>
+2026-10-28 09:51:11,116 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:11,163 [WARNING] 전송 실패, DB에 보관 중 31개: <urlopen error timed out>
+2026-10-28 09:51:20,340 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:20,386 [WARNING] 전송 실패, DB에 보관 중 32개: <urlopen error timed out>
+2026-10-28 09:51:25,414 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:25,429 [WARNING] 전송 실패, DB에 보관 중 33개: <urlopen error timed out>
+2026-10-28 09:51:30,439 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:30,485 [WARNING] 전송 실패, DB에 보관 중 34개: <urlopen error timed out>
+2026-10-28 09:51:35,539 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:35,584 [WARNING] 전송 실패, DB에 보관 중 35개: <urlopen error timed out>
+2026-10-28 09:51:40,599 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:40,645 [WARNING] 전송 실패, DB에 보관 중 36개: <urlopen error timed out>
+2026-10-28 09:51:45,713 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:45,745 [WARNING] 전송 실패, DB에 보관 중 37개: <urlopen error timed out>
+2026-10-28 09:51:50,766 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:50,797 [WARNING] 전송 실패, DB에 보관 중 38개: <urlopen error timed out>
+2026-10-28 09:51:55,796 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:51:55,841 [WARNING] 전송 실패, DB에 보관 중 39개: <urlopen error timed out>
+2026-10-28 09:51:56,260 [INFO] 분석 속도: 초당 8.2회 (목표 10회)
+2026-10-28 09:52:00,848 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:52:00,894 [WARNING] 전송 실패, DB에 보관 중 40개: <urlopen error timed out>
+2026-10-28 09:52:00,956 [INFO] 종료 신호 받음
+2026-10-28 09:52:01,442 [INFO] 프로그램 종료
+2026-10-28 09:52:16,528 [INFO] 프로그램 시작
+2026-10-28 09:52:16,530 [INFO] 지난번에 못 보낸 데이터 40개 있음 -> 서버 연결되면 자동 전송
+2026-10-28 09:52:18,910 [INFO] 카메라 연결 성공
+2026-10-28 09:52:19,926 [ERROR] 오류 발생, 10초 후 재시작: 'neck'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 444, in main
+    run(cfg)
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 401, in run
+    history.append(worse_pct(m, base))
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 248, in worse_pct
+    neck = (base["neck"] - m["neck"]) / base["neck"] * 100
+            ~~~~^^^^^^^^
+KeyError: 'neck'
+2026-10-28 09:52:30,399 [INFO] 카메라 연결 성공
+2026-10-28 09:52:31,348 [ERROR] 오류 발생, 10초 후 재시작: 'neck'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 444, in main
+    run(cfg)
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 401, in run
+    history.append(worse_pct(m, base))
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 248, in worse_pct
+    neck = (base["neck"] - m["neck"]) / base["neck"] * 100
+            ~~~~^^^^^^^^
+KeyError: 'neck'
+2026-10-28 09:52:41,659 [INFO] 카메라 연결 성공
+2026-10-28 09:52:42,596 [ERROR] 오류 발생, 10초 후 재시작: 'neck'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 444, in main
+    run(cfg)
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 401, in run
+    history.append(worse_pct(m, base))
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 248, in worse_pct
+    neck = (base["neck"] - m["neck"]) / base["neck"] * 100
+            ~~~~^^^^^^^^
+KeyError: 'neck'
+2026-10-28 09:52:52,908 [INFO] 카메라 연결 성공
+2026-10-28 09:52:53,863 [ERROR] 오류 발생, 10초 후 재시작: 'neck'
+Traceback (most recent call last):
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 444, in main
+    run(cfg)
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 401, in run
+    history.append(worse_pct(m, base))
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Home\Desktop\qkrgh\turtleneck\posture.py", line 248, in worse_pct
+    neck = (base["neck"] - m["neck"]) / base["neck"] * 100
+            ~~~~^^^^^^^^
+KeyError: 'neck'
+2026-10-28 09:52:54,814 [INFO] 종료 신호 받음
+2026-10-28 09:52:54,869 [INFO] 프로그램 종료
+2026-10-28 09:53:19,717 [INFO] 프로그램 시작
+2026-10-28 09:53:19,719 [INFO] 지난번에 못 보낸 데이터 40개 있음 -> 서버 연결되면 자동 전송
+2026-10-28 09:53:21,778 [INFO] 카메라 연결 성공
+2026-10-28 09:53:27,924 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:27,940 [WARNING] 전송 실패, DB에 보관 중 41개: <urlopen error timed out>
+2026-10-28 09:53:32,973 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:33,018 [WARNING] 전송 실패, DB에 보관 중 42개: <urlopen error timed out>
+2026-10-28 09:53:38,022 [WARNING] 전송 실패, DB에 보관 중 43개: <urlopen error timed out>
+2026-10-28 09:53:38,022 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:43,069 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:43,084 [WARNING] 전송 실패, DB에 보관 중 44개: <urlopen error timed out>
+2026-10-28 09:53:48,174 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:48,218 [WARNING] 전송 실패, DB에 보관 중 45개: <urlopen error timed out>
+2026-10-28 09:53:53,246 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:53:53,261 [WARNING] 전송 실패, DB에 보관 중 46개: <urlopen error timed out>
+2026-10-28 09:54:08,569 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:54:08,616 [WARNING] 전송 실패, DB에 보관 중 47개: <urlopen error timed out>
+2026-10-28 09:54:13,685 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:54:13,700 [WARNING] 전송 실패, DB에 보관 중 48개: <urlopen error timed out>
+2026-10-28 09:54:21,781 [INFO] 분석 속도: 초당 8.0회 (목표 10회)
+2026-10-28 09:54:51,885 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:54:51,946 [WARNING] 전송 실패, DB에 보관 중 49개: <urlopen error timed out>
+2026-10-28 09:54:56,900 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:54:56,963 [WARNING] 전송 실패, DB에 보관 중 50개: <urlopen error timed out>
+2026-10-28 09:55:14,013 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:55:14,042 [WARNING] 전송 실패, DB에 보관 중 51개: <urlopen error timed out>
+2026-10-28 09:55:21,783 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:55:21,783 [WARNING] 전송 실패, DB에 보관 중 52개: <urlopen error timed out>
+2026-10-28 09:55:21,847 [INFO] 분석 속도: 초당 8.2회 (목표 10회)
+2026-10-28 09:55:26,805 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:55:26,848 [WARNING] 전송 실패, DB에 보관 중 53개: <urlopen error timed out>
+2026-10-28 09:55:31,908 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:55:31,955 [WARNING] 전송 실패, DB에 보관 중 54개: <urlopen error timed out>
+2026-10-28 09:55:35,519 [INFO] 종료 신호 받음
+2026-10-28 09:55:36,048 [INFO] 프로그램 종료
+2026-10-28 09:55:52,966 [INFO] 프로그램 시작
+2026-10-28 09:55:52,967 [INFO] 지난번에 못 보낸 데이터 54개 있음 -> 서버 연결되면 자동 전송
+2026-10-28 09:55:54,752 [INFO] 카메라 연결 성공
+2026-10-28 09:55:55,256 [INFO] 사람 감지, 자세 학습 시작
+2026-10-28 09:56:11,318 [INFO] 자세 학습 완료 (구분 정도 10.6, 어깨 사용: True)
+2026-10-28 09:56:12,385 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:12,401 [WARNING] 전송 실패, DB에 보관 중 55개: <urlopen error timed out>
+2026-10-28 09:56:17,386 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:17,433 [WARNING] 전송 실패, DB에 보관 중 56개: <urlopen error timed out>
+2026-10-28 09:56:22,425 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:22,456 [WARNING] 전송 실패, DB에 보관 중 57개: <urlopen error timed out>
+2026-10-28 09:56:27,450 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:27,480 [WARNING] 전송 실패, DB에 보관 중 58개: <urlopen error timed out>
+2026-10-28 09:56:32,486 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:32,531 [WARNING] 전송 실패, DB에 보관 중 59개: <urlopen error timed out>
+2026-10-28 09:56:37,509 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:37,557 [WARNING] 전송 실패, DB에 보관 중 60개: <urlopen error timed out>
+2026-10-28 09:56:39,194 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 09:56:40,206 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:41,539 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 09:56:41,849 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 09:56:42,547 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:42,548 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:42,590 [WARNING] 전송 실패, DB에 보관 중 61개: <urlopen error timed out>
+2026-10-28 09:56:42,854 [WARNING] 상태 알림 실패: <urlopen error timed out>
+2026-10-28 09:56:45,536 [INFO] 종료 신호 받음
+2026-10-28 09:56:46,006 [INFO] 프로그램 종료
+2026-10-28 09:57:07,699 [INFO] 프로그램 시작
+2026-10-28 09:57:07,702 [INFO] 지난번에 못 보낸 데이터 61개 있음 -> 서버 연결되면 자동 전송
+2026-10-28 09:57:09,306 [INFO] 카메라 연결 성공
+2026-10-28 09:57:09,739 [INFO] 사람 감지, 자세 학습 시작
+2026-10-28 09:57:25,743 [INFO] 자세 학습 완료 (구분 정도 159.0, 어깨 사용: True)
+2026-10-28 09:57:25,818 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:27,288 [INFO] 밀린 데이터 62개 전송 완료
+2026-10-28 09:57:30,803 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:35,815 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:40,823 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:45,855 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:50,876 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:53,728 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 09:57:53,733 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:57:55,924 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:00,929 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:05,927 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:10,965 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:15,971 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:16,703 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 09:58:16,707 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:21,004 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:22,221 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 09:58:22,226 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:25,398 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 09:58:25,402 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:26,020 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:30,551 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 09:58:30,554 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:31,030 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:36,112 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:41,125 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:46,168 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:47,947 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 09:58:47,953 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:48,488 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 09:58:48,521 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:51,235 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:58:56,256 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:01,340 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:02,375 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 09:59:02,385 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:06,388 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:11,063 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 09:59:11,067 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:11,415 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:16,470 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:21,482 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:23,874 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 09:59:23,880 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:26,506 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:31,599 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:36,669 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:41,717 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:46,797 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:51,857 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 09:59:56,912 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:01,987 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:07,065 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:12,132 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:17,152 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:22,206 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:27,249 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:32,295 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:35,044 [INFO] 상태 변경: 위험 -> 정상
+2026-10-28 10:00:35,049 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:39,835 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:44,835 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:49,831 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:00:49,843 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:49,863 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:54,882 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:00:59,908 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:05,520 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:05,606 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:01:05,617 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:07,512 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:01:07,517 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:12,254 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:17,584 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:28,600 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:33,625 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:38,657 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:43,667 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:48,693 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:52,261 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:01:52,265 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:53,765 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:01:58,772 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:02,755 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:02:02,783 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:03,830 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:08,832 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:13,855 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:18,994 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:23,994 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:24,220 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:02:24,226 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:25,687 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:02:25,691 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:29,123 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:34,167 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:39,179 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:39,688 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:02:39,698 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:42,675 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:02:42,681 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:44,219 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:44,301 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:02:44,307 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:45,306 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:02:45,310 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:49,218 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:54,344 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:55,433 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:02:55,437 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:02:59,300 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:03,393 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:03:03,403 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:04,304 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:09,364 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:14,408 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:19,489 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:24,512 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:29,557 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:34,625 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:39,679 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:44,688 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:49,725 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:54,775 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:03:59,869 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:04,746 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:04:04,750 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:04,905 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:05,821 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:04:05,825 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:09,952 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:14,941 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:16,435 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:04:16,443 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:19,994 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:20,069 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:04:20,075 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:20,517 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:04:20,531 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:25,039 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:30,051 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:34,141 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:04:34,145 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:35,060 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:40,085 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:45,113 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:50,134 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:04:55,201 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:00,228 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:05,256 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:10,267 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:15,283 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:19,277 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:05:19,281 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:19,818 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:05:19,824 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:20,341 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:05:20,943 [INFO] 종료 신호 받음
+2026-10-28 10:05:21,392 [INFO] 프로그램 종료
+2026-10-28 10:05:40,880 [INFO] 프로그램 시작
+2026-10-28 10:05:42,640 [INFO] 카메라 연결 성공
+2026-10-28 10:05:43,127 [INFO] 사람 감지, 자세 학습 시작
+2026-10-28 10:05:59,169 [INFO] 자세 학습 완료 (구분 정도 4.5, 어깨 사용: True)
+2026-10-28 10:05:59,288 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:04,281 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:09,333 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:14,418 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:19,415 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:21,095 [INFO] c 키 입력 -> 자세 학습 다시 시작
+2026-10-28 10:06:21,126 [INFO] 사람 감지, 자세 학습 시작
+2026-10-28 10:06:37,179 [INFO] 자세 학습 완료 (구분 정도 84.5, 어깨 사용: True)
+2026-10-28 10:06:37,233 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:42,299 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:47,318 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:50,225 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:06:50,228 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:52,291 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:57,329 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:06:58,256 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:06:58,259 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:02,365 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:07,380 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:12,402 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:17,429 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:22,443 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:23,390 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:07:23,395 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:23,476 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:07:23,491 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:27,447 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:32,444 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:37,456 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:42,474 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:43,704 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:07:43,730 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:47,511 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:52,512 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:55,749 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:07:55,771 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:56,738 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:07:56,743 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:57,552 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:07:58,664 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:07:58,667 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:01,474 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:08:01,479 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:02,569 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:04,276 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:08:04,282 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:04,319 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:08:04,328 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:07,598 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:12,629 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:17,673 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:22,714 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:26,465 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:08:26,469 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:26,599 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:08:26,617 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:27,687 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:08:27,709 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:27,730 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:32,755 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:35,686 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:08:35,715 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:37,572 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:08:37,576 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:37,796 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:40,776 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:08:40,801 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:42,813 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:43,380 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:08:43,383 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:47,855 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:52,904 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:08:57,950 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:01,515 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:09:01,523 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:02,548 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:09:02,552 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:02,964 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:07,995 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:13,024 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:17,330 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:09:17,333 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:17,379 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:09:17,386 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:18,056 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:23,101 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:28,108 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:31,787 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:09:31,791 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:33,128 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:38,175 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:43,208 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:48,206 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:53,255 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:57,366 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:09:57,370 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:57,839 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:09:57,844 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:09:58,261 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:03,274 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:04,158 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:10:04,161 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:05,474 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:10:05,477 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:08,009 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:10:08,013 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:08,290 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:13,300 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:18,335 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:23,369 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:27,617 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:10:27,620 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:28,393 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:30,581 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:10:30,587 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:33,398 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:38,431 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:38,737 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:10:38,754 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:43,497 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:48,522 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:53,577 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:55,261 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:10:55,266 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:55,727 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:10:55,733 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:55,884 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:10:55,889 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:10:58,602 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:03,623 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:08,673 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:13,692 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:18,717 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:19,118 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:11:19,121 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:20,229 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:11:20,234 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:20,291 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:11:20,307 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:23,735 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:28,733 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:34,090 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:39,097 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:44,082 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:11:44,087 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:44,136 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:48,724 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:11:48,729 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:48,897 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:11:48,902 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:49,144 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:54,145 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:11:59,191 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:33,466 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:38,482 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:43,516 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:48,596 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:53,677 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:12:58,719 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:02,497 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:13:02,503 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:03,538 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:13:03,543 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:03,757 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:08,788 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:13,792 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:18,796 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:23,856 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:28,487 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:13:28,518 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:28,911 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:13:28,916 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:28,920 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:33,977 [WARNING] 상태 알림 실패: HTTP Error 404: NOT FOUND
+2026-10-28 10:13:35,500 [INFO] 종료 신호 받음
+2026-10-28 10:13:36,036 [INFO] 프로그램 종료
+2026-10-28 10:13:55,972 [INFO] 프로그램 시작
+2026-10-28 10:13:57,630 [INFO] 카메라 연결 성공
+2026-10-28 10:13:58,002 [INFO] 사람 감지, 자세 학습 시작
+2026-10-28 10:14:14,092 [INFO] 자세 학습 완료 (구분 정도 132.8, 어깨 사용: True)
+2026-10-28 10:14:29,773 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:14:30,103 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:14:33,911 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:14:35,054 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:14:42,266 [INFO] 상태 변경: 위험 -> 정상
+2026-10-28 10:15:44,744 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:15:50,715 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:15:58,025 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:16:12,328 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:16:12,720 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:16:24,287 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:16:25,708 [INFO] 상태 변경: 위험 -> 정상
+2026-10-28 10:16:41,686 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:16:41,929 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:16:49,121 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:16:49,264 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:17:03,152 [INFO] 상태 변경: 정상 -> 경고
+2026-10-28 10:17:04,995 [INFO] 상태 변경: 경고 -> 정상
+2026-10-28 10:17:15,652 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:17:31,824 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:32,083 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:17:32,683 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:32,898 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:17:42,048 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:42,816 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:17:48,889 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:51,169 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:17:53,337 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:54,274 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:17:55,117 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:17:58,158 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:18:39,828 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:18:40,397 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:19:10,612 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:19:10,992 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:19:11,523 [INFO] 상태 변경: 위험 -> 정상
+2026-10-28 10:19:21,614 [INFO] 상태 변경: 정상 -> 위험
+2026-10-28 10:19:25,100 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:19:25,317 [INFO] 상태 변경: 경고 -> 위험
+2026-10-28 10:19:31,960 [INFO] 상태 변경: 위험 -> 경고
+2026-10-28 10:19:33,050 [INFO] 상태 변경: 경고 -> 위험
