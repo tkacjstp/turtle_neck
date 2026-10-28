@@ -40,12 +40,17 @@ assert why is None and 60 < m["dist"] < 80 and round(m["forward"], 2) == 0.25
 face[1] = P(0.9, 0.45)   # 코가 어깨 밖 -> 다른 사람
 assert posture.get_metrics(pose, face, 640, 480)[1] == "ONE PERSON ONLY"
 
-# 지속시간: 10초 미만이면 정상, 이상이면 확정, 정상 들어오면 리셋
-s, since, d = posture.hold("위험", None, 10, now=100)
-assert (s, since) == ("정상", 100)
-s, since, d = posture.hold("위험", since, 10, now=111)
-assert (s, d) == ("위험", 11)
-assert posture.hold("정상", since, 10, now=112) == ("정상", None, 0.0)
+# 지속시간: 경고는 5초, 위험은 3초 이어져야 확정, 정상 들어오면 리셋
+hc = {"warning_hold_sec": 5, "danger_hold_sec": 3}
+s, since, d = posture.hold("위험", (None, None), hc, now=100)
+assert s == "정상" and since == (100, 100)
+assert posture.hold("위험", since, hc, now=103)[0] == "위험"          # 위험 3초
+s, since, d = posture.hold("경고", (None, None), hc, now=100)
+assert posture.hold("경고", since, hc, now=104)[0] == "정상"          # 경고 4초는 아직
+assert posture.hold("경고", since, hc, now=105)[0] == "경고"          # 경고 5초
+s, since, d = posture.hold("위험", since, hc, now=106)                # 경고 중 위험으로 악화
+assert s == "경고" and posture.hold("위험", since, hc, now=109)[0] == "위험"
+assert posture.hold("정상", since, hc, now=110) == ("정상", (None, None), 0.0)
 
 # 서버 연동: 꺼져 있으면 보관, 켜지면 밀린 것까지 전송
 app.DB_FILE = os.path.join(tempfile.mkdtemp(), "t.db"); app.init_db()

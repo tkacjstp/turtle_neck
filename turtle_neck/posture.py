@@ -8,7 +8,7 @@ r"""
   처음에 잡은 "바른 자세"보다 얼마나 나빠졌는지(%) 계산해서
   정상 / 경고 / 위험을 판정한 뒤 서버(app.py)로 보낸다.
 
-  웹캠 -> 귀·어깨 찾기 -> 바른 자세와 비교 -> 나쁜 자세가 10초 이상 계속되면 경고/위험
+  웹캠 -> 귀·어깨 찾기 -> 바른 자세와 비교 -> 나빠진 상태가 경고 5초·위험 3초 이상 계속되면 확정
        -> 5초마다 서버로 전송 -> 웹 페이지(http://서버IP:5050)에서 결과 확인
 
 
@@ -100,8 +100,8 @@ r"""
   CALIBRATING         : 바른 자세 측정 중 -> 5초간 바르게 앉아 있기
   HOLD STILL          : 측정 중 움직여서 다시 측정 -> 가만히 바르게 앉아 있기
   NORMAL  (초록)      : 정상
-  WARNING (주황)      : 경고 - 바른 자세보다 10% 이상 나빠진 상태가 10초 이상
-  DANGER  (빨강)      : 위험 - 바른 자세보다 20% 이상 나빠진 상태가 10초 이상
+  WARNING (주황)      : 경고 - 바른 자세보다 10% 이상 나빠진 상태가 5초 이상
+  DANGER  (빨강)      : 위험 - 바른 자세보다 20% 이상 나빠진 상태가 3초 이상
   ※ 숫자(%)는 바른 자세보다 얼마나 나빠졌는지. 0%에 가까울수록 좋음
   ※ 노란 점 3개 = 판정에 쓰는 양쪽 눈 끝과 코끝
 
@@ -111,7 +111,7 @@ r"""
     판정이 틀어지므로 c 키로 기준자세를 다시 잡을 것
   - 안경은 괜찮지만, 마스크나 손으로 얼굴을 가리면 인식이 안 됨
   - model_complexity: 1(기본)이 더 정확. 라즈베리파이가 너무 느리면 0으로 (대신 첫 실행 때 다운로드)
-  - 판정이 너무 예민하거나 둔하면 config.json의 warning_pct, danger_pct, hold_sec 숫자를 조절
+  - 판정이 너무 예민하거나 둔하면 config.json의 warning_pct, danger_pct, warning_hold_sec, danger_hold_sec 숫자를 조절
   - config.json을 바꾸면 프로그램을 껐다 켜야 반영됨
   - 기준자세를 다시 잡고 싶으면 baseline.json을 지우고 다시 실행
   - 모든 측정값은 판별기 쪽 posture_data.db에 먼저 저장되고, 그다음 서버 포트(server_url)로 전송됨
@@ -315,20 +315,28 @@ def raw_status(pct, cfg, prev="정상"):
     return "경고" if pct < danger else "위험"
 
 
-def hold(raw, bad_since, hold_sec, now):
-    """나쁜 자세가 hold_sec 이상 이어져야 확정. (확정 상태, bad_since, 지속시간)"""
+def hold(raw, since, cfg, now):
+    """경고는 warning_hold_sec초, 위험은 danger_hold_sec초 이상 이어져야 확정.
+    since = (나빠지기 시작한 시각, 위험 수준이 시작된 시각). 반환: (확정 상태, since, 나쁜 자세 지속시간)"""
     if raw == "정상":
-        return "정상", None, 0.0
-    bad_since = bad_since or now
-    duration = now - bad_since
-    return (raw if duration >= hold_sec else "정상"), bad_since, duration
+        return "정상", (None, None), 0.0
+    bad = since[0] or now
+    danger = (since[1] or now) if raw == "위험" else None
+    duration = now - bad
+    if danger is not None and now - danger >= cfg["danger_hold_sec"]:
+        status = "위험"
+    elif duration >= cfg["warning_hold_sec"]:
+        status = "경고"
+    else:
+        status = "정상"
+    return status, (bad, danger), duration
 
 
 STATUS_URL = None   # main()에서 server_url로 정함. 예) http://127.0.0.1:5050/api/status
 
 
 def post_status(status):
-    """지금 상태를 서버 /api/status로 바로 보냄 -> 라즈베리파이가 가져가서 LED/부저/진동 제어.
+    """지금 상태를 서버 /api/status로 바로 보냄 -> 라즈베리파이가 가져가서 LED/부저 제어.
     실패해도 다음 상태 변경이나 save_interval마다 다시 보내므로 기록만 남김"""
     def _post():
         try:
@@ -425,7 +433,7 @@ def run(cfg):
         base = None
     calib, calib_start, still_msg_until = [], None, 0
     history = deque()   # (시각, 악화율, 어깨 기울기) 최근 smooth_sec초
-    status, raw, bad_since = "정상", "정상", None
+    status, raw, bad_since = "정상", "정상", (None, None)
     last_save = last_valid = time.time()
     last_proc, interval = 0.0, 1 / cfg.get("analysis_fps", 10)
     n_proc, fps_since = 0, time.time()   # 실제 분석 속도 기록용 (라즈베리파이 성능 확인)
@@ -437,7 +445,7 @@ def run(cfg):
 
     def reset_state():
         nonlocal calib, calib_start, bad_since, raw, status
-        calib, calib_start, bad_since, raw = [], None, None, "정상"
+        calib, calib_start, bad_since, raw = [], None, (None, None), "정상"
         history.clear()
         if status != "정상":
             on_status_change(status, "정상")
@@ -511,7 +519,7 @@ def run(cfg):
                             history.popleft()
                         pct = statistics.median(v for _, v, _ in history)
                         raw = raw_status(pct, cfg, raw)
-                        new_status, bad_since, duration = hold(raw, bad_since, cfg["hold_sec"], now)
+                        new_status, bad_since, duration = hold(raw, bad_since, cfg, now)
                         if new_status != status:
                             on_status_change(status, new_status)
                             status = new_status

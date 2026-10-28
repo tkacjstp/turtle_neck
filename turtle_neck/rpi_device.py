@@ -5,7 +5,7 @@ r"""
 
 [이 프로그램이 하는 일]
   1) 알림: 노트북 서버(app.py)의 /api/status를 0.3초마다 확인해서
-           경고/위험이면 LED·부저·진동을 켬 (상태가 바뀌고 1초 안에 반응)
+           경고/위험이면 LED·부저를 켬 (상태가 바뀌고 0.5초 안에 반응)
   2) 센서: read_sensors()로 센서값을 읽어 SENSOR_SEC초마다 서버 /api/sensor로 보냄
 
   [노트북] 카메라 -> posture.py -> app.py(서버) <-> rpi_device.py [라즈베리파이]
@@ -23,8 +23,9 @@ r"""
 
 [동작]
   정상 : 모두 꺼짐
-  경고 : LED 켜짐 + 진동 짧게 한 번
-  위험 : LED 깜빡임 + 부저 삐- 삐- + 진동 짧게 한 번
+  경고 : LED 켜짐
+  위험 : LED 깜빡임 + 부저 삐- 삐-
+  (진동 모터를 달면 VIBRATION_PIN에 핀 번호를 넣으면 상태가 바뀔 때 짧게 한 번 울림)
   서버 연결이 끊기거나, 판별기가 STALE_SEC초 넘게 소식이 없으면 모두 끔
 """
 import json
@@ -39,7 +40,7 @@ SERVER = "http://노트북IP:5050"   # ← 노트북 IP로 바꾸기
 POLL_SEC = 0.3      # 상태 확인 주기 (1초 안에 반응하려면 0.5 이하)
 SENSOR_SEC = 5      # 센서값 전송 주기
 STALE_SEC = 15      # 판별기 소식이 이 시간 넘게 없으면 알림 끔
-LED_PIN, BUZZER_PIN, VIBRATION_PIN = 17, 27, 22   # BCM 번호. 없는 장치는 None
+LED_PIN, BUZZER_PIN, VIBRATION_PIN = 17, 27, None   # BCM 번호. 없는 장치는 None (진동 모터 미사용)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("rpi")
