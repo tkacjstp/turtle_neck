@@ -528,6 +528,7 @@ def open_camera(cv2, cfg=None):
             cap, device = find_camera(
                 cv2, device=cfg.get("camera_device"),
                 should_run=lambda: running,
+                stream_url=cfg.get("camera_url"),
             )
             log.info("카메라 연결 성공: %s", device)
             return cap

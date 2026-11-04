@@ -15,6 +15,7 @@
   "analysis_fps": 30,
   "camera_fov_deg": 65,
   "camera_device": null,
+  "camera_url": null,
   "use_shoulders": true,
   "new_person_reset_sec": 5
 }

@@ -48,12 +48,40 @@ def device_name(path):
         return "이름 확인 불가"
 
 
-def open_camera(cv2, device=None, width=640, height=480, should_run=lambda: True):
+def open_camera(cv2, device=None, width=640, height=480, should_run=lambda: True,
+                stream_url=None):
     """Return (opened_capture, device_path); caller must release the capture.
 
     Each candidate must supply a nonempty frame. A driver can block in read();
     the attempt count below is not a hard timeout for a stalled driver.
     """
+    if stream_url:
+        from urllib.parse import urlsplit
+        parsed = urlsplit(stream_url)
+        if parsed.scheme not in ("http", "https") or not parsed.hostname:
+            raise RuntimeError("camera_url은 http://노트북IP:8080/video_feed 형식이어야 합니다.")
+        cap = None
+        keep = False
+        try:
+            cap = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG, [
+                cv2.CAP_PROP_OPEN_TIMEOUT_MSEC, 5000,
+                cv2.CAP_PROP_READ_TIMEOUT_MSEC, 5000,
+            ])
+            if not cap.isOpened():
+                raise RuntimeError("노트북 영상 연결 실패: 송출 프로그램·주소·방화벽·네트워크를 확인하세요. FFmpeg 지원 OpenCV가 필요합니다.")
+            for _ in range(10):
+                if not should_run():
+                    raise RuntimeError("카메라 검색 종료")
+                ok, frame = cap.read()
+                if ok and frame is not None and frame.size:
+                    keep = True
+                    print("[연결 성공] 노트북 네트워크 카메라")
+                    return cap, stream_url
+            raise RuntimeError("노트북에서 영상 프레임을 받지 못했습니다.")
+        finally:
+            if cap is not None and not keep:
+                cap.release()
+
     linux = sys.platform.startswith("linux")
     if device is not None:
         devices = [device]
@@ -109,6 +137,7 @@ def open_camera(cv2, device=None, width=640, height=480, should_run=lambda: True
 def main():
     parser = argparse.ArgumentParser(description="라즈베리 파이 V4L2 카메라 검색 및 영상 수신 확인")
     parser.add_argument("--device", help="장치를 직접 지정 (예: /dev/video2)")
+    parser.add_argument("--url", help="노트북 영상 주소 (예: http://192.168.0.10:8080/video_feed)")
     args = parser.parse_args()
     try:
         import cv2
@@ -116,7 +145,7 @@ def main():
         print("OpenCV가 필요합니다: sudo apt install python3-opencv", file=sys.stderr)
         return 1
     try:
-        cap, _ = open_camera(cv2, device=args.device)
+        cap, _ = open_camera(cv2, device=args.device, stream_url=args.url)
         cap.release()
         return 0
     except (OSError, RuntimeError, cv2.error) as exc:
