@@ -23,3 +23,27 @@ Traceback (most recent call last):
     cap, device = find_camera(
                   ^^^^^^^^^^^^
 TypeError: open_camera() got an unexpected keyword argument 'stream_url'
+
+
+"""Find a working V4L2 camera on Raspberry Pi (USB/V4L2 devices).
+
+Run: python3 detect_video.py
+Select explicitly: python3 detect_video.py --device /dev/video2
+Dependency: sudo apt install python3-opencv
+CSI cameras requiring Picamera2/libcamera are outside this script's scope.
+"""
+
+[연결 성공] 노트북 네트워크 카메라
+2026-11-04 10:59:35,654 [INFO] 카메라 연결 성공: http://10.233.169.235:8080/video_feed?token=90598pUYJlRcbqsEee7T06DNjndRIoSg
+2026-11-04 10:59:35,662 [ERROR] 오류 발생, 10초 후 재시작: module 'mediapipe' has no attribute 'solutions'
+Traceback (most recent call last):
+  File "/home/pi/turtle_neck/posture.py", line 718, in main
+    run(cfg)
+  File "/home/pi/turtle_neck/posture.py", line 589, in run
+    with make_pose(mp, cfg.get("model_complexity", 1)) as pose, \
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/turtle_neck/posture.py", line 512, in make_pose
+    return mp.solutions.pose.Pose(model_complexity=c,
+           ^^^^^^^^^^^^
+AttributeError: module 'mediapipe' has no attribute 'solutions'
+^C2026-11-04 10:59:39,461 [INFO] 종료 신호 받음
