@@ -1,0 +1,5 @@
+# Legacy Solutions API used by posture.py (Python 3.9-3.12, ARM64 Linux).
+mediapipe==0.10.18
+numpy>=1.23,<2
+opencv-contrib-python>=4.8,<4.12
+flask>=2.2,<4

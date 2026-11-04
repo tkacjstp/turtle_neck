@@ -41,7 +41,7 @@ r"""
               - 버전 확인: python3 --version (윈도우는 py --version)
   mediapipe : 0.10.18 (조원 모두 이 버전으로 통일)
               - 이 코드는 예전 방식인 mp.solutions.pose 를 사용함
-              - mp.solutions 는 0.10.30 이상(최신 1.x 포함)에서 삭제됨
+              - mp.solutions 는 0.10.31 이상에서 삭제됨
                 -> 버전 지정 없이 설치하면 "has no attribute 'solutions'" 오류로 실행 안 됨
               - 0.10.20, 0.10.21은 라즈베리파이(ARM 64비트)용 설치 파일이 없음
                 -> 라즈베리파이에서도 설치되는 마지막 버전이 0.10.18
@@ -549,7 +549,8 @@ READY_SEC = 3   # 보정 단계마다 준비 카운트다운(초)
 
 def run(cfg):
     import cv2
-    import mediapipe as mp
+    from mediapipe_compat import load_mediapipe
+    mp = load_mediapipe()
 
     cap = open_camera(cv2, cfg)
     if cap is None:
@@ -704,6 +705,13 @@ def main():
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     global STATUS_URL
+    from mediapipe_compat import load_mediapipe
+    try:
+        mp = load_mediapipe()
+    except RuntimeError as exc:
+        log.error("%s", exc)
+        return
+    log.info("MediaPipe 호환 확인: %s", getattr(mp, "__version__", "버전 확인 불가"))
     cfg = load_json(CONFIG_FILE)
     if cfg is None:
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
