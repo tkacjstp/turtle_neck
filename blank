@@ -2,6 +2,8 @@ http://10.233.169.235:8080/video_feed?token=90598pUYJlRcbqsEee7T06DNjndRIoSg
 
 http://10.233.169.235:8080/video_feed?token=Rl_j1TOJHAu-oyIaNDvj2nRFBVw_95RQ
 
+http://10.233.169.235:8080/video_feed?token=kXdcbK480oCzK9I77rdu116V8o2dAgGO
+
 
 2026-11-04 10:54:51,530 [ERROR] 오류 발생, 10초 후 재시작: open_camera() got an unexpected keyword argument 'stream_url'
 Traceback (most recent call last):
