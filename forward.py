@@ -43,7 +43,7 @@ import urllib.request
 import urllib.error
 
 # ======================== 설정 ========================
-FORWARD_URL = "http://받는서버IP:5050/api/record"   # ← 받는 서버 주소로 바꾸기
+FORWARD_URL = "http://127.0.0.1:5050/api/record"   # ← 받는 서버 주소로 바꾸기
 INTERVAL = 10       # 몇 초마다 새 데이터를 확인할지
 BATCH = 200         # 한 번에 최대 몇 개 보낼지
 
