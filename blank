@@ -6,6 +6,23 @@ http://10.233.169.235:8080/video_feed?token=kXdcbK480oCzK9I77rdu116V8o2dAgGO
 
 http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C
 
+cd /home/pi/turtle_neck
+./.venv-pi/bin/python - <<'PY'
+import json
+from urllib.request import urlopen
+from urllib.error import HTTPError, URLError
+
+with open("config.json", encoding="utf-8-sig") as f:
+    url = json.load(f)["camera_url"]
+
+try:
+    with urlopen(url, timeout=5) as response:
+        print(response.status, response.headers.get("Content-Type"))
+except HTTPError as e:
+    print("HTTP", e.code)
+except (URLError, TimeoutError):
+    print("연결 실패 또는 시간 초과")
+PY
 
 ./.venv-pi/bin/python -c 'import json, cv2; from detect_video import open_camera; cap, _ = open_camera(cv2, stream_url=json.load(open("config.json", encoding="utf-8-sig"))["http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C"]); cap.release()'
 
