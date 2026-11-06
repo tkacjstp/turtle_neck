@@ -470,8 +470,8 @@ def has_display():
     return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
 
 
-def draw(cv2, mp, frame, pose_res, face_lm, text, color, sub, pct, cfg):
-    """관절점·얼굴 점, 상태, 점수 막대를 그려서 창에 표시. q: 종료, 누른 키를 돌려줌"""
+def draw(cv2, mp, frame, pose_res, face_lm, text, color, sub, pct, cfg, show, preview):
+    """관절점과 자세 상태를 로컬 창 또는 웹 미리보기에 표시."""
     global running
     h, w = frame.shape[:2]
     if pose_res is not None and pose_res.pose_landmarks:
@@ -494,6 +494,12 @@ def draw(cv2, mp, frame, pose_res, face_lm, text, color, sub, pct, cfg):
         for th in (cfg["warning_pct"], cfg["danger_pct"]):   # 경고·위험 기준선
             tx = x0 + int((x1 - x0) * th / 120)
             cv2.line(frame, (tx, y0 - 3), (tx, y0 + 18), (255, 255, 255), 2)
+    if preview is not None:
+        ok, jpeg = cv2.imencode(".jpg", frame)
+        if ok:
+            preview.publish(jpeg.tobytes())
+    if not show:
+        return -1
     cv2.putText(frame, "c: recalibrate  q: quit", (10, h - 12),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
     cv2.imshow("turtle_neck", frame)
@@ -547,7 +553,7 @@ def open_camera(cv2, cfg=None):
 READY_SEC = 3   # 보정 단계마다 준비 카운트다운(초)
 
 
-def run(cfg):
+def run(cfg, preview=None):
     import cv2
     from mediapipe_compat import load_mediapipe
     mp = load_mediapipe()
@@ -686,9 +692,10 @@ def run(cfg):
                                 post_status(status)   # 살아 있다는 신호 겸 상태 재전송
                                 last_save = now
 
-                if show:
+                if show or preview is not None:
                     shown_pct = pct if phase == "run" else None
-                    if draw(cv2, mp, frame, pose_res, face_lm, text, color, sub, shown_pct, cfg) == ord("c"):
+                    if draw(cv2, mp, frame, pose_res, face_lm, text, color, sub,
+                            shown_pct, cfg, show, preview) == ord("c"):
                         if os.path.exists(BASELINE_FILE):
                             os.remove(BASELINE_FILE)
                         restart_calibration("c 키 입력")
@@ -702,6 +709,12 @@ def run(cfg):
 
 
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="자세 분석 및 웹 미리보기")
+    parser.add_argument("--web-host", help="웹 미리보기를 열 파이의 IP")
+    parser.add_argument("--web-port", type=int, default=8081)
+    args = parser.parse_args()
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
     global STATUS_URL
@@ -721,14 +734,35 @@ def main():
     left = unsent_count()
     if left:
         log.info(f"지난번에 못 보낸 데이터 {left}개 있음 -> 서버 연결되면 자동 전송")
-    while running:
-        try:
-            run(cfg)
-        except Exception as e:
-            log.exception(f"오류 발생, 10초 후 재시작: {e}")
-            for _ in range(10):   # 대기 중에도 Ctrl+C 바로 반영
-                if running:
-                    time.sleep(1)
+    preview = None
+    server = None
+    if args.web_host:
+        import cv2
+        import secrets
+        from werkzeug.serving import make_server
+        from webcam_stream import Webcam, create_app
+
+        token = secrets.token_urlsafe(24)
+        preview = Webcam(cv2)
+        logging.getLogger("werkzeug").setLevel(logging.ERROR)
+        server = make_server(args.web_host, args.web_port, create_app(preview, token),
+                             threaded=True)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        print(f"자세 분석 화면: http://{args.web_host}:{args.web_port}/?token={token}", flush=True)
+    try:
+        while running:
+            try:
+                run(cfg, preview)
+            except Exception as e:
+                log.exception(f"오류 발생, 10초 후 재시작: {e}")
+                for _ in range(10):
+                    if running:
+                        time.sleep(1)
+    finally:
+        if server is not None:
+            preview.stop()
+            server.shutdown()
+            server.server_close()
     log.info("프로그램 종료")
 
 
