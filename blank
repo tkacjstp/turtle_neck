@@ -22,6 +22,9 @@ Traceback (most recent call last):
 AttributeError: module 'mediapipe' has no attribute 'solutions'
 
 
+curl -i --max-time 5 -H 'Content-Type: application/json' \
+  -d '{}' http://127.0.0.1:5050/api/record
+
 cd /home/pi/turtle_neck-main
 python3 -m venv .venv-pi
 ./.venv-pi/bin/python -m pip install "mediapipe==0.10.18" "numpy>=1.23,<2" "opencv-contrib-python>=4.8,<4.12" flask
