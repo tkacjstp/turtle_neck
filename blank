@@ -8,6 +8,20 @@ http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C
 
 grep -nE '^\[|^[[:space:]]*(dtoverlay=dwc2|otg_mode=)' /boot/firmware/config.txt
 
+2026-11-06 13:28:47,938 [INFO] 카메라 연결 성공
+2026-11-06 13:28:47,941 [ERROR] 오류 발생, 10초 후 재시작: module 'mediapipe' has no attribute 'solutions'
+Traceback (most recent call last):
+  File "/home/pi/turtle_neck-main/posture.py", line 708, in main
+    run(cfg)
+  File "/home/pi/turtle_neck-main/posture.py", line 579, in run
+    with make_pose(mp, cfg.get("model_complexity", 1)) as pose, \
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/turtle_neck-main/posture.py", line 512, in make_pose
+    return mp.solutions.pose.Pose(model_complexity=c,
+           ^^^^^^^^^^^^
+AttributeError: module 'mediapipe' has no attribute 'solutions'
+
+
 cd /home/pi/turtle_neck
 ./.venv-pi/bin/python - <<'PY'
 import json
