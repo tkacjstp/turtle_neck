@@ -6,6 +6,8 @@ http://10.233.169.235:8080/video_feed?token=kXdcbK480oCzK9I77rdu116V8o2dAgGO
 
 http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C
 
+grep -nE '^\[|^[[:space:]]*(dtoverlay=dwc2|otg_mode=)' /boot/firmware/config.txt
+
 cd /home/pi/turtle_neck
 ./.venv-pi/bin/python - <<'PY'
 import json
