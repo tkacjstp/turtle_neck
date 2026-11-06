@@ -7,7 +7,7 @@ http://10.233.169.235:8080/video_feed?token=kXdcbK480oCzK9I77rdu116V8o2dAgGO
 http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C
 
 
-./.venv-pi/bin/python -c 'import json, cv2; from detect_video import open_camera; cap, _ = open_camera(cv2, stream_url=json.load(open("config.json", encoding="utf-8-sig"))["camera_url"]); cap.release()'
+./.venv-pi/bin/python -c 'import json, cv2; from detect_video import open_camera; cap, _ = open_camera(cv2, stream_url=json.load(open("config.json", encoding="utf-8-sig"))["http://10.233.169.235:8080/video_feed?token=yUhH6xq-pLQBB7EOhpfEjpzALVnMDQ3C"]); cap.release()'
 
 2026-11-04 10:54:51,530 [ERROR] 오류 발생, 10초 후 재시작: open_camera() got an unexpected keyword argument 'stream_url'
 Traceback (most recent call last):
