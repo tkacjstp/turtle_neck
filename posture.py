@@ -536,7 +536,8 @@ def open_camera(cv2, cfg=None):
                 should_run=lambda: running,
                 stream_url=cfg.get("camera_url"),
             )
-            log.info("카메라 연결 성공: %s", device)
+            log.info("카메라 연결 성공: %s",
+                     "노트북 네트워크 카메라" if cfg.get("camera_url") else device)
             return cap
         except (OSError, RuntimeError, cv2.error) as exc:
             if not running:
@@ -714,6 +715,8 @@ def main():
     parser = argparse.ArgumentParser(description="자세 분석 및 웹 미리보기")
     parser.add_argument("--web-host", help="웹 미리보기를 열 파이의 IP")
     parser.add_argument("--web-port", type=int, default=8081)
+    parser.add_argument("--ask-camera-url", action="store_true",
+                        help="이번 실행에 사용할 노트북 영상 주소를 입력")
     args = parser.parse_args()
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
@@ -729,6 +732,13 @@ def main():
     if cfg is None:
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
         return
+    if args.ask_camera_url:
+        from getpass import getpass
+
+        camera_url = getpass("노트북 영상 주소: ").strip()
+        if not camera_url:
+            parser.error("노트북 영상 주소를 입력하세요.")
+        cfg["camera_url"] = camera_url
     STATUS_URL = cfg["server_url"].rsplit("/", 1)[0] + "/status"
     log.info("프로그램 시작")
     left = unsent_count()
