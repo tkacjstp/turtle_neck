@@ -34,6 +34,7 @@ class VideoTests(unittest.TestCase):
         done = threading.Event()
 
         class Reply:
+            headers = {'X-Posture-Command': 'calibrate'}
             def __enter__(self): return self
             def __exit__(self, *args): pass
             def read(self): return b''
@@ -53,6 +54,8 @@ class VideoTests(unittest.TestCase):
                 self.assertTrue(done.wait(5))
             finally:
                 publisher.close()
+            self.assertEqual(publisher.take_command(), 'calibrate')
+            self.assertIsNone(publisher.take_command())
         self.assertTrue(client.get('/api/video_status').json['online'])
         response = client.get('/video_feed', buffered=False)
         packet = next(iter(response.response))
@@ -60,9 +63,9 @@ class VideoTests(unittest.TestCase):
         jpeg = packet.split(b'\r\n\r\n', 1)[1][:-2]
         self.assertEqual(cv2.imdecode(np.frombuffer(jpeg, np.uint8), 1).shape, (48, 64, 3))
         response.close()
-        self.assertEqual(client.post('/api/record', json={'status': '����', 'worse_pct': 12}).status_code, 200)
+        self.assertEqual(client.post('/api/record', json={'status': '정상', 'worse_pct': 12}).status_code, 200)
         self.assertEqual(client.get('/api/results').json[0]['worse_pct'], 12)
-        self.assertEqual(client.post('/api/status', json={'status': '����'}).status_code, 200)
+        self.assertEqual(client.post('/api/status', json={'status': '정상'}).status_code, 200)
         page = client.get('/')
         self.assertEqual(page.status_code, 200)
         self.assertIn(b'camera-feed', page.data)
@@ -84,6 +87,28 @@ class VideoTests(unittest.TestCase):
         stream = store.stream()
         self.assertIn(b'new', next(stream))
         stream.close()
+
+    def test_controls_delivered_once_and_expire(self):
+        client = self.module.app.test_client()
+        self.module.pending_command = None
+        self.module.video.updated = -float('inf')
+        self.assertEqual(client.post('/api/control', json={'command': 'quit'}).status_code, 409)
+        self.module.video.publish(b'frame')
+        self.assertEqual(client.post('/api/control', json={'command': 'invalid'}).status_code, 400)
+        self.assertEqual(client.post('/api/control', json={'command': 'quit'},
+                                    headers={'Origin': 'https://other.example'}).status_code, 403)
+        self.assertEqual(client.post('/api/control', json={'command': 'quit'},
+                                    environ_base={'REMOTE_ADDR': '192.168.1.8'}).status_code, 403)
+        for command in ('calibrate', 'quit'):
+            self.assertEqual(client.post('/api/control', json={'command': command}).status_code, 202)
+            self.assertEqual(client.post('/api/control', json={'command': command}).status_code, 409)
+            reply = client.post('/api/video_frame', data=b'\xff\xd8\xff\xd9', content_type='image/jpeg')
+            self.assertEqual(reply.headers['X-Posture-Command'], command)
+            reply = client.post('/api/video_frame', data=b'\xff\xd8\xff\xd9', content_type='image/jpeg')
+            self.assertNotIn('X-Posture-Command', reply.headers)
+        self.module.pending_command = ('quit', time.monotonic() - 1)
+        reply = client.post('/api/video_frame', data=b'\xff\xd8\xff\xd9', content_type='image/jpeg')
+        self.assertNotIn('X-Posture-Command', reply.headers)
 
 
 if __name__ == '__main__':

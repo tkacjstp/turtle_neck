@@ -16,14 +16,14 @@
   "analysis_fps": 30,
   "pose_fps": 5,
   "camera_fps": 30,
-  "camera_width": 640,
-  "camera_height": 480,
+  "camera_width": 1280,
+  "camera_height": 720,
   "camera_fourcc": "MJPG",
   "camera_fov_deg": 65,
   "camera_tilt_deg": 10,
   "use_shoulders": true,
   "new_person_reset_sec": 5,
   "web_video": true,
-  "video_fps": 10,
-  "video_jpeg_quality": 75
+  "video_fps": 30,
+  "video_jpeg_quality": 90
 }

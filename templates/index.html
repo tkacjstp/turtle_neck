@@ -378,6 +378,16 @@
                 padding: 12px;
             }
         }
+        .camera-panel { margin-bottom: 24px; }
+        .camera { position: relative; background: #101828; aspect-ratio: 16 / 9; display: grid; place-items: center; border-radius: 12px; overflow: hidden; }
+        .camera img { width: 100%; height: 100%; object-fit: contain; }
+        .camera img[hidden], .camera p[hidden] { display: none; }
+        .camera p { position: absolute; color: white; text-align: center; padding: 16px; }
+        .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+        .controls button { border: 0; border-radius: 9px; padding: 12px 18px; background: var(--blue); color: white; cursor: pointer; font: inherit; }
+        .controls #quit { background: var(--red); }
+        .controls button:disabled { opacity: .5; cursor: wait; }
+        #video-state, #control-state { color: var(--muted); font-size: 13px; }
     </style>
 </head>
 
@@ -397,6 +407,19 @@
         </div>
     </header>
 
+    <section class="card camera-panel">
+        <div class="panel-title">실시간 자세 영상</div>
+        <p id="video-state" role="status">카메라 연결 확인 중...</p>
+        <div class="camera">
+            <img id="camera-feed" alt="자세 분석 결과가 표시된 실시간 카메라 영상" hidden>
+            <p id="camera-placeholder">posture.py를 실행하면 영상이 표시됩니다.</p>
+        </div>
+        <div class="controls">
+            <button id="calibrate" type="button">캘리브레이션 (C)</button>
+            <button id="quit" type="button">측정 종료 (Q)</button>
+        </div>
+        <p id="control-state" role="status">이 페이지에서 C / Q 키로도 조작할 수 있습니다.</p>
+    </section>
     <div class="section-title">현재 측정 요약</div>
 
     <section class="grid">
@@ -505,6 +528,73 @@
 
 <script>
     const $ = id => document.getElementById(id);
+    const camera = $('camera-feed');
+    const placeholder = $('camera-placeholder');
+    const videoState = $('video-state');
+        let connected = false;
+        let commandBusy = false;
+        const controlState = document.getElementById('control-state');
+        async function sendCommand(command) {
+            if (commandBusy) return;
+            if (!connected) {
+                controlState.textContent = '영상 연결 후 사용할 수 있습니다.';
+                return;
+            }
+            commandBusy = true;
+            document.getElementById('calibrate').disabled = true;
+            document.getElementById('quit').disabled = true;
+            try {
+                const response = await fetch('/api/control', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command}), signal: AbortSignal.timeout(5000)
+                });
+                if (!response.ok) throw new Error('명령 접수 실패: ' + response.status);
+                controlState.textContent = command === 'calibrate'
+                    ? '캘리브레이션 요청을 보냈습니다. 영상 안내에 따라 자세를 잡아 주세요.'
+                    : '측정 종료 요청을 보냈습니다. 웹 서버는 계속 실행됩니다.';
+            } catch (error) {
+                controlState.textContent = '명령을 전달하지 못했습니다. 연결 상태를 확인하고 다시 시도해 주세요.';
+            } finally {
+                commandBusy = false;
+                document.getElementById('calibrate').disabled = false;
+                document.getElementById('quit').disabled = false;
+            }
+        }
+        document.getElementById('calibrate').onclick = () => sendCommand('calibrate');
+        document.getElementById('quit').onclick = () => sendCommand('quit');
+        document.addEventListener('keydown', event => {
+            if (event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey
+                || event.target.closest('input, textarea, select, [contenteditable]')) return;
+            const key = event.key.toLowerCase();
+            if (key === 'c' || key === 'q') {
+                event.preventDefault();
+                sendCommand(key === 'c' ? 'calibrate' : 'quit');
+            }
+        });
+        async function checkVideo() {
+            try {
+                const response = await fetch('/api/video_status', {cache: 'no-store'});
+                if (!response.ok) throw new Error('video status unavailable');
+                const {online} = await response.json();
+                if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
+                if (!online && connected) camera.removeAttribute('src');
+                connected = online;
+                camera.hidden = !online;
+                placeholder.hidden = online;
+                videoState.textContent = online ? '● 실시간 연결됨' : '영상 대기 중 · posture.py 실행 상태를 확인해 주세요.';
+            } catch (error) {
+                connected = false;
+                camera.removeAttribute('src');
+                camera.hidden = true;
+                placeholder.hidden = false;
+                videoState.textContent = '서버 연결을 확인해 주세요.';
+            }
+            setTimeout(checkVideo, 1500);
+        }
+        camera.onerror = () => { connected = false; camera.hidden = true; placeholder.hidden = false; };
+        checkVideo();
+
+
 
     function setConnection(online) {
         $('connection-dot').className =

@@ -14,6 +14,7 @@ class FramePublisher:
         self.quality = max(30, min(95, int(cfg.get('video_jpeg_quality', 75))))
         self.condition = threading.Condition()
         self.frame = None
+        self.command = None
         self.closed = False
         self.next_frame = 0
         self.thread = threading.Thread(target=self._run, daemon=True)
@@ -46,12 +47,22 @@ class FramePublisher:
                                              headers={'Content-Type': 'image/jpeg'}, method='POST')
                 with opener.open(req, timeout=1) as response:
                     response.read()
+                    command = response.headers.get('X-Posture-Command')
+                    if command in ('calibrate', 'quit'):
+                        with self.condition:
+                            if self.command != 'quit':
+                                self.command = command
             except Exception as exc:
                 if time.monotonic() - last_warning > 10:
                     logging.getLogger(__name__).warning('Web video unavailable: %s', exc)
                     last_warning = time.monotonic()
                 # No backlog: failed frames are discarded, measurements use their own DB queue.
                 time.sleep(0.2)
+
+    def take_command(self):
+        with self.condition:
+            command, self.command = self.command, None
+            return command
 
     def close(self):
         with self.condition:
