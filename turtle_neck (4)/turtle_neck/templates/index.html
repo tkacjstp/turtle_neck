@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>�źϸ� �ǽð� ���� ���</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { margin: 0; padding: 24px; font-family: sans-serif; background: #f4f6fa; color: #18243a; }
+        .dashboard { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; max-width: 1440px; margin: auto; }
+        section { min-width: 0; background: white; padding: 20px; border-radius: 14px; }
+        .camera { position: relative; background: #101828; aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: 8px; overflow: hidden; }
+        .camera img { width: 100%; height: 100%; object-fit: contain; }
+        .camera p { position: absolute; color: white; text-align: center; padding: 16px; }
+        .table-wrap { overflow: auto; max-height: 65vh; }
+        #video-state { color: #536075; }
+        @media(max-width: 850px) { .dashboard { grid-template-columns: 1fr; } body { padding: 12px; } }
+
+        table { width : 100%; border-collapse : collapse; margin : 20px auto; text-align : center; }
+        th, td { border : 1px solid #ccc; padding : 10px; }
+        th { background-color : #f4f4f4; }
+        .���� { color : red; font-weight : bold; }
+        .��� { color : orange; font-weight : bold; }
+        .���� { color : green; font-weight : bold; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">�ǽð� �źϸ� ���� ��� ���</h2>
+    <main class="dashboard">
+    <section>
+        <h3>�ǽð� �ڼ� ����</h3>
+        <p id="video-state" role="status">ī�޶� ���� Ȯ�� �ߡ�</p>
+        <div class="camera">
+            <img id="camera-feed" alt="������ ���� ǥ�ð� ���Ե� �ǽð� �ڼ� ����" hidden>
+            <p id="camera-placeholder">posture.py�� �����ϸ� ������ ǥ�õ˴ϴ�.</p>
+        </div>
+        <p>���� ķ â�� ���� �����Դϴ�. �� ������ �⺻ �ʴ� 10�������Դϴ�.</p>
+    </section>
+    <section><h3>�ֱ� ���� ���</h3><div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>��ȣ</th>
+                <th>���� �ð�</th>
+                <th>��ȭ�� (%)</th>
+                <th>����</th>
+            </tr>
+        </thead>
+        <tbody id="result-table">
+        </tbody>
+    </table></div></section></main>
+
+    <script>
+        const camera = document.getElementById('camera-feed');
+        const placeholder = document.getElementById('camera-placeholder');
+        const videoState = document.getElementById('video-state');
+        let connected = false;
+        async function checkVideo() {
+            try {
+                const response = await fetch('/api/video_status', {cache: 'no-store'});
+                if (!response.ok) throw new Error('video status unavailable');
+                const {online} = await response.json();
+                if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
+                if (!online && connected) camera.removeAttribute('src');
+                connected = online;
+                camera.hidden = !online;
+                placeholder.hidden = online;
+                videoState.textContent = online ? '�� �ǽð� �����' : '���� ��� �� �� posture.py ���� ���¸� Ȯ���� �ּ���.';
+            } catch (error) {
+                connected = false;
+                camera.removeAttribute('src');
+                camera.hidden = true;
+                placeholder.hidden = false;
+                videoState.textContent = '���� ������ Ȯ���� �ּ���.';
+            }
+            setTimeout(checkVideo, 1500);
+        }
+        camera.onerror = () => { connected = false; camera.hidden = true; placeholder.hidden = false; };
+        checkVideo();
+
+        function fetchResults() {
+            fetch('/api/results')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('result-table');
+                    tbody.replaceChildren();
+
+                    data.forEach(row => {
+                        const tr = tbody.insertRow();
+                        [row.id, row.timestamp, row.angle, row.status].forEach(v => {
+                            tr.insertCell().textContent = v;
+                        });
+                        tr.cells[3].className = row.status;
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        setInterval(fetchResults, 2000);
+        fetchResults();
+    </script>
+</body>
+</html>
