@@ -378,7 +378,8 @@
                 padding: 12px;
             }
         }
-        .camera-panel { margin-bottom: 24px; }
+        .camera-panel { margin-bottom: 0; }
+        .distribution-panel { margin-top: 18px; }
         .camera { position: relative; background: #101828; aspect-ratio: 16 / 9; display: grid; place-items: center; border-radius: 12px; overflow: hidden; }
         .camera img { width: 100%; height: 100%; object-fit: contain; }
         .camera img[hidden], .camera p[hidden] { display: none; }
@@ -407,19 +408,6 @@
         </div>
     </header>
 
-    <section class="card camera-panel">
-        <div class="panel-title">실시간 자세 영상</div>
-        <p id="video-state" role="status">카메라 연결 확인 중...</p>
-        <div class="camera">
-            <img id="camera-feed" alt="자세 분석 결과가 표시된 실시간 카메라 영상" hidden>
-            <p id="camera-placeholder">posture.py를 실행하면 영상이 표시됩니다.</p>
-        </div>
-        <div class="controls">
-            <button id="calibrate" type="button">캘리브레이션 (C)</button>
-            <button id="quit" type="button">측정 종료 (Q)</button>
-        </div>
-        <p id="control-state" role="status">이 페이지에서 C / Q 키로도 조작할 수 있습니다.</p>
-    </section>
     <div class="section-title">현재 측정 요약</div>
 
     <section class="grid">
@@ -464,7 +452,22 @@
             </div>
         </section>
 
-        <section class="card">
+    <section class="card camera-panel">
+        <div class="panel-title">실시간 자세 영상</div>
+        <p id="video-state" role="status">카메라 연결 확인 중...</p>
+        <div class="camera">
+            <img id="camera-feed" alt="자세 분석 결과가 표시된 실시간 카메라 영상" hidden>
+            <p id="camera-placeholder">posture.py를 실행하면 영상이 표시됩니다.</p>
+        </div>
+        <div class="controls">
+            <button id="calibrate" type="button">캘리브레이션 (C)</button>
+            <button id="quit" type="button">측정 종료 (Q)</button>
+        </div>
+        <p id="control-state" role="status">이 페이지에서 C / Q 키로도 조작할 수 있습니다.</p>
+    </section>
+    </div>
+
+        <section class="card distribution-panel">
             <div class="panel-title">오늘의 상태 분포</div>
             <div class="panel-description">오늘 저장된 기록 기준</div>
 
@@ -494,7 +497,6 @@
                 </div>
             </div>
         </section>
-    </div>
 
     <section class="card table-card">
         <div class="table-header">
@@ -834,3 +836,4 @@
 </script>
 </body>
 </html>
+
