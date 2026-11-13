@@ -12,7 +12,7 @@
   "smooth_sec": 0.25,
   "shoulder_tilt_deg": 5,
   "save_interval": 3,
-  "show_window": true,
+  "show_window": false,
   "mirror": true,
   "display_fps": 30,
   "profile": "auto",
@@ -29,6 +29,6 @@
   "use_shoulders": true,
   "new_person_reset_sec": 5,
   "web_video": true,
-  "video_fps": 10,
+  "video_fps": 60,
   "video_jpeg_quality": 80
 }

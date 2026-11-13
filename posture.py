@@ -1524,6 +1524,10 @@ def main():
     if cfg is None:
         log.error(f"설정 파일 없음 또는 형식 오류: {CONFIG_FILE}")
         return
+    if os.environ.get('POSTURE_WEB_LAUNCH') == '1':
+        cfg['show_window'] = False
+        cfg['web_video'] = True
+        cfg['server_url'] = os.environ.get('POSTURE_SERVER_URL', cfg['server_url'])
     STATUS_URL = cfg["server_url"].rsplit("/", 1)[0] + "/status"
     global CAMERA_TILT, TORSO_CUE
     CAMERA_TILT = cfg.get("camera_tilt_deg", CAMERA_TILT)
@@ -1547,5 +1551,32 @@ def main():
     log.info("프로그램 종료")
 
 
+def acquire_instance_lock():
+    """Hold an OS lock until exit, including when started manually."""
+    handle = open(os.path.join(BASE_DIR, 'posture.lock'), 'a+b')
+    try:
+        if os.name == 'nt':
+            import msvcrt
+            if os.fstat(handle.fileno()).st_size == 0:
+                handle.write(b'0')
+                handle.flush()
+            handle.seek(0)
+            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        handle.close()
+        return None
+    return handle
+
+
 if __name__ == "__main__":
-    main()
+    instance_lock = acquire_instance_lock()
+    if instance_lock is None:
+        log.error('posture.py가 이미 실행 중입니다. 기존 측정을 종료한 뒤 다시 시작하세요.')
+        sys.exit(1)
+    try:
+        main()
+    finally:
+        instance_lock.close()

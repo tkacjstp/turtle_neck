@@ -490,9 +490,10 @@
         <p id="video-state" role="status">카메라 연결 확인 중...</p>
         <div class="camera">
             <img id="camera-feed" alt="자세 분석 결과가 표시된 실시간 카메라 영상" hidden>
-            <p id="camera-placeholder">posture.py를 실행하면 영상이 표시됩니다.</p>
+            <p id="camera-placeholder">측정 시작 버튼을 누르면 영상이 표시됩니다.</p>
         </div>
         <div class="controls">
+            <button id="start" type="button">측정 시작</button>
             <button id="calibrate" type="button">캘리브레이션 (C)</button>
             <button id="quit" type="button">측정 종료 (Q)</button>
         </div>
@@ -539,35 +540,49 @@
     const videoState = $('video-state');
         let connected = false;
         let commandBusy = false;
-        const controlState = document.getElementById('control-state');
+        let measurementState = 'stopped';
+        const controlState = $('control-state');
+        function updateControls() {
+            $('start').disabled = commandBusy || ['starting', 'running', 'stopping'].includes(measurementState);
+            $('calibrate').disabled = commandBusy || !connected || measurementState === 'stopping';
+            $('quit').disabled = commandBusy || measurementState === 'stopping' || (!connected && measurementState !== 'starting');
+        }
         async function sendCommand(command) {
             if (commandBusy) return;
-            if (!connected) {
+            if (command === 'calibrate' && !connected) {
                 controlState.textContent = '영상 연결 후 사용할 수 있습니다.';
                 return;
             }
             commandBusy = true;
-            document.getElementById('calibrate').disabled = true;
-            document.getElementById('quit').disabled = true;
+            updateControls();
             try {
                 const response = await fetch('/api/control', {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({command}), signal: AbortSignal.timeout(5000)
                 });
                 if (!response.ok) throw new Error('명령 접수 실패: ' + response.status);
-                controlState.textContent = command === 'calibrate'
-                    ? '캘리브레이션 요청을 보냈습니다. 처리되면 기존 기록과 보정 이후 횟수가 초기화됩니다. 오늘 누적 횟수는 유지됩니다. 영상 안내에 따라 자세를 잡아 주세요.'
-                    : '측정 종료 요청을 보냈습니다. 웹 서버는 계속 실행됩니다.';
+                const result = await response.json();
+                if (command === 'start') {
+                    measurementState = result.state || 'starting';
+                    controlState.textContent = result.result === 'already_running'
+                        ? '이미 측정 중입니다.' : '측정을 시작하고 있습니다. 별도 카메라 창은 열리지 않습니다.';
+                } else if (command === 'calibrate') {
+                    controlState.textContent = '캘리브레이션 요청을 보냈습니다. 기존 기록과 보정 이후 횟수는 초기화하고 오늘 누적은 유지합니다. 영상 안내에 따라 자세를 잡아 주세요.';
+                } else {
+                    measurementState = 'stopping';
+                    controlState.textContent = '측정 종료 요청을 보냈습니다. 웹 서버는 계속 실행됩니다.';
+                }
             } catch (error) {
-                controlState.textContent = '명령을 전달하지 못했습니다. 연결 상태를 확인하고 다시 시도해 주세요.';
+                controlState.textContent = '명령을 전달하지 못했습니다. 연결 상태와 실행 로그를 확인해 주세요.';
             } finally {
                 commandBusy = false;
-                document.getElementById('calibrate').disabled = false;
-                document.getElementById('quit').disabled = false;
+                updateControls();
             }
         }
-        document.getElementById('calibrate').onclick = () => sendCommand('calibrate');
-        document.getElementById('quit').onclick = () => sendCommand('quit');
+        $('start').onclick = () => sendCommand('start');
+        $('calibrate').onclick = () => sendCommand('calibrate');
+        $('quit').onclick = () => sendCommand('quit');
+        updateControls();
         document.addEventListener('keydown', event => {
             if (event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey
                 || event.target.closest('input, textarea, select, [contenteditable]')) return;
@@ -581,19 +596,26 @@
             try {
                 const response = await fetch('/api/video_status', {cache: 'no-store'});
                 if (!response.ok) throw new Error('video status unavailable');
-                const {online} = await response.json();
+                const {online, state} = await response.json();
+                measurementState = state || (online ? 'running' : 'stopped');
                 if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
                 if (!online && connected) camera.removeAttribute('src');
                 connected = online;
                 camera.hidden = !online;
                 placeholder.hidden = online;
-                videoState.textContent = online ? '● 실시간 연결됨' : '영상 대기 중 · posture.py 실행 상태를 확인해 주세요.';
+                const labels = {starting: '카메라 연결 및 측정 준비 중...', running: '영상 연결 대기 중...',
+                    stopping: '측정 종료 중...', stopped: '측정이 종료되어 있습니다.', error: '측정 시작 실패 · 실행 로그를 확인해 주세요.'};
+                videoState.textContent = online ? '● 실시간 연결됨' : (labels[measurementState] || labels.stopped);
+                placeholder.textContent = online ? '' : (measurementState === 'stopped'
+                    ? '측정 시작 버튼을 눌러 주세요.' : labels[measurementState]);
+                updateControls();
             } catch (error) {
                 connected = false;
                 camera.removeAttribute('src');
                 camera.hidden = true;
                 placeholder.hidden = false;
                 videoState.textContent = '서버 연결을 확인해 주세요.';
+                updateControls();
             }
             setTimeout(checkVideo, 1500);
         }

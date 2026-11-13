@@ -10,7 +10,7 @@ r"""
 [필요 환경]
   Python : 3.9 ~ 3.12 (3.11 권장, 판별기와 같은 버전으로 맞추면 관리가 편함)
   flask  : 버전 제한 없음 (pip install flask)
-  ※ 서버 컴퓨터에는 mediapipe·OpenCV·웹캠이 필요 없음
+  ※ 웹 시작 버튼을 쓰려면 app.py와 같은 Python 환경에 mediapipe·OpenCV가 필요함
 
 [실행]
   윈도우: venv\Scripts\python app.py      맥/라즈베리파이: python app.py
@@ -33,6 +33,8 @@ r"""
 from flask import Flask, render_template, request, jsonify, Response
 import os
 import threading
+import subprocess
+import sys
 import time
 from urllib.parse import urlsplit
 from video_stream import FrameStore
@@ -45,26 +47,91 @@ MAX_RECORDS = 500
 video = FrameStore()
 command_lock = threading.Lock()
 pending_command = None
+process_lock = threading.Lock()
+posture_process = None
+posture_stopping = False
+posture_error = False
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def measurement_state():
+    global posture_process, posture_stopping, posture_error
+    # Caller holds process_lock.
+    if posture_process is not None and posture_process.poll() is not None:
+        posture_error = posture_process.returncode != 0 and not posture_stopping
+        posture_process = None
+        posture_stopping = False
+    if posture_process is not None:
+        return 'stopping' if posture_stopping else ('running' if video.online() else 'starting')
+    if video.online():
+        return 'running'
+    return 'error' if posture_error else 'stopped'
 
 
 @app.post('/api/control')
 def control_posture():
-    global pending_command
+    global pending_command, posture_process, posture_stopping, posture_error
     if request.remote_addr not in ('127.0.0.1', '::1'):
         return jsonify(error='local control only'), 403
     origin = request.headers.get('Origin')
     if origin and urlsplit(origin).netloc != request.host:
         return jsonify(error='same origin required'), 403
     data = request.get_json(silent=True)
-    if not isinstance(data, dict) or data.get('command') not in ('calibrate', 'quit'):
+    if not isinstance(data, dict) or data.get('command') not in ('start', 'calibrate', 'quit'):
         return jsonify(error='invalid command'), 400
-    if not video.online():
-        return jsonify(error='posture offline'), 409
-    with command_lock:
-        if pending_command and pending_command[1] > time.monotonic():
-            return jsonify(error='command pending'), 409
-        pending_command = (data['command'], time.monotonic() + 3)
-    return jsonify(result='queued'), 202
+    command = data['command']
+    with process_lock:
+        state = measurement_state()
+        if command == 'start':
+            if state == 'stopping':
+                return jsonify(error='posture stopping'), 409
+            if posture_process is not None or video.online():
+                return jsonify(result='already_running', state=state), 200
+            script = os.path.join(BASE_DIR, 'posture.py')
+            if not os.path.isfile(script):
+                return jsonify(error='posture.py missing'), 500
+            env = os.environ.copy()
+            env['POSTURE_WEB_LAUNCH'] = '1'
+            port = str(request.environ.get('SERVER_PORT', '5050'))
+            if not port.isdigit():
+                port = '5050'
+            env['POSTURE_SERVER_URL'] = f'http://127.0.0.1:{port}/api/record'
+            try:
+                # The same Python environment as app.py; no shell or new console window.
+                with open(os.path.join(BASE_DIR, 'posture_launcher.log'), 'ab') as output:
+                    posture_process = subprocess.Popen(
+                        [sys.executable, '-u', script], cwd=BASE_DIR, env=env,
+                        stdin=subprocess.DEVNULL, stdout=output, stderr=subprocess.STDOUT,
+                        creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            except OSError:
+                posture_error = True
+                app.logger.exception('Could not launch posture.py')
+                return jsonify(error='posture launch failed'), 500
+            posture_stopping = False
+            posture_error = False
+            with command_lock:
+                pending_command = None
+            return jsonify(result='started', state='starting'), 202
+        if state == 'stopping':
+            return jsonify(error='posture stopping'), 409
+        if not video.online():
+            if command == 'quit' and posture_process is not None:
+                # A starting process may not have published its first frame yet.
+                try:
+                    posture_process.terminate()
+                except OSError:
+                    measurement_state()
+                else:
+                    posture_stopping = True
+                return jsonify(result='queued', state='stopping'), 202
+            return jsonify(error='posture offline'), 409
+        with command_lock:
+            if pending_command and pending_command[1] > time.monotonic():
+                return jsonify(error='command pending'), 409
+            pending_command = (command, time.monotonic() + 3)
+        # Online Q is sent through the existing graceful-stop channel.
+        return jsonify(result='queued'), 202
+
 
 DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'turtle_neck.db')
 
@@ -190,7 +257,9 @@ def receive_video_frame():
 
 @app.get('/api/video_status')
 def video_status():
-    return jsonify(online=video.online())
+    with process_lock:
+        state = measurement_state()
+    return jsonify(online=video.online(), state=state)
 
 
 @app.get('/video_feed')
