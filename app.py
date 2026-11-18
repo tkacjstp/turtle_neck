@@ -38,6 +38,7 @@ import sys
 import time
 from urllib.parse import urlsplit
 from video_stream import FrameStore
+from sensor_state import SensorState
 import sqlite3
 from datetime import datetime
 
@@ -45,6 +46,7 @@ app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 MAX_RECORDS = 500
 video = FrameStore()
+sensor_state = SensorState()
 command_lock = threading.Lock()
 pending_command = None
 process_lock = threading.Lock()
@@ -80,6 +82,8 @@ def control_posture():
     if not isinstance(data, dict) or data.get('command') not in ('start', 'calibrate', 'quit'):
         return jsonify(error='invalid command'), 400
     command = data['command']
+    if command in ('start', 'calibrate', 'quit'):
+        sensor_state.clear()
     with process_lock:
         state = measurement_state()
         if command == 'start':
@@ -273,7 +277,13 @@ def receive_status():
     data = request.get_json(silent=True)
     if not isinstance(data, dict) or data.get('status') not in VALID_STATUS:
         return jsonify(result='fail', reason='invalid status'), 400
+    sensor_state.publish(data['status'])
     return jsonify(result='success', status=data['status'])
+
+
+@app.get('/api/sensor_status')
+def sensor_status():
+    return jsonify(sensor_state.snapshot()), 200, {'Cache-Control': 'no-store'}
 
 
 @app.route('/api/record', methods=['POST'])
@@ -342,3 +352,4 @@ init_db()
 if __name__ == '__main__':
     # 개발 중 오류 확인이 필요하면 debug=True, 시연·제출 때는 False
     app.run(host='0.0.0.0', port=5050, debug=False, threaded=True)
+
