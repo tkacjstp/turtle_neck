@@ -33,11 +33,11 @@ def read_config(path):
 
 def output_pattern(status, elapsed):
     if status == '정상':
-        return (0, 1, 0), False
+        return (0, 0, 1), False
     if status == '경고' and elapsed % 1 < .5:
-        return (1, 1, 0), False
+        return (1, 0, 0), False
     if status == '위험':
-        return (1, 0, 0), elapsed % 1 < .2
+        return (1, 1, 0), elapsed % 1 < .6
     return (0, 0, 0), False
 
 

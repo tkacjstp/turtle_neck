@@ -24,11 +24,11 @@ class SensorTests(unittest.TestCase):
         self.assertFalse(state.snapshot()['online'])
 
     def test_patterns_and_network_loss(self):
-        self.assertEqual(output_pattern('정상', 0), ((0, 1, 0), False))
-        self.assertEqual(output_pattern('경고', .1), ((1, 1, 0), False))
+        self.assertEqual(output_pattern('정상', 0), ((0, 0, 1), False))
+        self.assertEqual(output_pattern('경고', .1), ((1, 0, 0), False))
         self.assertEqual(output_pattern('경고', .6), ((0, 0, 0), False))
-        self.assertEqual(output_pattern('위험', .1), ((1, 0, 0), True))
-        self.assertEqual(output_pattern('위험', .3), ((1, 0, 0), False))
+        self.assertEqual(output_pattern('위험', .1), ((1, 1, 0), True))
+        self.assertEqual(output_pattern('위험', .7), ((1, 1, 0), False))
         self.assertEqual(output_pattern(None, 0), ((0, 0, 0), False))
         poller = StatusPoller({}, MagicMock())
         poller.status, poller.received = '위험', 10
