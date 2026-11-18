@@ -13,11 +13,15 @@ log = logging.getLogger(__name__)
 
 def read_config(path):
     cfg = json.loads(Path(path).read_text(encoding='utf-8'))
-    pins = [cfg.get('led_pin'), cfg.get('buzzer_pin')]
+    rgb_pins = cfg.get('rgb_pins')
+    if rgb_pins is not None and (not isinstance(rgb_pins, list) or len(rgb_pins) != 3 or None in rgb_pins):
+        raise ValueError('rgb_pins must specify three BCM numbers in R, G, B order')
+    pins = [*(rgb_pins or []), cfg.get('buzzer_pin')]
     if any(p is not None and (type(p) is not int or not 0 <= p <= 27) for p in pins):
         raise ValueError('GPIO pins must be BCM integers 0..27, or null to disable')
-    if pins[0] is not None and pins[0] == pins[1]:
-        raise ValueError('LED and buzzer must use different GPIO pins')
+    used = [pin for pin in pins if pin is not None]
+    if len(set(used)) != len(used):
+        raise ValueError('RGB channels and buzzer must use different GPIO pins')
     if cfg.get('buzzer_type', 'active') not in ('active', 'passive'):
         raise ValueError('buzzer_type must be active or passive')
     for key, default in [('poll_interval', .25), ('request_timeout', 1), ('tone_hz', 880)]:
@@ -28,11 +32,13 @@ def read_config(path):
 
 
 def output_pattern(status, elapsed):
-    if status == '경고':
-        return elapsed % 1 < .5, False
+    if status == '정상':
+        return (0, 1, 0), False
+    if status == '경고' and elapsed % 1 < .5:
+        return (1, 1, 0), False
     if status == '위험':
-        return True, elapsed % 1 < .2
-    return False, False
+        return (1, 0, 0), elapsed % 1 < .2
+    return (0, 0, 0), False
 
 
 class Outputs:
@@ -43,10 +49,11 @@ class Outputs:
         self.last = None
         if dry_run:
             return
-        from gpiozero import LED, Buzzer, TonalBuzzer
+        from gpiozero import RGBLED, Buzzer, TonalBuzzer
         try:
-            if cfg.get('led_pin') is not None:
-                self.led = LED(cfg['led_pin'], active_high=cfg.get('led_active_high', True), initial_value=False)
+            if cfg.get('rgb_pins'):
+                self.led = RGBLED(*cfg['rgb_pins'], active_high=cfg.get('rgb_active_high', True),
+                                  initial_value=(0, 0, 0), pwm=False)
             if cfg.get('buzzer_pin') is not None:
                 if self.passive:
                     self.buzzer = TonalBuzzer(cfg['buzzer_pin'])

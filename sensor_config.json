@@ -2,9 +2,9 @@
   "status_url": "http://127.0.0.1:5050/api/sensor_status",
   "poll_interval": 0.25,
   "request_timeout": 1,
-  "led_pin": 17,
-  "led_active_high": true,
-  "buzzer_pin": 18,
+  "rgb_pins": [10, 9, 11],
+  "rgb_active_high": true,
+  "buzzer_pin": 2,
   "buzzer_type": "active",
   "buzzer_active_high": true,
   "tone_hz": 880

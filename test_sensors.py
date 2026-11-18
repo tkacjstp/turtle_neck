@@ -24,12 +24,12 @@ class SensorTests(unittest.TestCase):
         self.assertFalse(state.snapshot()['online'])
 
     def test_patterns_and_network_loss(self):
-        self.assertEqual(output_pattern('정상', 0), (False, False))
-        self.assertEqual(output_pattern('경고', .1), (True, False))
-        self.assertEqual(output_pattern('경고', .6), (False, False))
-        self.assertEqual(output_pattern('위험', .1), (True, True))
-        self.assertEqual(output_pattern('위험', .3), (True, False))
-        self.assertEqual(output_pattern(None, 0), (False, False))
+        self.assertEqual(output_pattern('정상', 0), ((0, 1, 0), False))
+        self.assertEqual(output_pattern('경고', .1), ((1, 1, 0), False))
+        self.assertEqual(output_pattern('경고', .6), ((0, 0, 0), False))
+        self.assertEqual(output_pattern('위험', .1), ((1, 0, 0), True))
+        self.assertEqual(output_pattern('위험', .3), ((1, 0, 0), False))
+        self.assertEqual(output_pattern(None, 0), ((0, 0, 0), False))
         poller = StatusPoller({}, MagicMock())
         poller.status, poller.received = '위험', 10
         with patch('rpi_device.time.monotonic', return_value=13):
@@ -37,14 +37,16 @@ class SensorTests(unittest.TestCase):
 
     def test_active_and_passive_outputs(self):
         import types
-        fake = types.SimpleNamespace(LED=MagicMock(), Buzzer=MagicMock(), TonalBuzzer=MagicMock())
+        fake = types.SimpleNamespace(RGBLED=MagicMock(), Buzzer=MagicMock(), TonalBuzzer=MagicMock())
         for kind in ('active', 'passive'):
             with patch.dict('sys.modules', {'gpiozero': fake}):
-                out = Outputs(dict(led_pin=17, buzzer_pin=18, buzzer_type=kind))
-                out.set(True, True)
+                out = Outputs(dict(rgb_pins=[10, 9, 11], buzzer_pin=2, buzzer_type=kind))
+                out.set((1, 0, 0), True)
+                self.assertEqual(fake.RGBLED.call_args.args, (10, 9, 11))
+                self.assertEqual(fake.RGBLED.return_value.value, (1, 0, 0))
                 buzzer = fake.TonalBuzzer.return_value if kind == 'passive' else fake.Buzzer.return_value
                 (buzzer.play if kind == 'passive' else buzzer.on).assert_called()
-                out.set(False, False)
+                out.set((0, 0, 0), False)
                 (buzzer.stop if kind == 'passive' else buzzer.off).assert_called()
                 out.close()
                 buzzer.close.assert_called()
