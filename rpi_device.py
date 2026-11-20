@@ -37,7 +37,7 @@ def output_pattern(status, elapsed):
     if status == '경고' and elapsed % 1 < .5:
         return (1, 0, 0), False
     if status == '위험':
-        return (1, 1, 0), elapsed % 1 < .6
+        return (1, 1, 0), True
     return (0, 0, 0), False
 
 

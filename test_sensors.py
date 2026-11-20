@@ -28,7 +28,7 @@ class SensorTests(unittest.TestCase):
         self.assertEqual(output_pattern('경고', .1), ((1, 0, 0), False))
         self.assertEqual(output_pattern('경고', .6), ((0, 0, 0), False))
         self.assertEqual(output_pattern('위험', .1), ((1, 1, 0), True))
-        self.assertEqual(output_pattern('위험', .7), ((1, 1, 0), False))
+        self.assertEqual(output_pattern('위험', 5.7), ((1, 1, 0), True))
         self.assertEqual(output_pattern(None, 0), ((0, 0, 0), False))
         poller = StatusPoller({}, MagicMock())
         poller.status, poller.received = '위험', 10
