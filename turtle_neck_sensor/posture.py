@@ -894,8 +894,8 @@ WEB_GUIDANCE = {
     " - using last measurement": " · 이전 점수 유지",
     "SIT UP STRAIGHT": "바른 자세를 잡아 주세요",
     "NOW TURTLE NECK!": "목을 앞으로 내밀어 주세요",
-    "Sit tall, chin in": "허리를 펴고 턱을 살짝 당겨 주세요",
-    "Push your head forward like usual bad posture": "목을 앞으로 내민 자세를 잡아 주세요",
+    "Sit tall, chin in": "허리를 펴주세요",
+    "Push your head forward like usual bad posture": "머리를 앞으로 내밀어 주세요",
     "HOLD STRAIGHT...": "바른 자세를 유지해 주세요",
     "HOLD IT...": "지금 자세를 유지해 주세요",
     "head turned - score held": "고개가 돌아가 이전 점수를 표시합니다",
@@ -1616,4 +1616,5 @@ if __name__ == "__main__":
         main()
     finally:
         instance_lock.close()
+
 
