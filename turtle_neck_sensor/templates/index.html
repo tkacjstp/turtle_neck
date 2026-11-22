@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>거북목 자세 모니터링 대시보드</title>
+
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #172033;
+            --muted: #7b8498;
+            --border: #e8ecf3;
+            --blue: #4776e6;
+            --green: #169b72;
+            --yellow: #d99212;
+            --red: #dc4545;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, "Malgun Gothic", sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin: 0 0 8px;
+        }
+
+        .connection {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--yellow);
+        }
+
+        .dot.online {
+            background: var(--green);
+        }
+
+        .dot.offline {
+            background: var(--red);
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 28px 0 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            min-width: 0;
+            box-shadow: 0 3px 12px rgba(25, 40, 70, 0.025);
+        }
+
+        .card-label {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .card-value {
+            font-size: 30px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .card-unit {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        .status-normal {
+            color: var(--green);
+        }
+
+        .status-warning {
+            color: var(--yellow);
+        }
+
+        .status-danger {
+            color: var(--red);
+        }
+
+        .status-unknown {
+            color: var(--muted);
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .chart {
+            height: 190px;
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+            padding: 0 2px;
+        }
+
+        .bar-column {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .bar-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .bar {
+            width: min(100%, 30px);
+            min-height: 3px;
+            border-radius: 6px 6px 0 0;
+            background: var(--green);
+            transition: height 0.25s ease;
+        }
+
+        .bar.warning {
+            background: var(--yellow);
+        }
+
+        .bar.danger {
+            background: var(--red);
+        }
+
+        .bar-time {
+            height: 14px;
+            font-size: 10px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .distribution-layout {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .distribution-pie {
+            width: min(100%, 185px);
+            aspect-ratio: 1;
+            justify-self: center;
+            border-radius: 50%;
+            background: var(--border);
+        }
+        @media (max-width: 480px) {
+            .distribution-layout { grid-template-columns: 1fr; }
+        }
+        .distribution {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .distribution-row {
+            display: grid;
+            grid-template-columns: max-content minmax(0, 1fr) 48px;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 9px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #eef1f6;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .fill-normal { background: var(--green); }
+        .fill-warning { background: var(--yellow); }
+        .fill-danger { background: var(--red); }
+
+        .table-card {
+            margin-top: 18px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 22px;
+            flex-wrap: wrap;
+        }
+
+        .table-header .panel-title {
+            margin: 0;
+        }
+
+        .refresh-info {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .latest-row {
+            background: #f5f8ff;
+        }
+
+        .latest-row td:first-child {
+            border-left: 3px solid var(--blue);
+        }
+
+        .latest-label {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 3px 7px;
+            border-radius: 999px;
+            color: var(--blue);
+            background: #eaf0ff;
+            font-size: 11px;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 15px 22px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        th {
+            background: #fafbfe;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            border-radius: 7px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge.normal {
+            color: var(--green);
+            background: #e7f7f0;
+        }
+
+        .badge.warning {
+            color: #a96e00;
+            background: #fff4d9;
+        }
+
+        .badge.danger {
+            color: var(--red);
+            background: #ffebeb;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: var(--muted);
+        }
+
+        footer {
+            margin-top: 22px;
+            text-align: right;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 950px) {
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .container {
+                padding: 18px 12px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .card-value {
+                font-size: 24px;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+        }
+        .camera-panel { margin-bottom: 0; }
+        .chart-stack { display: grid; grid-template-rows: auto 1fr; gap: 16px; min-width: 0; }
+        .distribution-panel { margin-top: 0; }
+        .camera { position: relative; background: #101828; aspect-ratio: 4 / 3; display: grid; place-items: center; border-radius: 12px; overflow: hidden; }
+        .camera img { width: 100%; height: 100%; object-fit: contain; }
+        .camera img[hidden], .camera p[hidden] { display: none; }
+        .camera p { position: absolute; color: white; text-align: center; padding: 16px; }
+        .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+        .controls button { border: 0; border-radius: 9px; padding: 12px 18px; background: var(--blue); color: white; cursor: pointer; font: inherit; }
+        .controls #quit { background: var(--red); }
+        .controls button:disabled { opacity: .5; cursor: wait; }
+        #control-state:empty { display: none; }
+        .live-score { margin-top: 16px; }
+        .live-track { position: relative; height: 12px; background: var(--border); border-radius: 8px; }
+        #live-fill { height: 100%; border-radius: inherit; transition: width .2s linear; }
+        .live-marker { position: absolute; top: 0; bottom: 0; border-left: 2px solid currentColor; }
+        #control-state { color: var(--muted); font-size: 13px; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>자세 모니터링 대시보드</h1>
+        </div>
+
+        <div class="connection">
+            <span id="connection-dot" class="dot"></span>
+            <span id="connection-text">서버 연결 확인 중...</span>
+        </div>
+    </header>
+
+    <div class="two-columns">
+        <div class="chart-stack">
+        <section class="card">
+            <div class="panel-title">최근 측정 변화</div>
+            <div id="angle-chart" class="chart">
+                <div class="empty">측정 데이터를 불러오는 중입니다.</div>
+            </div>
+        </section>
+        <section class="card distribution-panel">
+            <div class="panel-title">오늘의 상태 분포</div>
+
+            <div class="distribution-layout">
+            <div id="distribution-pie" class="distribution-pie" aria-hidden="true"></div>
+            <div class="distribution">
+                <div class="distribution-row">
+                    <span>정상</span>
+                    <div class="progress">
+                        <div id="normal-bar" class="progress-fill fill-normal"></div>
+                    </div>
+                    <strong id="normal-percent">0%</strong>
+                </div>
+
+                <div class="distribution-row">
+                    <span>경고</span>
+                    <div class="progress">
+                        <div id="warning-bar" class="progress-fill fill-warning"></div>
+                    </div>
+                    <strong id="warning-percent">0%</strong>
+                </div>
+
+                <div class="distribution-row">
+                    <span>위험</span>
+                    <div class="progress">
+                        <div id="danger-bar" class="progress-fill fill-danger"></div>
+                    </div>
+                    <strong id="danger-percent">0%</strong>
+                </div>
+            </div>
+            </div>
+        </section>
+        </div>
+
+    <section class="card camera-panel">
+        <div class="panel-title">실시간 자세 영상</div>
+        <div class="camera">
+            <img id="camera-feed" alt="자세 분석 결과가 표시된 실시간 카메라 영상" hidden>
+            <p id="camera-placeholder">측정 시작 버튼을 누르면 영상이 표시됩니다.</p>
+        </div>
+        <div class="live-score">
+            <strong id="live-value">자세 점수 —</strong>
+            <p id="live-detail" class="muted" hidden></p>
+            <div class="live-track" id="live-track" role="meter" aria-label="자세 점수" aria-valuemin="0" aria-valuemax="100" hidden>
+                <div id="live-fill"></div>
+                <span id="live-warning" class="live-marker" title="경고 기준"></span>
+                <span id="live-danger" class="live-marker" title="위험 기준"></span>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="start" type="button">측정 시작 (S)</button>
+            <button id="calibrate" type="button">보정 (C)</button>
+            <button id="quit" type="button">측정 종료 (Q)</button>
+        </div>
+        <p id="control-state" role="status"></p>
+    </section>
+    </div>
+
+
+
+    <section id="measurement-summary" aria-labelledby="measurement-summary-title" hidden>
+        <div class="section-title" id="measurement-summary-title">측정 요약</div>
+
+        <section class="grid">
+            <div class="card">
+                <div class="card-label">최근 자세 상태</div>
+                <div id="latest-status" class="card-value status-unknown">
+                    대기 중
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">보정 후 측정 횟수</div>
+                <div class="card-value">
+                    <span id="session-count">0</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">오늘 측정 횟수</div>
+                <div class="card-value" id="total-count">0</div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">오늘 경고 및 위험</div>
+                <div class="card-value status-danger" id="attention-count">0</div>
+            </div>
+        </section>
+    </section>
+
+    <section class="card table-card">
+        <div class="table-header">
+            <div class="panel-title">최근 측정 기록</div>
+            <div class="refresh-info">최근 기록 500개 보관 · C 보정 시 기록 초기화(오늘 누적 유지) · 2초마다 갱신</div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>측정 시간</th>
+                    <th>자세 상태</th>
+                    <th>어깨 상태</th>
+                </tr>
+                </thead>
+                <tbody id="result-table">
+                <tr>
+                    <td colspan="3" class="empty">측정 기록을 불러오는 중입니다.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        마지막 갱신: <span id="last-updated">--</span>
+    </footer>
+</div>
+
+<script>
+    const $ = id => document.getElementById(id);
+    const camera = $('camera-feed');
+    const placeholder = $('camera-placeholder');
+        let connected = false;
+        let commandBusy = false;
+        let measurementState = 'stopped';
+        const controlState = $('control-state');
+        function updateControls() {
+            $('start').disabled = commandBusy || ['starting', 'running', 'stopping'].includes(measurementState);
+            $('calibrate').disabled = commandBusy || !connected || measurementState === 'stopping';
+            $('quit').disabled = commandBusy || measurementState === 'stopping' || (!connected && measurementState !== 'starting');
+        }
+        async function sendCommand(command) {
+            if (commandBusy) return;
+            if (command === 'calibrate' && !connected) {
+                controlState.textContent = '영상 연결 후 사용할 수 있습니다.';
+                return;
+            }
+            commandBusy = true;
+            updateControls();
+            try {
+                const response = await fetch('/api/control', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command}), signal: AbortSignal.timeout(5000)
+                });
+                if (!response.ok) throw new Error('명령 접수 실패: ' + response.status);
+                const result = await response.json();
+                if (command === 'start') {
+                    measurementState = result.state || 'starting';
+                    $('measurement-summary').hidden = true;
+                } else if (command === 'quit') {
+                    measurementState = 'stopping';
+                    $('measurement-summary').hidden = false;
+                }
+                controlState.textContent = '';
+            } catch (error) {
+                controlState.textContent = '명령을 전달하지 못했습니다. 연결 상태와 실행 로그를 확인해 주세요.';
+            } finally {
+                commandBusy = false;
+                updateControls();
+            }
+        }
+        $('start').onclick = () => sendCommand('start');
+        $('calibrate').onclick = () => sendCommand('calibrate');
+        $('quit').onclick = () => sendCommand('quit');
+        updateControls();
+        document.addEventListener('keydown', event => {
+            if (event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey
+                || event.target.closest('input, textarea, select, [contenteditable]')) return;
+            const buttonId = {s: 'start', c: 'calibrate', q: 'quit'}[event.key.toLowerCase()];
+            if (['start', 'calibrate', 'quit'].includes(buttonId)) {
+                event.preventDefault();
+                $(buttonId).click();
+            }
+        });
+        function updateLiveScore(metrics) {
+            const score = metrics?.score;
+            const valid = Number.isFinite(score);
+            const detail = [metrics?.message, metrics?.detail].filter(Boolean).join(' · ');
+            $('live-detail').textContent = detail;
+            $('live-detail').hidden = !detail;
+            const track = $('live-track');
+            track.hidden = !valid;
+            $('live-value').textContent = valid
+                ? `자세 점수 ${Math.round(score)}% · ${metrics.status || ''}`
+                : '자세 점수 —';
+            if (!valid) return;
+            const clamp = value => Math.max(0, Math.min(100, value));
+            track.setAttribute('aria-valuenow', clamp(score));
+            $('live-fill').style.width = clamp(score) + '%';
+            $('live-fill').style.background = metrics.status === '위험' ? 'var(--red)'
+                : metrics.status === '경고' ? 'var(--yellow)' : 'var(--green)';
+            for (const key of ['warning', 'danger']) {
+                const marker = $('live-' + key);
+                marker.hidden = !Number.isFinite(metrics[key]);
+                if (!marker.hidden) marker.style.left = clamp(metrics[key]) + '%';
+            }
+        }
+        async function checkVideo() {
+            try {
+                const response = await fetch('/api/video_status', {cache: 'no-store'});
+                if (!response.ok) throw new Error('video status unavailable');
+                const {online, state, metrics} = await response.json();
+                updateLiveScore(online ? metrics : null);
+                measurementState = state || (online ? 'running' : 'stopped');
+                if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
+                if (!online && connected) camera.removeAttribute('src');
+                connected = online;
+                camera.hidden = !online;
+                placeholder.hidden = online;
+                const labels = {starting: '카메라 연결 및 측정 준비 중...', running: '영상 연결 대기 중...',
+                    stopping: '측정 종료 중...', stopped: '측정이 종료되어 있습니다.', error: '측정 시작 실패 · 실행 로그를 확인해 주세요.'};
+                placeholder.textContent = online ? '' : (measurementState === 'stopped'
+                    ? '측정 시작 버튼을 눌러 주세요.' : labels[measurementState]);
+                updateControls();
+            } catch (error) {
+                connected = false;
+                updateLiveScore(null);
+                camera.removeAttribute('src');
+                camera.hidden = true;
+                placeholder.hidden = false;
+                updateControls();
+            }
+            setTimeout(checkVideo, connected ? 250 : 1500);
+        }
+        camera.onerror = () => { connected = false; camera.hidden = true; placeholder.hidden = false; };
+        checkVideo();
+
+
+
+    function setConnection(online) {
+        $('connection-dot').className =
+            'dot ' + (online ? 'online' : 'offline');
+
+        $('connection-text').textContent =
+            online ? '서버 연결 정상' : '서버 연결 오류';
+    }
+
+    function getStatusClass(status) {
+        if (status === '정상') return 'normal';
+        if (status === '경고') return 'warning';
+        if (status === '위험') return 'danger';
+        return '';
+    }
+
+    function getStatusTextClass(status) {
+        if (status === '정상') return 'status-normal';
+        if (status === '경고') return 'status-warning';
+        if (status === '위험') return 'status-danger';
+        return 'status-unknown';
+    }
+
+    function formatNumber(value) {
+        if (value === null || value === undefined || value === '') {
+            return '--';
+        }
+
+        const number = Number(value);
+        return Number.isFinite(number) ? number.toFixed(1) : '--';
+    }
+
+    function makeCell(value) {
+        const td = document.createElement('td');
+        td.textContent =
+            value === null || value === undefined || value === ''
+                ? '-'
+                : String(value);
+        return td;
+    }
+
+    function renderTable(rows) {
+        const tbody = $('result-table');
+        tbody.replaceChildren();
+
+        if (!rows.length) {
+            const tr = document.createElement('tr');
+            const td = makeCell('아직 저장된 측정 기록이 없습니다.');
+            td.colSpan = 3;
+            td.className = 'empty';
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            return;
+        }
+
+        rows.forEach((row, index) => {
+            const tr = document.createElement('tr');
+            if (index === 0) tr.classList.add('latest-row');
+
+            const timestampCell = makeCell(row.timestamp);
+            if (index === 0) {
+                const latestLabel = document.createElement('span');
+                latestLabel.className = 'latest-label';
+                latestLabel.textContent = '최신';
+                timestampCell.appendChild(latestLabel);
+            }
+            tr.appendChild(timestampCell);
+
+            const statusCell = document.createElement('td');
+            const badge = document.createElement('span');
+            badge.className = 'badge ' + getStatusClass(row.status);
+            badge.textContent = row.status || '미확인';
+            statusCell.appendChild(badge);
+            tr.appendChild(statusCell);
+
+            tr.appendChild(makeCell(row.shoulder_status));
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderChart(rows) {
+        const chart = $('angle-chart');
+        chart.replaceChildren();
+
+        const validRows = rows
+            .filter(row =>
+                row.angle !== null &&
+                row.angle !== undefined &&
+                row.angle !== '' &&
+                Number.isFinite(Number(row.angle))
+            )
+            .slice(0, 12)
+            .reverse();
+
+        if (!validRows.length) {
+            const empty = document.createElement('div');
+            empty.className = 'empty';
+            empty.textContent = '표시할 측정값이 없습니다.';
+            chart.appendChild(empty);
+            return;
+        }
+
+        const maxValue = Math.max(
+            1,
+            ...validRows.map(row => Math.abs(Number(row.angle)))
+        );
+
+        validRows.forEach(row => {
+            const value = Number(row.angle);
+            const column = document.createElement('div');
+            column.className = 'bar-column';
+
+            const valueLabel = document.createElement('span');
+            valueLabel.className = 'bar-value';
+            valueLabel.textContent = value.toFixed(1);
+
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+
+            if (row.status === '경고') bar.classList.add('warning');
+            if (row.status === '위험') bar.classList.add('danger');
+
+            bar.style.height =
+                Math.max(3, Math.abs(value) / maxValue * 135) + 'px';
+            bar.title = `${row.timestamp || ''} / ${value}° / ${row.status || ''}`;
+
+            const time = document.createElement('span');
+            time.className = 'bar-time';
+            time.textContent = String(row.timestamp || '').slice(11, 16);
+
+            column.append(valueLabel, bar, time);
+            chart.appendChild(column);
+        });
+    }
+
+    function renderStats(stats) {
+        const counts = stats.counts || {};
+        const total = Number(stats.total) || 0;
+
+        const normal = Number(counts['정상']) || 0;
+        const warning = Number(counts['경고']) || 0;
+        const danger = Number(counts['위험']) || 0;
+
+        $('total-count').textContent = total;
+        $('session-count').textContent = Number(stats.session_total) || 0;
+        $('attention-count').textContent = warning + danger;
+
+        const classifiedTotal = normal + warning + danger;
+        const normalEnd = classifiedTotal ? normal / classifiedTotal * 100 : 0;
+        const warningEnd = classifiedTotal ? (normal + warning) / classifiedTotal * 100 : 0;
+        $('distribution-pie').style.background = classifiedTotal
+            ? `conic-gradient(var(--green) 0% ${normalEnd}%, var(--yellow) ${normalEnd}% ${warningEnd}%, var(--red) ${warningEnd}% 100%)`
+            : 'var(--border)';
+
+        [
+            ['normal', normal],
+            ['warning', warning],
+            ['danger', danger]
+        ].forEach(([key, count]) => {
+            const percent = total ? count / total * 100 : 0;
+            $(key + '-bar').style.width = percent + '%';
+            $(key + '-percent').textContent = percent.toFixed(1) + '%';
+        });
+    }
+
+    async function fetchResults() {
+        try {
+            const response = await fetch('/api/results?limit=12', {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('측정 기록 요청 실패: HTTP ' + response.status);
+            }
+
+            const rows = await response.json();
+
+            if (!Array.isArray(rows)) {
+                throw new Error('측정 기록 응답 형식이 올바르지 않습니다.');
+            }
+
+            setConnection(true);
+            renderTable(rows);
+            renderChart(rows);
+
+            if (rows.length > 0) {
+                const latest = rows[0];
+
+                $('latest-status').textContent = latest.status || '미확인';
+                $('latest-status').className =
+                    'card-value ' + getStatusTextClass(latest.status);
+
+            } else {
+                $('latest-status').textContent = '데이터 없음';
+                $('latest-status').className = 'card-value status-unknown';
+            }
+
+            $('last-updated').textContent =
+                new Date().toLocaleTimeString('ko-KR');
+
+        } catch (error) {
+            setConnection(false);
+            console.error('측정 기록 조회 오류:', error);
+        }
+    }
+
+    async function fetchStats() {
+        try {
+            const response = await fetch('/api/stats', {
+                cache: 'no-store'
+            });
+
+            if (!response.ok) {
+                throw new Error('통계 요청 실패: HTTP ' + response.status);
+            }
+
+            const stats = await response.json();
+            renderStats(stats);
+
+        } catch (error) {
+            console.error('통계 조회 오류:', error);
+        }
+    }
+
+    async function refreshDashboard() {
+        await Promise.all([
+            fetchResults(),
+            fetchStats()
+        ]);
+    }
+
+    refreshDashboard();
+    setInterval(refreshDashboard, 2000);
+</script>
+</body>
+</html>
+
