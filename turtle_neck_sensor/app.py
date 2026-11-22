@@ -133,9 +133,16 @@ def control_posture():
         with command_lock:
             if pending_command and pending_command[1] > time.monotonic():
                 return jsonify(error='command pending'), 409
+            previous_reset = None
+            if command == 'calibrate':
+                conn = get_conn()
+                try:
+                    previous_reset = get_reset_id(conn)
+                finally:
+                    conn.close()
             pending_command = (command, time.monotonic() + 3)
         # Online Q is sent through the existing graceful-stop channel.
-        return jsonify(result='queued'), 202
+        return jsonify(result='queued', previous_reset=previous_reset), 202
 
 
 DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'turtle_neck.db')
@@ -322,14 +329,23 @@ def record_result():
     return jsonify({"result": "success"})
 
 
+def get_reset_id(conn):
+    row = conn.execute("SELECT value FROM record_settings WHERE key = 'reset_id'").fetchone()
+    return row['value'] if row else ''
+
+
 @app.route('/api/results', methods=['GET'])
 def get_results():
     limit = min(request.args.get('limit', 20, type=int), 500)
     conn = get_conn()
-    rows = conn.execute('SELECT * FROM measurements ORDER BY timestamp DESC, id DESC LIMIT ?',
-                        (limit,)).fetchall()
-    conn.close()
-    return jsonify([dict(row) for row in rows])
+    try:
+        conn.execute('BEGIN')
+        reset_id = get_reset_id(conn)
+        rows = conn.execute('SELECT * FROM measurements ORDER BY timestamp DESC, id DESC LIMIT ?',
+                            (limit,)).fetchall()
+    finally:
+        conn.close()
+    return jsonify([dict(row) for row in rows]), 200, {'X-Measurement-Reset': reset_id}
 
 
 @app.route('/api/stats', methods=['GET'])
@@ -363,4 +379,3 @@ init_db()
 if __name__ == '__main__':
     # 개발 중 오류 확인이 필요하면 debug=True, 시연·제출 때는 False
     app.run(host='0.0.0.0', port=5050, debug=False, threaded=True)
-
