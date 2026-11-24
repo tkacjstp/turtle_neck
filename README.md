@@ -1,5 +1,8 @@
 # 거북목 판별기 (turtle_neck)
 
+
+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
+
 웹캠 1개로 앉아 있는 사람의 자세를 실시간으로 보고, **목만 앞으로 빠진 거북목**을 정상 / 경고 / 위험으로 판정해서 서버로 보내는 프로그램입니다. 결과는 웹 페이지에서 표로 확인할 수 있고, 라즈베리파이에서도 동작하도록 가볍게 만들었습니다.
 
 ```
