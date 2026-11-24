@@ -37,17 +37,26 @@ class SensorTests(unittest.TestCase):
 
     def test_active_and_passive_outputs(self):
         import types
-        fake = types.SimpleNamespace(RGBLED=MagicMock(), Buzzer=MagicMock(), TonalBuzzer=MagicMock())
+        fake = types.SimpleNamespace(RGBLED=MagicMock(), Buzzer=MagicMock(), PWMOutputDevice=MagicMock())
         for kind in ('active', 'passive'):
             with patch.dict('sys.modules', {'gpiozero': fake}):
-                out = Outputs(dict(rgb_pins=[10, 9, 11], buzzer_pin=2, buzzer_type=kind))
+                out = Outputs(dict(rgb_pins=[10, 9, 11], buzzer_pin=18, buzzer_type=kind))
                 out.set((1, 0, 0), True)
                 self.assertEqual(fake.RGBLED.call_args.args, (10, 9, 11))
                 self.assertEqual(fake.RGBLED.return_value.value, (1, 0, 0))
-                buzzer = fake.TonalBuzzer.return_value if kind == 'passive' else fake.Buzzer.return_value
-                (buzzer.play if kind == 'passive' else buzzer.on).assert_called()
+                if kind == 'passive':
+                    fake.PWMOutputDevice.assert_called_once_with(
+                        18, active_high=True, initial_value=0, frequency=880)
+                    buzzer = fake.PWMOutputDevice.return_value
+                    self.assertEqual(buzzer.value, 0.5)
+                else:
+                    buzzer = fake.Buzzer.return_value
+                    buzzer.on.assert_called_once()
                 out.set((0, 0, 0), False)
-                (buzzer.stop if kind == 'passive' else buzzer.off).assert_called()
+                if kind == 'passive':
+                    self.assertEqual(buzzer.value, 0)
+                else:
+                    buzzer.off.assert_called_once()
                 out.close()
                 buzzer.close.assert_called()
 
