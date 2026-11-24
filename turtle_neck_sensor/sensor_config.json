@@ -4,8 +4,8 @@
   "request_timeout": 1,
   "rgb_pins": [10, 9, 11],
   "rgb_active_high": true,
-  "buzzer_pin": 2,
-  "buzzer_type": "active",
+  "buzzer_pin": 18,
+  "buzzer_type": "passive",
   "buzzer_active_high": true,
   "tone_hz": 880
 }
