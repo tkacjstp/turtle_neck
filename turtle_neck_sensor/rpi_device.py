@@ -42,8 +42,12 @@ def output_pattern(status, elapsed):
 
 
 class Outputs:
-    def __init__(self, cfg, dry_run=False):
+    def __init__(self, cfg, dry_run=False, threaded_buzzer=False):
         self.led = self.buzzer = None
+        self.buzzer_thread = None
+        self.buzzer_condition = threading.Condition()
+        self.buzzer_requested = False
+        self.closing = False
         self.passive = cfg.get('buzzer_type', 'active') == 'passive'
         self.tone = cfg.get('tone_hz', 880)
         self.last = None
@@ -63,21 +67,52 @@ class Outputs:
             self.close()
             raise
 
+        if threaded_buzzer and self.buzzer is not None:
+            self.buzzer_thread = threading.Thread(target=self.run_buzzer, name='posture-buzzer')
+            self.buzzer_thread.start()
+
+    def drive_buzzer(self, enabled):
+        if self.passive:
+            self.buzzer.play(self.tone) if enabled else self.buzzer.stop()
+        else:
+            self.buzzer.on() if enabled else self.buzzer.off()
+
+    def run_buzzer(self):
+        applied = False
+        while True:
+            with self.buzzer_condition:
+                self.buzzer_condition.wait_for(
+                    lambda: self.closing or self.buzzer_requested != applied)
+                if self.closing:
+                    return
+                applied = self.buzzer_requested
+            try:
+                self.drive_buzzer(applied)
+            except Exception:
+                log.exception('Buzzer output failed')
+
     def set(self, led, buzzer):
         if self.last == (led, buzzer):
             return
         if self.led is not None:
             self.led.value = led
-        if self.buzzer is not None:
-            if self.passive:
-                self.buzzer.play(self.tone) if buzzer else self.buzzer.stop()
+        if self.buzzer is not None and (self.last is None or self.last[1] != buzzer):
+            if self.buzzer_thread is None:
+                self.drive_buzzer(buzzer)
             else:
-                self.buzzer.on() if buzzer else self.buzzer.off()
+                with self.buzzer_condition:
+                    self.buzzer_requested = buzzer
+                    self.buzzer_condition.notify()
         if self.led is None and self.buzzer is None:
             log.info('Outputs LED=%s buzzer=%s', led, buzzer)
         self.last = (led, buzzer)
 
     def close(self):
+        if self.buzzer_thread is not None:
+            with self.buzzer_condition:
+                self.closing = True
+                self.buzzer_condition.notify()
+            self.buzzer_thread.join()
         for device in (self.buzzer, self.led):
             if device is not None:
                 try:
@@ -129,7 +164,7 @@ def main():
     stop = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):
         signal.signal(sig, lambda *_: stop.set())
-    outputs = Outputs(cfg, args.dry_run)
+    outputs = Outputs(cfg, args.dry_run, threaded_buzzer=True)
     poller = StatusPoller(cfg, stop)
     previous, changed = None, time.monotonic()
     try:
