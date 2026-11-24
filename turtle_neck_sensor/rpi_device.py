@@ -53,27 +53,28 @@ class Outputs:
         self.last = None
         if dry_run:
             return
-        from gpiozero import RGBLED, Buzzer, TonalBuzzer
+        from gpiozero import RGBLED, Buzzer, PWMOutputDevice
         try:
             if cfg.get('rgb_pins'):
                 self.led = RGBLED(*cfg['rgb_pins'], active_high=cfg.get('rgb_active_high', True),
                                   initial_value=(0, 0, 0), pwm=False)
             if cfg.get('buzzer_pin') is not None:
                 if self.passive:
-                    self.buzzer = TonalBuzzer(cfg['buzzer_pin'])
+                    self.buzzer = PWMOutputDevice(
+                        cfg['buzzer_pin'], active_high=cfg.get('buzzer_active_high', True),
+                        initial_value=0, frequency=self.tone)
                 else:
                     self.buzzer = Buzzer(cfg['buzzer_pin'], active_high=cfg.get('buzzer_active_high', True), initial_value=False)
         except Exception:
             self.close()
             raise
-
         if threaded_buzzer and self.buzzer is not None:
             self.buzzer_thread = threading.Thread(target=self.run_buzzer, name='posture-buzzer')
             self.buzzer_thread.start()
 
     def drive_buzzer(self, enabled):
         if self.passive:
-            self.buzzer.play(self.tone) if enabled else self.buzzer.stop()
+            self.buzzer.value = 0.5 if enabled else 0
         else:
             self.buzzer.on() if enabled else self.buzzer.off()
 
