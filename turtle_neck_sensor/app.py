@@ -57,6 +57,14 @@ posture_error = False
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
+def latest_record_id():
+    conn = get_conn()
+    try:
+        return conn.execute('SELECT COALESCE(MAX(id), 0) FROM measurements').fetchone()[0]
+    finally:
+        conn.close()
+
+
 def measurement_state():
     global posture_process, posture_stopping, posture_error
     # Caller holds process_lock.
@@ -101,6 +109,7 @@ def control_posture():
             if not port.isdigit():
                 port = '5050'
             env['POSTURE_SERVER_URL'] = f'http://127.0.0.1:{port}/api/record'
+            after_id = latest_record_id()
             try:
                 # The same Python environment as app.py; no shell or new console window.
                 with open(os.path.join(BASE_DIR, 'posture_launcher.log'), 'ab') as output:
@@ -112,6 +121,13 @@ def control_posture():
                 posture_error = True
                 app.logger.exception('Could not launch posture.py')
                 return jsonify(error='posture launch failed'), 500
+            conn = get_conn()
+            try:
+                with conn:
+                    conn.execute("INSERT OR REPLACE INTO record_settings VALUES ('dashboard_after_id', ?)",
+                                 (str(after_id),))
+            finally:
+                conn.close()
             posture_stopping = False
             posture_error = False
             with command_lock:
@@ -341,8 +357,12 @@ def get_results():
     try:
         conn.execute('BEGIN')
         reset_id = get_reset_id(conn)
-        rows = conn.execute('SELECT * FROM measurements ORDER BY timestamp DESC, id DESC LIMIT ?',
-                            (limit,)).fetchall()
+        after_id = 0
+        if request.args.get('scope') == 'dashboard':
+            row = conn.execute("SELECT value FROM record_settings WHERE key = 'dashboard_after_id'").fetchone()
+            after_id = int(row['value']) if row else 0
+        rows = conn.execute('SELECT * FROM measurements WHERE id > ? ORDER BY timestamp DESC, id DESC LIMIT ?',
+                            (after_id, limit)).fetchall()
     finally:
         conn.close()
     return jsonify([dict(row) for row in rows]), 200, {'X-Measurement-Reset': reset_id}
@@ -379,3 +399,4 @@ init_db()
 if __name__ == '__main__':
     # 개발 중 오류 확인이 필요하면 debug=True, 시연·제출 때는 False
     app.run(host='0.0.0.0', port=5050, debug=False, threaded=True)
+
