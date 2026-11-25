@@ -84,7 +84,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
         }
 
@@ -483,13 +483,6 @@
 
         <section class="grid">
             <div class="card">
-                <div class="card-label">최근 자세 상태</div>
-                <div id="latest-status" class="card-value status-unknown">
-                    대기 중
-                </div>
-            </div>
-
-            <div class="card">
                 <div class="card-label">보정 후 측정 횟수</div>
                 <div class="card-value">
                     <span id="session-count">0</span>
@@ -651,9 +644,7 @@
                     resultsPaused = true;
                     clearResults();
                 }
-                updateLiveScore(online && !resultsPaused
-                    ? (calibrationWait ? {message: metrics?.message, detail: metrics?.detail} : metrics)
-                    : null);
+                updateLiveScore(online && !resultsPaused ? metrics : null);
                 if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
                 if (!online && connected) camera.removeAttribute('src');
                 connected = online;
@@ -692,13 +683,6 @@
         if (status === '경고') return 'warning';
         if (status === '위험') return 'danger';
         return '';
-    }
-
-    function getStatusTextClass(status) {
-        if (status === '정상') return 'status-normal';
-        if (status === '경고') return 'status-warning';
-        if (status === '위험') return 'status-danger';
-        return 'status-unknown';
     }
 
     function formatNumber(value) {
@@ -846,18 +830,6 @@
     function renderResults(rows) {
         renderTable(rows);
         renderChart(rows);
-
-        if (rows.length > 0) {
-            const latest = rows[0];
-
-            $('latest-status').textContent = latest.status || '미확인';
-            $('latest-status').className =
-                'card-value ' + getStatusTextClass(latest.status);
-
-        } else {
-            $('latest-status').textContent = '데이터 없음';
-            $('latest-status').className = 'card-value status-unknown';
-        }
     }
 
     async function fetchResults() {
