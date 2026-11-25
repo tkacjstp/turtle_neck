@@ -545,7 +545,6 @@
         }
         let calibrationWait = null;
         let resultsGeneration = 0;
-        let resultsPaused = true;
         function clearResults() {
             resultsGeneration++;
             renderResults([]);
@@ -571,15 +570,14 @@
                     calibrationWait = {previousReset: result.previous_reset};
                     clearResults();
                 } else if (command === 'start') {
-                    calibrationWait = null;
-                    resultsPaused = false;
-                    clearResults();
+                    if (result.result === 'started') {
+                        calibrationWait = null;
+                        clearResults();
+                    }
                     measurementState = result.state || 'starting';
                     $('measurement-summary').hidden = true;
                 } else if (command === 'quit') {
                     calibrationWait = null;
-                    resultsPaused = true;
-                    clearResults();
                     measurementState = 'stopping';
                     $('measurement-summary').hidden = false;
                 }
@@ -637,14 +635,10 @@
                     setTimeout(checkVideo, 250);
                     return;
                 }
-                const previousState = measurementState;
                 measurementState = state || (online ? 'running' : 'stopped');
-                if (online && ['stopped', 'error'].includes(previousState)) resultsPaused = false;
-                if (['stopped', 'error'].includes(measurementState) && !resultsPaused) {
-                    resultsPaused = true;
-                    clearResults();
+                if (online && measurementState === 'running') {
+                    updateLiveScore(metrics);
                 }
-                updateLiveScore(online && !resultsPaused ? metrics : null);
                 if (online && !connected) camera.src = '/video_feed?t=' + Date.now();
                 if (!online && connected) camera.removeAttribute('src');
                 connected = online;
@@ -657,7 +651,6 @@
                 updateControls();
             } catch (error) {
                 connected = false;
-                updateLiveScore(null);
                 camera.removeAttribute('src');
                 camera.hidden = true;
                 placeholder.hidden = false;
@@ -851,7 +844,7 @@
             }
 
             setConnection(true);
-            if (resultsPaused || generation !== resultsGeneration) return;
+            if (generation !== resultsGeneration) return;
             if (waiting && response.headers.get('X-Measurement-Reset') === waiting.previousReset) return;
             calibrationWait = null;
             renderResults(rows);
@@ -895,3 +888,4 @@
 </script>
 </body>
 </html>
+
